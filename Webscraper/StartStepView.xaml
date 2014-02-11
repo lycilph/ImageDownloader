@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="Webscraper.StartStepView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:c="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:l="clr-namespace:Webscraper"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance l:StartStep}">
+    <ScrollViewer>
+        <Grid>
+            <Grid.RowDefinitions>
+                <!-- Website -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+                <!-- Output dir -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+                <!-- Cache dir -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Website -->
+            <TextBlock Grid.Row="0"
+                       Margin="30,10"
+                       Text="Website"/>
+
+            <TextBox Grid.Row="1"
+                     Margin="30,10"
+                     Text="{Binding Website, UpdateSourceTrigger=PropertyChanged}"
+                     c:TextboxHelper.Watermark="Website"
+                     c:TextboxHelper.ClearTextButton="True"/>
+
+            <!-- Output dir -->
+            <TextBlock Grid.Row="2"
+                       Margin="30,30,30,10"
+                       Text="Output"/>
+
+            <DockPanel Grid.Row="3"
+                       Margin="30,10">
+                <Button DockPanel.Dock="Right"
+                        Margin="10,0,0,0"
+                        Command="{Binding BrowseOutputDirCommand}">
+                    <Image Source="Images\appbar.folder.png" Height="24"/>
+                </Button>
+                <TextBox VerticalContentAlignment="Center"
+                         Text="{Binding OutputDir}"
+                         ToolTip="{Binding OutputDir}"
+                         l:ScrollToEnd.Enable="true"
+                         c:TextboxHelper.Watermark="Directory"/>
+            </DockPanel>
+
+            <!-- Cache dir -->
+            <TextBlock Grid.Row="4"
+                       Margin="30,30,30,10"
+                       Text="Cache"/>
+
+            <CheckBox Grid.Row="5"
+                      Margin="30,10"
+                      Content="Use cache"
+                      IsChecked="{Binding UseCache}"/>
+
+            <DockPanel Grid.Row="6"
+                       Margin="30,10"
+                       IsEnabled="{Binding UseCache}">
+                <Button DockPanel.Dock="Right"
+                        Margin="10,0,0,0"
+                        Command="{Binding BrowseCacheDirCommand}">
+                    <Image Source="Images\appbar.folder.png" Height="24"/>
+                </Button>
+                <TextBox VerticalContentAlignment="Center"
+                         Text="{Binding CacheDir}"
+                         ToolTip="{Binding CacheDir}"
+                         l:ScrollToEnd.Enable="true"
+                         c:TextboxHelper.Watermark="Directory"/>
+            </DockPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
