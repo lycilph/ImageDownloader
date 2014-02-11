@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Webscraper.Properties
+namespace ImageDownloader.Properties
 {
 
 

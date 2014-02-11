@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader", "ImageDownloader\ImageDownloader.csproj", "{ED4F89FD-751C-4DFE-8958-60CC6A3AD98E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webscraper", "Webscraper\Webscraper.csproj", "{D7770A65-FEC4-446B-AD55-551F6C5523DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader", "ImageDownloader\ImageDownloader.csproj", "{4044EEEB-1252-4E78-ABF3-E1A8A8E95BF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ED4F89FD-751C-4DFE-8958-60CC6A3AD98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED4F89FD-751C-4DFE-8958-60CC6A3AD98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED4F89FD-751C-4DFE-8958-60CC6A3AD98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED4F89FD-751C-4DFE-8958-60CC6A3AD98E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7770A65-FEC4-446B-AD55-551F6C5523DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7770A65-FEC4-446B-AD55-551F6C5523DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7770A65-FEC4-446B-AD55-551F6C5523DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7770A65-FEC4-446B-AD55-551F6C5523DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4044EEEB-1252-4E78-ABF3-E1A8A8E95BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4044EEEB-1252-4E78-ABF3-E1A8A8E95BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4044EEEB-1252-4E78-ABF3-E1A8A8E95BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4044EEEB-1252-4E78-ABF3-E1A8A8E95BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
