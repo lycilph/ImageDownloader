@@ -26,9 +26,8 @@ namespace ImageDownloader.Utils
 
                 var list = new List<FrameworkElement>(get_named_elements(o));
                 var type = o.GetType();
-                var fields = o.GetType()
-                              .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-                              .Where(f => f.DeclaringType == type);
+                var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                                 .Where(f => f.DeclaringType == type);
                 var flyouts = fields.Where(f => f.FieldType == typeof(FlyoutsControl))
                                     .Select(f => f.GetValue(o))
                                     .Cast<FlyoutsControl>();
@@ -37,6 +36,16 @@ namespace ImageDownloader.Utils
                                     .Cast<WindowCommands>();
                 list.AddRange(flyouts);
                 list.AddRange(commands);
+
+                if (!flyouts.Any())
+                {
+                    var contained_flyouts = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                                .Where(p => p.PropertyType == typeof(FlyoutsControl))
+                                                .Select(p => p.GetValue(o))
+                                                .Cast<FlyoutsControl>();
+                    foreach (var flyout in contained_flyouts)
+                        list.AddRange(get_named_elements(flyout));
+                }
 
                 if (!commands.Any())
                 {

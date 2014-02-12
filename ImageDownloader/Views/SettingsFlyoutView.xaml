@@ -3,9 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:vm="clr-namespace:ImageDownloader.ViewModels"
+             xmlns:controls="clr-namespace:ImageDownloader.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TextBlock Text="Settings"/>
-    </Grid>
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance vm:SettingsFlyoutViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="visibility_converter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="20"
+                Width="300">
+        <TextBlock Text="Settings" FontSize="20"/>
+        <Separator/>
+        <TextBlock Text="Output folder" FontSize="16" Margin="0,10,0,0"/>
+        <TextBox Text="{Binding Settings.OutputFolder, UpdateSourceTrigger=PropertyChanged}"
+                 ToolTip="{Binding Settings.OutputFolder}"
+                 Margin="0,10,0,0"
+                 metro:TextboxHelper.Watermark="Folder">
+            <i:Interaction.Behaviors>
+                <controls:ScrollToEndBehavior/>
+            </i:Interaction.Behaviors>
+        </TextBox>
+
+        <!-- Debug settings-->
+        <StackPanel Margin="0,10,0,0"
+                    Visibility="{Binding Settings.DebugEnabled, Converter={StaticResource visibility_converter}}">
+            <Separator/>
+            <TextBlock Text="Debug settings" FontSize="16" Margin="0,10,0,0"/>
+            <metro:ToggleSwitch Content="Enable Caching" Margin="0,10,0,0"/>
+        </StackPanel>
+    </StackPanel>
 </UserControl>

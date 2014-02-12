@@ -13,14 +13,8 @@ using System.ComponentModel.Composition;
 namespace ImageDownloader.ViewModels
 {
     [Export(typeof(ProjectPageViewModel))]
-    public class ProjectPageViewModel : ReactiveConductor<IStep>.Collection.OneActive, IPage, IPartImportsSatisfiedNotification, IHandle<Project>
+    public class ProjectPageViewModel : ReactiveConductor<IStep>.Collection.OneActive, IPage, IHandle<Project>
     {
-        [Import]
-        private IEventAggregator EventAggregator { get; set; }
-
-        [ImportMany]
-        private IEnumerable<Lazy<IStep, OrderMetadata>> UnsortedSteps { get; set; }
-
         private Project _Project;
         public Project Project
         {
@@ -38,8 +32,12 @@ namespace ImageDownloader.ViewModels
             get { return ActiveItem.CanGotoNext; }
         }
 
-        public ProjectPageViewModel()
+        [ImportingConstructor]
+        public ProjectPageViewModel(IEventAggregator event_aggregator,
+                                    [ImportMany] IEnumerable<Lazy<IStep, OrderMetadata>> steps)
         {
+            event_aggregator.Subscribe(this);
+
             this.WhenAny(m => m.ActiveItem, m => m.Value)
                 .Where(m => m != null)
                 .Subscribe(m =>
@@ -47,10 +45,17 @@ namespace ImageDownloader.ViewModels
                     raisePropertyChanged("CanPrevious");
                     raisePropertyChanged("CanNext");
                 });
+
+            Items.AddRange(steps.OrderBy(Lazy => Lazy.Metadata.Order).Select(Lazy => Lazy.Value));
+            if (Items.Any())
+                ActivateItem(Items.First());
         }
 
         public void Previous()
         {
+            var index = Items.IndexOf(ActiveItem);
+            if (index - 1 >= 0)
+                ActivateItem(Items[index - 1]);
         }
 
         public void Next()
@@ -63,15 +68,6 @@ namespace ImageDownloader.ViewModels
         public void Handle(Project project)
         {
             Project = project;
-        }
-
-        public void OnImportsSatisfied()
-        {
-            EventAggregator.Subscribe(this);
-
-            Items.AddRange(UnsortedSteps.OrderBy(Lazy => Lazy.Metadata.Order).Select(Lazy => Lazy.Value));
-            if (Items.Any())
-                ActivateItem(Items.First());
         }
     }
 }

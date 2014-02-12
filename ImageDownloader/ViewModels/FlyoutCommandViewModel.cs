@@ -2,23 +2,18 @@
 
 namespace ImageDownloader.ViewModels
 {
-    public class FlyoutCommandViewModel : ReactiveObject
+    public class FlyoutCommandViewModel : ViewModelBase<FlyoutBase>
     {
-        public FlyoutBase Flyout { get; private set; }
-
         public string Header
         {
-            get { return Flyout.Header; }
+            get { return Model.Header; }
         }
 
-        public FlyoutCommandViewModel(FlyoutBase flyout)
-        {
-            Flyout = flyout;
-        }
+        public FlyoutCommandViewModel(FlyoutBase flyout) : base(flyout) {}
 
         public void Toggle()
         {
-            Flyout.Toggle();
+            Model.Toggle();
         }
     }
 }

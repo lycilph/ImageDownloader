@@ -15,10 +15,8 @@ namespace ImageDownloader.ViewModels
     {
         private static ILog log = LogManager.GetLog(typeof(ProjectSelectionPageViewModel));
 
+        private IEventAggregator event_aggregator;
         private Repository repository = new Repository();
-
-        [Import]
-        private IEventAggregator EventAggregator { get; set; }
 
         private IReactiveDerivedList<ProjectViewModel> _Projects;
         public IReactiveDerivedList<ProjectViewModel> Projects
@@ -49,8 +47,11 @@ namespace ImageDownloader.ViewModels
             get { return SelectedProject != null; }
         }
 
-        public ProjectSelectionPageViewModel()
+        [ImportingConstructor]
+        public ProjectSelectionPageViewModel(IEventAggregator event_aggregator)
         {
+            this.event_aggregator = event_aggregator;
+
             Projects = repository.Projects.CreateDerivedCollection(p => new ProjectViewModel(p));
             Projects.ItemsAdded.Subscribe(p =>
             {
@@ -64,7 +65,7 @@ namespace ImageDownloader.ViewModels
                     raisePropertyChanged("CanDeleteProject");
                     raisePropertyChanged("CanEditProject");
                     raisePropertyChanged("CanSelectProject");
-                    EventAggregator.PublishOnCurrentThread(SelectedProject.Model);
+                    event_aggregator.PublishOnCurrentThread(SelectedProject.Model);
                 });
         }
 
@@ -93,7 +94,7 @@ namespace ImageDownloader.ViewModels
 
         public void SelectProject()
         {
-            EventAggregator.PublishOnCurrentThread(NavigationMessage.NavigateToProjectPage());
+            event_aggregator.PublishOnCurrentThread(NavigationMessage.NavigateToProjectPage());
         }
     }
 }
