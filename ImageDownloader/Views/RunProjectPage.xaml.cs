@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ImageDownloader.Views
 {
     /// <summary>
-    /// Interaction logic for ProjectPage.xaml
+    /// Interaction logic for RunProjectPage.xaml
     /// </summary>
-    public partial class ProjectPage : UserControl
+    public partial class RunProjectPage : UserControl
     {
-        public ProjectPage()
+        public RunProjectPage()
         {
             InitializeComponent();
         }

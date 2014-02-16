@@ -1,23 +1,26 @@
 ﻿using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Interfaces;
+using ImageDownloader.Messages;
 using ImageDownloader.Models;
 using ImageDownloader.Utils;
 using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
+using System.Reactive.Linq;
 
 namespace ImageDownloader.ViewModels
 {
     [Export(typeof(IShell))]
-    public class ShellViewModel : ReactiveConductor<IPage>, IShell, IHandle<NavigationMessage>
+    public class ShellViewModel : ReactiveConductor<IPage>, IShell, IHandle<PageType>, IHandle<ShellMessage>
     {
         private static ILog log = LogManager.GetLog(typeof(ShellViewModel));
 
+        private IRepository repository;
         private IEventAggregator event_aggregator;
-        private Settings settings;
-        private ProjectSelectionPageViewModel project_selection_page;
-        private ProjectPageViewModel project_page;
+        private List<IPage> pages;
 
         private ReactiveList<FlyoutBase> _FlyoutViewModels;
         public ReactiveList<FlyoutBase> FlyoutViewModels
@@ -33,49 +36,62 @@ namespace ImageDownloader.ViewModels
             set { this.RaiseAndSetIfChanged(ref _FlyoutCommands, value); }
         }
 
+        private bool _IsEnabled = true;
+        public bool IsEnabled
+        {
+            get { return _IsEnabled; }
+            set { this.RaiseAndSetIfChanged(ref _IsEnabled, value); }
+        }
+
         [ImportingConstructor]
         public ShellViewModel(IEventAggregator event_aggregator,
-                              Settings settings,
-                              ProjectSelectionPageViewModel project_selection_page,
-                              ProjectPageViewModel project_page,
+                              IRepository repository,
+                              [ImportMany] IEnumerable<IPage> pages,
                               [ImportMany] IEnumerable<FlyoutBase> flyouts)
         {
-            DisplayName = "Image Downloader";
-
+            this.repository = repository;
             this.event_aggregator = event_aggregator;
-            this.settings = settings;
-            this.project_selection_page = project_selection_page;
-            this.project_page = project_page;
+            this.pages = new List<IPage>(pages);
+
+            this.WhenAnyDynamic(new string[] { "repository", "Current" },
+                                new string[] { "repository", "Current", "Name" },
+                                (p1, p2) => p1)
+                .Subscribe(x => CurrentProjectChanged((Project)x.Value));
+
             FlyoutViewModels = new ReactiveList<FlyoutBase>(flyouts);
             FlyoutCommands = FlyoutViewModels.CreateDerivedCollection(f => new FlyoutCommandViewModel(f), f => f.ShowInTitlebar);
 
             event_aggregator.Subscribe(this);
-            ActivateItem(project_selection_page);
+            Handle(PageType.ProjectSelection);
         }
 
         public void ShowAbout()
         {
-            event_aggregator.PublishOnCurrentThread(NavigationMessage.NavigateToProjectSelectionPage());
+            System.Windows.MessageBox.Show("About");
         }
 
         public void ToggleDebug()
         {
-            settings.DebugEnabled = !settings.DebugEnabled;
+            event_aggregator.PublishOnCurrentThread(SystemMessage.ToggleDebug);
         }
 
-        public void Handle(NavigationMessage message)
+        private void CurrentProjectChanged(Project project)
         {
-            switch (message.NavigateToPage)
-            {
-                case NavigationMessage.Page.ProjectSelection:
-                    ActivateItem(project_selection_page);
-                    break;
-                case NavigationMessage.Page.ProjectPage:
-                    ActivateItem(project_page);
-                    break;
-                default:
-                    break;
-            }
+            DisplayName = (project == Project.Empty ? "Image Downloader" : "Image Downloader - " + project.Name);
+        }
+
+        public void Handle(PageType page)
+        {
+            var vm = pages.FirstOrDefault(p => p.Page == page);
+            if (vm != null)
+                ActivateItem(vm);
+            else
+                throw new InvalidOperationException("Unknown page type");
+        }
+
+        public void Handle(ShellMessage state)
+        {
+            IsEnabled = (state == ShellMessage.Enabled);
         }
     }
 }

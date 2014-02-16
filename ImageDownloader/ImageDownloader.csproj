@@ -79,6 +79,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAutoGrid">
+      <HintPath>..\packages\WpfAutoGrid.1.2.0.0\lib\net45\WpfAutoGrid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -89,30 +92,42 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\BringIntoViewBehavior.cs" />
     <Compile Include="Controls\EditableTextControl.xaml.cs">
       <DependentUpon>EditableTextControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScrollToEndBehavior.cs" />
+    <Compile Include="Controls\UnsetOnZeroConverter.cs" />
     <Compile Include="Interfaces\IPage.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IShell.cs" />
     <Compile Include="Interfaces\IStep.cs" />
+    <Compile Include="Messages\EditMessage.cs" />
+    <Compile Include="Messages\SystemMessage.cs" />
+    <Compile Include="Models\Keyword.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Utils\DebugLogger.cs" />
     <Compile Include="Utils\InputBindingParser.cs" />
     <Compile Include="Utils\InputBindingTrigger.cs" />
-    <Compile Include="Utils\NavigationMessage.cs" />
     <Compile Include="Utils\OrderMetadata.cs" />
     <Compile Include="Utils\StartupTasks.cs" />
+    <Compile Include="Utils\Webscraper.cs" />
+    <Compile Include="Messages\ShellMessage.cs" />
     <Compile Include="ViewModels\CriteriaStepViewModel.cs" />
     <Compile Include="ViewModels\FlyoutBase.cs" />
     <Compile Include="ViewModels\FlyoutCommandViewModel.cs" />
-    <Compile Include="ViewModels\ProjectPageViewModel.cs" />
+    <Compile Include="ViewModels\ImagesStepViewModel.cs" />
+    <Compile Include="ViewModels\EditProjectPageViewModel.cs" />
+    <Compile Include="ViewModels\KeywordViewModel.cs" />
     <Compile Include="ViewModels\ProjectSelectionPageViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\RunProjectPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\SiteMapStepViewModel.cs" />
+    <Compile Include="ViewModels\StepBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\WebsiteStepViewModel.cs" />
     <Compile Include="Views\CriteriaStepView.xaml.cs">
@@ -121,8 +136,14 @@
     <Compile Include="Views\FlyoutCommandView.xaml.cs">
       <DependentUpon>FlyoutCommandView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProjectPage.xaml.cs">
-      <DependentUpon>ProjectPage.xaml</DependentUpon>
+    <Compile Include="Views\ImagesStepView.xaml.cs">
+      <DependentUpon>ImagesStepView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditProjectPage.xaml.cs">
+      <DependentUpon>EditProjectPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KeywordView.xaml.cs">
+      <DependentUpon>KeywordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProjectSelectionPage.xaml.cs">
       <DependentUpon>ProjectSelectionPage.xaml</DependentUpon>
@@ -130,11 +151,17 @@
     <Compile Include="Views\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RunProjectPage.xaml.cs">
+      <DependentUpon>RunProjectPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsFlyoutView.xaml.cs">
       <DependentUpon>SettingsFlyoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SiteMapStepView.xaml.cs">
+      <DependentUpon>SiteMapStepView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WebsiteStepView.xaml.cs">
       <DependentUpon>WebsiteStepView.xaml</DependentUpon>
@@ -185,7 +212,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProjectPage.xaml">
+    <Page Include="Views\ImagesStepView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditProjectPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KeywordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -197,11 +232,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RunProjectPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsFlyoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SiteMapStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,6 +265,18 @@
   <ItemGroup>
     <Resource Include="Images\appbar.chevron.left.png" />
     <Resource Include="Images\appbar.chevron.right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.arrow.left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.control.stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

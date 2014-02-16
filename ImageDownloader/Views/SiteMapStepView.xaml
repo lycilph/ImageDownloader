@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="ImageDownloader.Views.SiteMapStepView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:vm="clr-namespace:ImageDownloader.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:controls="clr-namespace:ImageDownloader.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance vm:SiteMapStepViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="visibility_converter"/>
+        
+        <Style TargetType="Image">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Opacity" Value="0.3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel Margin="70,20,70,0">
+        <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Right"
+                    Style="{StaticResource MetroCircleButtonStyle}"
+                    ToolTip="Refresh the site map">
+                <Image Source="..\Images\appbar.refresh.png" Height="36"/>
+            </Button>
+            <Button DockPanel.Dock="Right"
+                    Style="{StaticResource MetroCircleButtonStyle}"
+                    ToolTip="Stop the process">
+                <Image Source="..\Images\appbar.control.stop.png" Height="36"/>
+            </Button>
+            <TextBlock Text="Site map" FontSize="24" VerticalAlignment="Top"/>
+        </DockPanel>
+        <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>
+        <ListBox x:Name="Pages">
+            <i:Interaction.Behaviors>
+                <controls:BringIntoViewBehavior/>
+            </i:Interaction.Behaviors>
+        </ListBox>
+    </DockPanel>
+</UserControl>

@@ -6,17 +6,23 @@ using ReactiveUI;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System;
+using System.Reactive.Linq;
 using ImageDownloader.Utils;
 
 namespace ImageDownloader.ViewModels
 {
-    [Export(typeof(ProjectSelectionPageViewModel))]
+    [Export(typeof(IPage))]
     public class ProjectSelectionPageViewModel : ReactiveScreen, IPage
     {
         private static ILog log = LogManager.GetLog(typeof(ProjectSelectionPageViewModel));
 
         private IEventAggregator event_aggregator;
-        private Repository repository = new Repository();
+        private IRepository repository;
+
+        public PageType Page
+        {
+            get { return PageType.ProjectSelection; }
+        }
 
         private IReactiveDerivedList<ProjectViewModel> _Projects;
         public IReactiveDerivedList<ProjectViewModel> Projects
@@ -32,24 +38,28 @@ namespace ImageDownloader.ViewModels
             set { this.RaiseAndSetIfChanged(ref _SelectedProject, value); }
         }
 
+        private ObservableAsPropertyHelper<bool> _CanDeleteProject;
         public bool CanDeleteProject
         {
-            get { return SelectedProject != null; }
+            get { return _CanDeleteProject.Value; }
         }
 
+        private ObservableAsPropertyHelper<bool> _CanEditProject;
         public bool CanEditProject
         {
-            get { return SelectedProject != null; }
+            get { return _CanEditProject.Value; }
         }
 
-        public bool CanSelectProject
+        private ObservableAsPropertyHelper<bool> _CanRunProject;
+        public bool CanRunProject
         {
-            get { return SelectedProject != null; }
+            get { return _CanRunProject.Value; }
         }
 
         [ImportingConstructor]
-        public ProjectSelectionPageViewModel(IEventAggregator event_aggregator)
+        public ProjectSelectionPageViewModel(IRepository repository, IEventAggregator event_aggregator)
         {
+            this.repository = repository;
             this.event_aggregator = event_aggregator;
 
             Projects = repository.Projects.CreateDerivedCollection(p => new ProjectViewModel(p));
@@ -59,14 +69,20 @@ namespace ImageDownloader.ViewModels
                 SelectedProject.IsEditing = true;
             });
 
-            this.ObservableForProperty(m => m.SelectedProject)
-                .Subscribe(m =>
-                {
-                    raisePropertyChanged("CanDeleteProject");
-                    raisePropertyChanged("CanEditProject");
-                    raisePropertyChanged("CanSelectProject");
-                    event_aggregator.PublishOnCurrentThread(SelectedProject.Model);
-                });
+            this.ObservableForProperty(x => x.SelectedProject)
+                .Subscribe(x => repository.Current = (SelectedProject == null ? Project.Empty : SelectedProject.Model));
+
+            _CanDeleteProject = this.ObservableForProperty(x => x.SelectedProject)
+                                    .Select(p => p.Value != null)
+                                    .ToProperty(this, x => x.CanDeleteProject);
+
+            _CanEditProject = this.ObservableForProperty(x => x.SelectedProject)
+                                  .Select(p => p.Value != null)
+                                  .ToProperty(this, x => x.CanEditProject);
+
+            _CanRunProject = this.ObservableForProperty(x => x.SelectedProject)
+                                 .Select(p => p.Value != null)
+                                 .ToProperty(this, x => x.CanRunProject);
         }
 
         protected override void OnActivate()
@@ -74,27 +90,33 @@ namespace ImageDownloader.ViewModels
             base.OnActivate();
 
             if (Projects.Any() && SelectedProject == null)
-                SelectedProject = Projects.First();            
+                SelectedProject = Projects.First();
+
+            // DEBUG
+            //EditProject();
         }
 
         public void AddProject()
         {
-            repository.Projects.Add(new Project { Name = "New" });
+            repository.Add(new Project { Name = "New" });
         }
 
         public void DeleteProject()
         {
-            repository.Projects.Remove(SelectedProject.Model);
+            repository.Remove(SelectedProject.Model);
         }
 
         public void EditProject()
         {
-            SelectedProject.IsEditing = true;
+            event_aggregator.PublishOnCurrentThread(PageType.EditProject);
         }
 
-        public void SelectProject()
+        public void RunProject()
         {
-            event_aggregator.PublishOnCurrentThread(NavigationMessage.NavigateToProjectPage());
+            if (SelectedProject.Model.CanRun())
+                event_aggregator.PublishOnCurrentThread(PageType.RunProject);
+            else
+                event_aggregator.PublishOnCurrentThread(PageType.EditProject);
         }
     }
 }

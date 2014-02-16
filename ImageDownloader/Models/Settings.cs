@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using Caliburn.Micro;
+using ImageDownloader.Messages;
+using ReactiveUI;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Reflection;
@@ -6,8 +8,10 @@ using System.Reflection;
 namespace ImageDownloader.Models
 {
     [Export(typeof(Settings))]
-    public class Settings : ReactiveObject
+    public class Settings : ReactiveObject, IHandle<SystemMessage>
     {
+        private IEventAggregator event_aggregator;
+
         private string _OutputFolder;
         public string OutputFolder
         {
@@ -22,9 +26,18 @@ namespace ImageDownloader.Models
             set { this.RaiseAndSetIfChanged(ref _DebugEnabled, value); }
         }
 
-        public Settings()
+        [ImportingConstructor]
+        public Settings(IEventAggregator event_aggregator)
         {
+            this.event_aggregator = event_aggregator;
+            event_aggregator.Subscribe(this);
+
             _OutputFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        public void Handle(SystemMessage message)
+        {
+            DebugEnabled = !DebugEnabled;
         }
     }
 }

@@ -36,5 +36,5 @@
         </metro:FlyoutsControl>
     </metro:MetroWindow.Flyouts>
     
-    <metro:TransitioningContentControl x:Name="ActiveItem"/>
+    <metro:TransitioningContentControl x:Name="ActiveItem" IsEnabled="{Binding IsEnabled}"/>
 </metro:MetroWindow>

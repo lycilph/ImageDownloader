@@ -1,47 +1,87 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro;
 using ImageDownloader.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReactiveUI;
+using ImageDownloader.Messages;
+using System.Reactive.Linq;
 
 namespace ImageDownloader.ViewModels
 {
     [Export(typeof(IStep))]
     [ExportMetadata("Order", 2)]
-    public class CriteriaStepViewModel : ReactiveScreen, IStep
+    public class CriteriaStepViewModel : StepBase
     {
-        private bool _IsEnabled;
-        public bool IsEnabled
+        private IRepository repository;
+        private IEventAggregator event_aggregator;
+
+        private string _Extension;
+        public string Extension
         {
-            get { return _IsEnabled; }
-            set { this.RaiseAndSetIfChanged(ref _IsEnabled, value); }
+            get { return _Extension; }
+            set { this.RaiseAndSetIfChanged(ref _Extension, value); }
         }
 
-        public bool CanGotoPrevious
+        private IReactiveDerivedList<string> _Extensions;
+        public IReactiveDerivedList<string> Extensions
         {
-            get { return true; }
+            get { return _Extensions; }
+            set { this.RaiseAndSetIfChanged(ref _Extensions, value); }
         }
 
-        public bool CanGotoNext
+        private ObservableAsPropertyHelper<bool> _CanAddExtension;
+        public bool CanAddExtension
         {
-            get { return false; }
+            get { return _CanAddExtension.Value; }
         }
 
-        public CriteriaStepViewModel()
+        [ImportingConstructor]
+        public CriteriaStepViewModel(IRepository repository, IEventAggregator event_aggregator) : base("Criteria")
         {
-            DisplayName = "Criteria";
-            IsEnabled = false;
+            this.repository = repository;
+            this.event_aggregator = event_aggregator;
+
+            _CanAddExtension = this.ObservableForProperty(x => x.Extension)
+                                   .Select(x => !string.IsNullOrWhiteSpace(x.Value))
+                                   .ToProperty(this, x => x.CanAddExtension);
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-
             IsEnabled = true;
+            event_aggregator.PublishOnCurrentThread(EditMessage.EnablePrevious | EditMessage.EnableNext);
+
+            Extensions = repository.Current.Extensions.CreateDerivedCollection(e => e);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            if (close)
+                IsEnabled = false;
+        }
+
+        public void AddExtensionShortcut()
+        {
+            if (string.IsNullOrWhiteSpace(Extension))
+                return;
+
+            AddExtension();
+        }
+
+        public void AddExtension()
+        {
+            repository.Current.Extensions.Add(Extension);
+            Extension = string.Empty;
+        }
+
+        public void DeleteExtension(string extension)
+        {
+            if (string.IsNullOrWhiteSpace(extension))
+                return;
+
+            repository.Current.Extensions.Remove(extension);
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace ImageDownloader.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace ImageDownloader.Interfaces
 {
     public interface IStep
     {
         bool IsEnabled { get; }
-
-        bool CanGotoPrevious { get; }
-
-        bool CanGotoNext { get; }
+        bool IsBusy { get; }
+        void Cancel();
     }
 }

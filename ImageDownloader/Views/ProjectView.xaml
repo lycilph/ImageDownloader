@@ -22,7 +22,7 @@
         <StackPanel Grid.ColumnSpan="2" Margin="140,0,10,0">
             <TextBlock Text="{Binding Model.Created, StringFormat=Created {0:dd-MM-yyyy}}" FontSize="16" HorizontalAlignment="Right"/>
             <TextBlock Text="{Binding Model.LastExecution, StringFormat=Last execution {0:dd-MM-yyyy}}" FontSize="16" HorizontalAlignment="Right"/>
-            <TextBlock Text="{Binding Model.ExecutionCount, StringFormat=Execution count {0}}" FontSize="16" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding Model.ImagesFound, StringFormat=Images found {0}}" FontSize="16" HorizontalAlignment="Right"/>
         </StackPanel>
     </Grid>
 </UserControl>
