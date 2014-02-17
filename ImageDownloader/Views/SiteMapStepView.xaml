@@ -6,12 +6,13 @@
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:vm="clr-namespace:ImageDownloader.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:controls="clr-namespace:ImageDownloader.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance vm:SiteMapStepViewModel}">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="visibility_converter"/>
+        <controls:BooleanToVisibilityConverter x:Key="visibility_converter" Collapse="False"/>
         
         <Style TargetType="Image">
             <Style.Triggers>
@@ -25,19 +26,21 @@
     <DockPanel Margin="70,20,70,0">
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right"
+                    x:Name="Start"
                     Style="{StaticResource MetroCircleButtonStyle}"
                     ToolTip="Refresh the site map">
                 <Image Source="..\Images\appbar.refresh.png" Height="36"/>
             </Button>
             <Button DockPanel.Dock="Right"
+                    x:Name="Cancel"
                     Style="{StaticResource MetroCircleButtonStyle}"
                     ToolTip="Stop the process">
                 <Image Source="..\Images\appbar.control.stop.png" Height="36"/>
             </Button>
             <TextBlock Text="Site map" FontSize="24" VerticalAlignment="Top"/>
         </DockPanel>
-        <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>
-        <ListBox x:Name="Pages">
+        <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" EllipseDiameter="5" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>
+        <ListBox x:Name="Pages" SelectionMode="Extended" cal:Message.Attach="[Shortcut Delete] = [DeletePages(Pages.SelectedItems)]">
             <i:Interaction.Behaviors>
                 <controls:BringIntoViewBehavior/>
             </i:Interaction.Behaviors>

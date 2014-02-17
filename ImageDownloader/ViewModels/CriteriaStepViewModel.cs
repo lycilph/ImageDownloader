@@ -14,6 +14,34 @@ namespace ImageDownloader.ViewModels
         private IRepository repository;
         private IEventAggregator event_aggregator;
 
+        private int? _MinWidth;
+        public int? MinWidth
+        {
+            get { return _MinWidth; }
+            set { this.RaiseAndSetIfChanged(ref _MinWidth, value); }
+        }
+
+        private int? _MaxWidth;
+        public int? MaxWidth
+        {
+            get { return _MaxWidth; }
+            set { this.RaiseAndSetIfChanged(ref _MaxWidth, value); }
+        }
+
+        private int? _MinHeight;
+        public int? MinHeight
+        {
+            get { return _MinHeight; }
+            set { this.RaiseAndSetIfChanged(ref _MinHeight, value); }
+        }
+
+        private int? _MaxHeight;
+        public int? MaxHeight
+        {
+            get { return _MaxHeight; }
+            set { this.RaiseAndSetIfChanged(ref _MaxHeight, value); }
+        }
+
         private string _Extension;
         public string Extension
         {
@@ -51,6 +79,10 @@ namespace ImageDownloader.ViewModels
             IsEnabled = true;
             event_aggregator.PublishOnCurrentThread(EditMessage.EnablePrevious | EditMessage.EnableNext);
 
+            MinWidth = repository.Current.MinWidth;
+            MaxWidth = repository.Current.MaxWidth;
+            MinHeight = repository.Current.MinHeight;
+            MaxHeight = repository.Current.MaxHeight;
             Extensions = repository.Current.Extensions.CreateDerivedCollection(e => e);
         }
 
@@ -60,6 +92,11 @@ namespace ImageDownloader.ViewModels
 
             if (close)
                 IsEnabled = false;
+
+            repository.Current.MinWidth = MinWidth;
+            repository.Current.MaxWidth = MaxWidth;
+            repository.Current.MinHeight = MinHeight;
+            repository.Current.MaxHeight = MaxHeight;
         }
 
         public void AddExtensionShortcut()

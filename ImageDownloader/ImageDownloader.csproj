@@ -92,12 +92,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controls\BringIntoViewBehavior.cs" />
     <Compile Include="Controls\EditableTextControl.xaml.cs">
       <DependentUpon>EditableTextControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScrollToEndBehavior.cs" />
     <Compile Include="Controls\UnsetOnZeroConverter.cs" />
+    <Compile Include="Interfaces\ICache.cs" />
     <Compile Include="Interfaces\IPage.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IShell.cs" />
@@ -108,10 +110,14 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Utils\Cache.cs" />
     <Compile Include="Utils\DebugLogger.cs" />
     <Compile Include="Utils\InputBindingParser.cs" />
     <Compile Include="Utils\InputBindingTrigger.cs" />
+    <Compile Include="Interfaces\IScraper.cs" />
     <Compile Include="Utils\OrderMetadata.cs" />
+    <Compile Include="Utils\ScraperInfo.cs" />
+    <Compile Include="Utils\ScraperResult.cs" />
     <Compile Include="Utils\StartupTasks.cs" />
     <Compile Include="Utils\Webscraper.cs" />
     <Compile Include="Messages\ShellMessage.cs" />

@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Interfaces;
 using ReactiveUI;
+using System.Threading.Tasks;
 
 namespace ImageDownloader.ViewModels
 {
@@ -25,6 +26,9 @@ namespace ImageDownloader.ViewModels
             DisplayName = name;
         }
 
-        public virtual void Cancel() { }
+        public virtual Task Cancel()
+        {
+            return Task.FromResult(0);
+        }
     }
 }

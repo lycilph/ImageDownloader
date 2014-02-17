@@ -6,6 +6,6 @@ namespace ImageDownloader.Interfaces
     {
         bool IsEnabled { get; }
         bool IsBusy { get; }
-        void Cancel();
+        Task Cancel();
     }
 }

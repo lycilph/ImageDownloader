@@ -7,6 +7,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace ImageDownloader.ViewModels
 {
@@ -15,8 +18,9 @@ namespace ImageDownloader.ViewModels
     public class SiteMapStepViewModel : StepBase
     {
         private IEventAggregator event_aggregator;
-        private IProgress<string> progress;
+        private IProgress<ScraperInfo> progress;
         private CancellationTokenSource cancellation_source;
+        private IScraper scraper;
         private Task task;
         private bool done;
         
@@ -27,18 +31,49 @@ namespace ImageDownloader.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Pages, value); }
         }
 
-        [ImportingConstructor]
-        public SiteMapStepViewModel(IEventAggregator event_aggregator) : base("Site Map")
+        private ObservableAsPropertyHelper<bool> _CanCancel;
+        public bool CanCancel
         {
+            get { return _CanCancel.Value; }
+        }
+
+        private ObservableAsPropertyHelper<bool> _CanStart;
+        public bool CanStart
+        {
+            get { return _CanStart.Value; }
+        }
+
+        [ImportingConstructor]
+        public SiteMapStepViewModel(IScraper scraper, IEventAggregator event_aggregator) : base("Site Map")
+        {
+            this.scraper = scraper;
             this.event_aggregator = event_aggregator;
-            progress = new Progress<string>(AddPage);
+            progress = new Progress<ScraperInfo>(Update);
             done = false;
+
+            _CanCancel = this.ObservableForProperty(x => x.IsBusy)
+                             .Select(x => x.Value)
+                             .ToProperty(this, x => x.CanCancel);
+
+            _CanStart = this.ObservableForProperty(x => x.IsBusy)
+                            .Select(x => !x.Value)
+                            .ToProperty(this, x => x.CanStart );
+        }
+
+        private void UpdateNavigationState()
+        {
+            if (done)
+                event_aggregator.PublishOnCurrentThread(EditMessage.EnablePrevious | EditMessage.EnableNext);
+            else
+                event_aggregator.PublishOnCurrentThread(EditMessage.EnablePrevious);
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
             IsEnabled = true;
+
+            UpdateNavigationState();
 
             if (!done)
                 Start();
@@ -50,60 +85,60 @@ namespace ImageDownloader.ViewModels
 
             if (close)
             {
-                Pages.Clear();
                 IsEnabled = false;
                 done = false;
             }
-
-            if (!done)
-                Pages.Clear();
         }
 
-        public override void CanClose(Action<bool> callback)
+        public override async void CanClose(Action<bool> callback)
         {
-            Cancel();
+            await Cancel();
+
             callback(true);
         }
 
-        public override async void Cancel()
+        public override Task Cancel()
         {
             if (IsBusy && cancellation_source != null)
             {
                 event_aggregator.PublishOnCurrentThread(ShellMessage.Disabled);
-                //cancellation_source.Cancel();
-                await task;
-                event_aggregator.PublishOnCurrentThread(ShellMessage.Enabled);
+                cancellation_source.Cancel();
+                return task.ContinueWith(parent => event_aggregator.PublishOnCurrentThread(ShellMessage.Enabled), TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            else
+                return base.Cancel();
+        }
+
+        public void DeletePages(IList urls)
+        {
+            while (urls.Count > 0)
+            {
+                Pages.Remove(urls[0]);
             }
         }
 
-        private void Start()
+        public void Start()
         {
             cancellation_source = new CancellationTokenSource();
-            var rnd = new Random();
 
             IsBusy = true;
-            task = Task.Factory.StartNew(() =>
-            {
-                for (int i = 0; i < 500; i++)
-                {
-                    Thread.Sleep(rnd.Next(10000, 25000));
+            done = false;
+            Pages.Clear();
+            UpdateNavigationState();
 
-                    if (cancellation_source.Token.IsCancellationRequested)
-                        return;
-
-                    progress.Report(string.Format("Page {0}", i));
-                }
-            }).ContinueWith(parent =>
-            {
-                IsBusy = false;
-                if (!cancellation_source.IsCancellationRequested)
-                    done = true;
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            task = Task.Factory.StartNew(() => scraper.FindAllPages("Test", progress, cancellation_source.Token))
+                               .ContinueWith(parent =>
+                               {
+                                   IsBusy = false;
+                                   if (!cancellation_source.IsCancellationRequested)
+                                       done = true;
+                                   UpdateNavigationState();
+                               }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void AddPage(string page)
+        private void Update(ScraperInfo info)
         {
-            Pages.Add(page);
+            Pages.Add(string.Format("({0}) {1}", info.State.ToString(), info.Item));
         }
     }
 }

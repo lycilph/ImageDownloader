@@ -19,7 +19,14 @@ namespace ImageDownloader.Models
             set { this.RaiseAndSetIfChanged(ref _OutputFolder, value); }
         }
 
-        private bool _DebugEnabled = false;
+        private string _CacheFolder;
+        public string CacheFolder
+        {
+            get { return _CacheFolder; }
+            set { this.RaiseAndSetIfChanged(ref _CacheFolder, value); }
+        }
+
+        private bool _DebugEnabled = true;
         public bool DebugEnabled
         {
             get { return _DebugEnabled; }
@@ -32,7 +39,12 @@ namespace ImageDownloader.Models
             this.event_aggregator = event_aggregator;
             event_aggregator.Subscribe(this);
 
-            _OutputFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var root_folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _OutputFolder = Path.Combine(root_folder, "Images");
+            _CacheFolder = Path.Combine(root_folder, "Cache");
+
+            if (!Directory.Exists(_CacheFolder))
+                Directory.CreateDirectory(_CacheFolder);
         }
 
         public void Handle(SystemMessage message)

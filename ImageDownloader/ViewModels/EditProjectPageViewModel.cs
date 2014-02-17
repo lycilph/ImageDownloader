@@ -55,15 +55,10 @@ namespace ImageDownloader.ViewModels
             steps = new List<IStep>(unsorted_steps.OrderBy(Lazy => Lazy.Metadata.Order).Select(Lazy => Lazy.Value));
         }
 
-        protected override void ChangeActiveItem(IStep newItem, bool closePrevious)
+        protected override async void ChangeActiveItem(IStep newItem, bool closePrevious)
         {
-            //if (ActiveItem != null && ActiveItem.IsBusy)
-            //{
-            //    event_aggregator.PublishOnCurrentThread(ShellMessage.Disabled);
-            //    ActiveItem.Cancel();
-            //    await ActiveItem.BusyTask;
-            //    event_aggregator.PublishOnCurrentThread(ShellMessage.Enabled);
-            //}
+            if (ActiveItem != null)
+                await ActiveItem.Cancel();
 
             base.ChangeActiveItem(newItem, closePrevious);
         }
@@ -75,6 +70,10 @@ namespace ImageDownloader.ViewModels
             Items.AddRange(steps);
             if (Items.Any())
                 ActivateItem(Items.First());
+
+            // DEBUG
+            GotoNext();
+            GotoNext();
         }
 
         public void GoBack()
