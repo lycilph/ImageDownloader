@@ -17,6 +17,7 @@ namespace ImageDownloader.ViewModels
     [ExportMetadata("Order", 3)]
     public class SiteMapStepViewModel : StepBase
     {
+        private IRepository repository;
         private IEventAggregator event_aggregator;
         private IProgress<ScraperInfo> progress;
         private CancellationTokenSource cancellation_source;
@@ -44,8 +45,9 @@ namespace ImageDownloader.ViewModels
         }
 
         [ImportingConstructor]
-        public SiteMapStepViewModel(IScraper scraper, IEventAggregator event_aggregator) : base("Site Map")
+        public SiteMapStepViewModel(IRepository repository, IScraper scraper, IEventAggregator event_aggregator) : base("Site Map")
         {
+            this.repository = repository;
             this.scraper = scraper;
             this.event_aggregator = event_aggregator;
             progress = new Progress<ScraperInfo>(Update);
@@ -113,7 +115,7 @@ namespace ImageDownloader.ViewModels
         {
             while (urls.Count > 0)
             {
-                Pages.Remove(urls[0]);
+                Pages.Remove((string)urls[0]);
             }
         }
 
@@ -126,9 +128,15 @@ namespace ImageDownloader.ViewModels
             Pages.Clear();
             UpdateNavigationState();
 
-            task = Task.Factory.StartNew(() => scraper.FindAllPages("Test", progress, cancellation_source.Token))
+            task = Task.Factory.StartNew(() => scraper.FindAllPages(repository.Current.Site, progress, cancellation_source.Token))
                                .ContinueWith(parent =>
                                {
+                                   if (parent.IsFaulted)
+                                   {
+                                       var e = parent.Exception as AggregateException;
+                                       System.Windows.MessageBox.Show(e.InnerException.Message);
+                                   }
+
                                    IsBusy = false;
                                    if (!cancellation_source.IsCancellationRequested)
                                        done = true;

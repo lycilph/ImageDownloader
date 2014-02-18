@@ -41,7 +41,7 @@ namespace ImageDownloader.ViewModels
 
         private void ForwardPropertyNotifications(object sender, PropertyChangedEventArgs e)
         {
-            raisePropertyChanged(e.PropertyName);
+            this.RaisePropertyChanged(e.PropertyName);
         }
     }
 }

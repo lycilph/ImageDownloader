@@ -20,6 +20,7 @@ namespace ImageDownloader.ViewModels
 
         private IRepository repository;
         private IEventAggregator event_aggregator;
+        private Settings settings;
         private List<IPage> pages;
 
         private ReactiveList<FlyoutBase> _FlyoutViewModels;
@@ -46,10 +47,12 @@ namespace ImageDownloader.ViewModels
         [ImportingConstructor]
         public ShellViewModel(IEventAggregator event_aggregator,
                               IRepository repository,
+                              Settings settings,
                               [ImportMany] IEnumerable<IPage> pages,
                               [ImportMany] IEnumerable<FlyoutBase> flyouts)
         {
             this.repository = repository;
+            this.settings = settings;
             this.event_aggregator = event_aggregator;
             this.pages = new List<IPage>(pages);
 
@@ -72,7 +75,7 @@ namespace ImageDownloader.ViewModels
 
         public void ToggleDebug()
         {
-            event_aggregator.PublishOnCurrentThread(SystemMessage.ToggleDebug);
+            settings.ToggleDebug();
         }
 
         private void CurrentProjectChanged(Project project)

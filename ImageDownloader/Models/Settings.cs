@@ -8,10 +8,8 @@ using System.Reflection;
 namespace ImageDownloader.Models
 {
     [Export(typeof(Settings))]
-    public class Settings : ReactiveObject, IHandle<SystemMessage>
+    public class Settings : ReactiveObject
     {
-        private IEventAggregator event_aggregator;
-
         private string _OutputFolder;
         public string OutputFolder
         {
@@ -26,28 +24,30 @@ namespace ImageDownloader.Models
             set { this.RaiseAndSetIfChanged(ref _CacheFolder, value); }
         }
 
-        private bool _DebugEnabled = true;
+        private bool _CachingEnabled;
+        public bool CachingEnabled
+        {
+            get { return _CachingEnabled; }
+            set { this.RaiseAndSetIfChanged(ref _CachingEnabled, value); }
+        }
+
+        private bool _DebugEnabled;
         public bool DebugEnabled
         {
             get { return _DebugEnabled; }
             set { this.RaiseAndSetIfChanged(ref _DebugEnabled, value); }
         }
 
-        [ImportingConstructor]
-        public Settings(IEventAggregator event_aggregator)
+        public Settings()
         {
-            this.event_aggregator = event_aggregator;
-            event_aggregator.Subscribe(this);
-
             var root_folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             _OutputFolder = Path.Combine(root_folder, "Images");
             _CacheFolder = Path.Combine(root_folder, "Cache");
-
-            if (!Directory.Exists(_CacheFolder))
-                Directory.CreateDirectory(_CacheFolder);
+            _CachingEnabled = true;
+            _DebugEnabled = true;
         }
 
-        public void Handle(SystemMessage message)
+        public void ToggleDebug()
         {
             DebugEnabled = !DebugEnabled;
         }

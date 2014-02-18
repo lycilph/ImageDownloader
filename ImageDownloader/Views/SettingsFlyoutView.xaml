@@ -9,7 +9,7 @@
              xmlns:vm="clr-namespace:ImageDownloader.ViewModels"
              xmlns:controls="clr-namespace:ImageDownloader.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="300"
              d:DataContext="{d:DesignInstance vm:SettingsFlyoutViewModel}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="visibility_converter"/>
@@ -20,8 +20,8 @@
         <TextBlock Text="Settings" FontSize="20"/>
         <Separator/>
         <TextBlock Text="Output folder" FontSize="16" Margin="0,10,0,0"/>
-        <TextBox Text="{Binding Settings.OutputFolder, UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="{Binding Settings.OutputFolder}"
+        <TextBox Text="{Binding OutputFolder, UpdateSourceTrigger=PropertyChanged}"
+                 ToolTip="{Binding OutputFolder}"
                  Margin="0,10,0,0"
                  metro:TextboxHelper.Watermark="Folder">
             <i:Interaction.Behaviors>
@@ -31,10 +31,17 @@
 
         <!-- Debug settings-->
         <StackPanel Margin="0,10,0,0"
-                    Visibility="{Binding Settings.DebugEnabled, Converter={StaticResource visibility_converter}}">
+                    Visibility="{Binding DebugEnabled, Converter={StaticResource visibility_converter}}">
             <Separator/>
             <TextBlock Text="Debug settings" FontSize="16" Margin="0,10,0,0"/>
-            <metro:ToggleSwitch Content="Enable Caching" Margin="0,10,0,0"/>
+            <metro:ToggleSwitch Content="Enable Caching" IsChecked="{Binding CachingEnabled}" Margin="0,10,0,0"/>
         </StackPanel>
+
+        <Button x:Name="Accept"
+                Style="{StaticResource MetroCircleButtonStyle}"
+                HorizontalAlignment="Right"
+                Margin="0,20,0,0">
+            <Image Source="..\images\appbar.check.png" Height="45"/>
+        </Button>
     </StackPanel>
 </UserControl>
