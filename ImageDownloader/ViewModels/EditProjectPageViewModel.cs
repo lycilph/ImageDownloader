@@ -72,7 +72,7 @@ namespace ImageDownloader.ViewModels
                 ActivateItem(Items.First());
 
             // DEBUG
-            ActivateItem(Items[3]);
+            ActivateItem(Items[2]);
         }
 
         public void Edit() { }

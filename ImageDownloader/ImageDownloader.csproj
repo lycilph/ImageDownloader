@@ -115,8 +115,11 @@
     <Compile Include="Controls\EditableTextControl.xaml.cs">
       <DependentUpon>EditableTextControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FlipView.cs" />
     <Compile Include="Controls\ScaleFontBehavior.cs" />
     <Compile Include="Controls\ScrollToEndBehavior.cs" />
+    <Compile Include="Controls\EnumToIntConverter.cs" />
+    <Compile Include="Controls\UnselectableBehavior.cs" />
     <Compile Include="Controls\UnsetOnZeroConverter.cs" />
     <Compile Include="Interfaces\ICache.cs" />
     <Compile Include="Interfaces\IPage.cs" />
@@ -231,6 +234,10 @@
     <Page Include="Controls\WizardListBoxItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CriteriaStepView.xaml">
       <SubType>Designer</SubType>

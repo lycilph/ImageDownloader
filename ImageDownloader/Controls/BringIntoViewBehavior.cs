@@ -11,13 +11,13 @@ namespace ImageDownloader.Controls
         protected override void OnAttached()
         {
             AssociatedObject.Loaded += OnLoaded;
-            AssociatedObject.Unloaded += OnUnLoaded;
+            AssociatedObject.Unloaded += OnUnloaded;
         }
 
         protected override void OnDetaching()
         {
             AssociatedObject.Loaded -= OnLoaded;
-            AssociatedObject.Unloaded -= OnUnLoaded;
+            AssociatedObject.Unloaded -= OnUnloaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -28,7 +28,7 @@ namespace ImageDownloader.Controls
             incc.CollectionChanged += OnCollectionChanged;
         }
 
-        private void OnUnLoaded(object sender, RoutedEventArgs e)
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             var incc = AssociatedObject.ItemsSource as INotifyCollectionChanged;
             if (incc == null) return;

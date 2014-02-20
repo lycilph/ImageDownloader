@@ -1,10 +1,12 @@
 ﻿using Caliburn.Micro;
 using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ImageDownloader.Utils
 {
@@ -18,47 +20,50 @@ namespace ImageDownloader.Utils
             var get_named_elements = BindingScope.GetNamedElements;
             BindingScope.GetNamedElements = o =>
             {
-                var metroWindow = o as MetroWindow;
-                if (metroWindow == null)
-                {
-                    return get_named_elements(o);
-                }
+                var metro_window = o as MetroWindow;
+                if (metro_window != null)
+                    return ResolveMetroWindow(o, get_named_elements);
 
-                var list = new List<FrameworkElement>(get_named_elements(o));
-                var type = o.GetType();
-                var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-                                 .Where(f => f.DeclaringType == type);
-                var flyouts = fields.Where(f => f.FieldType == typeof(FlyoutsControl))
-                                    .Select(f => f.GetValue(o))
-                                    .Cast<FlyoutsControl>();
-                var commands = fields.Where(f => f.FieldType == typeof(WindowCommands))
-                                    .Select(f => f.GetValue(o))
-                                    .Cast<WindowCommands>();
-                list.AddRange(flyouts);
-                list.AddRange(commands);
-
-                if (!flyouts.Any())
-                {
-                    var contained_flyouts = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                .Where(p => p.PropertyType == typeof(FlyoutsControl))
-                                                .Select(p => p.GetValue(o))
-                                                .Cast<FlyoutsControl>();
-                    foreach (var flyout in contained_flyouts)
-                        list.AddRange(get_named_elements(flyout));
-                }
-
-                if (!commands.Any())
-                {
-                    var contained_commands = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                 .Where(p => p.PropertyType == typeof(WindowCommands))
-                                                 .Select(p => p.GetValue(o))
-                                                 .Cast<WindowCommands>();
-                    foreach (var command in contained_commands)
-                        list.AddRange(get_named_elements(command));
-                }
-
-                return list;
+                return get_named_elements(o);
             };
+        }
+
+        private IEnumerable<FrameworkElement> ResolveMetroWindow(DependencyObject o, Func<DependencyObject, IEnumerable<FrameworkElement>> get_named_elements)
+        {
+            var list = new List<FrameworkElement>(get_named_elements(o));
+            var type = o.GetType();
+            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                             .Where(f => f.DeclaringType == type);
+            var flyouts = fields.Where(f => f.FieldType == typeof(FlyoutsControl))
+                                .Select(f => f.GetValue(o))
+                                .Cast<FlyoutsControl>();
+            var commands = fields.Where(f => f.FieldType == typeof(WindowCommands))
+                                .Select(f => f.GetValue(o))
+                                .Cast<WindowCommands>();
+            list.AddRange(flyouts);
+            list.AddRange(commands);
+
+            if (!flyouts.Any())
+            {
+                var contained_flyouts = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                            .Where(p => p.PropertyType == typeof(FlyoutsControl))
+                                            .Select(p => p.GetValue(o))
+                                            .Cast<FlyoutsControl>();
+                foreach (var flyout in contained_flyouts)
+                    list.AddRange(get_named_elements(flyout));
+            }
+
+            if (!commands.Any())
+            {
+                var contained_commands = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                             .Where(p => p.PropertyType == typeof(WindowCommands))
+                                             .Select(p => p.GetValue(o))
+                                             .Cast<WindowCommands>();
+                foreach (var command in contained_commands)
+                    list.AddRange(get_named_elements(command));
+            }
+
+            return list;
         }
 
         [Export(typeof(StartupTask))]

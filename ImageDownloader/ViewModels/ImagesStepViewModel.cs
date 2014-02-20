@@ -12,6 +12,7 @@ namespace ImageDownloader.ViewModels
     {
         private Random rnd = new Random();
         private DispatcherTimer timer;
+        private bool is_changing_item;
 
         private string _BannerText = "Item 0";
         public string BannerText
@@ -20,25 +21,25 @@ namespace ImageDownloader.ViewModels
             set { this.RaiseAndSetIfChanged(ref _BannerText, value); }
         }
 
-        private bool _ShowBanner = false;
-        public bool ShowBanner
+        private bool _IsBannerShown = true;
+        public bool IsBannerShown
         {
-            get { return _ShowBanner; }
-            set { this.RaiseAndSetIfChanged(ref _ShowBanner, value); }
+            get { return _IsBannerShown; }
+            set { this.RaiseAndSetIfChanged(ref _IsBannerShown, value); }
         }
 
         [ImportingConstructor]
         public ImagesStepViewModel() : base("Images")
         {
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(750);
+            timer.Interval = TimeSpan.FromMilliseconds(3000);
             timer.Tick += TimerTick;
-            //timer.Start();
+            timer.Start();
         }
 
         private void TimerTick(object sender, EventArgs e)
         {
-            ShowBanner = false;
+            IsBannerShown = false;
             timer.Stop();
         }
 
@@ -58,10 +59,30 @@ namespace ImageDownloader.ViewModels
 
         public void ItemChanged()
         {
-            //BannerText = string.Format("Item {0}", rnd.Next(1, 11));
-            ShowBanner = !ShowBanner;
-            //timer.Stop();
-            //timer.Start();
+            is_changing_item = true;
+
+            BannerText = string.Format("Item {0}", rnd.Next(1, 11));
+            IsBannerShown = true;
+            timer.Stop();
+            timer.Start();
+        }
+
+        public void ShowBanner()
+        {
+            IsBannerShown = true;
+            timer.Stop();
+        }
+
+        public void HideBanner()
+        {
+            if (is_changing_item)
+            {
+                is_changing_item = false;
+                return;
+            }
+
+            IsBannerShown = false;
+            timer.Stop();
         }
     }
 }

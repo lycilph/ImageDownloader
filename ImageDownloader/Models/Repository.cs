@@ -26,13 +26,14 @@ namespace ImageDownloader.Models
         {
             Projects = new ReactiveList<Project>
             {
+                new Project {Name = "Project 1", Site = @"http://www.skovboernehave.dk/Album/20131215Juletra/index.html"},
+                new Project {Name = "Project 2", Site = @"http://www.skovboernehave.dk/Album/20131215Juletra/index.html"},
                 new Project {Name = "Skovbørnehaven",
                              Site = @"http://www.skovboernehave.dk/",
                              Keywords = new ReactiveList<Keyword> { new Keyword {Text = "skov", Type = Keyword.RestrictionType.Exclude},
                                                                     new Keyword {Text = "have", Type = Keyword.RestrictionType.Include}},
-                             ImagesFound = 12,},
-                new Project {Name = "Project 2", Site = @"http://www.skovboernehave.dk/Album/20131215Juletra/index.html"},
-                new Project {Name = "Project 3"},
+                             ImagesFound = 12,}
+                
             };
 
             Current = Projects.First();

@@ -13,6 +13,7 @@
              d:DataContext="{d:DesignInstance vm:SiteMapStepViewModel}">
     <UserControl.Resources>
         <controls:BooleanToVisibilityConverter x:Key="visibility_converter" Collapse="False"/>
+        <controls:EnumToIntConverter x:Key="enum_converter"/>
         
         <Style TargetType="Image">
             <Style.Triggers>
@@ -56,15 +57,22 @@
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" EllipseDiameter="5" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>
         
-        <metro:MetroAnimatedTabControl TabStripPlacement="Left">
-            <metro:MetroTabItem Header="Pages"/>
-            <metro:MetroTabItem Header="Log">
+        <metro:MetroAnimatedTabControl TabStripPlacement="Left"
+                                       SelectedIndex="{Binding CurrentTab, Converter={StaticResource enum_converter}, ConverterParameter={x:Type vm:SiteMapStepViewModel+Tab}}">
+            <metro:MetroTabItem Header="Pages">
                 <ListBox x:Name="Pages"
                          SelectionMode="Extended"
+                         cal:Bind.Model="{Binding}"
                          cal:Message.Attach="[Shortcut Delete] = [DeletePages(Pages.SelectedItems)]"
+                         Style="{StaticResource VirtualisedMetroListBox}"/>
+            </metro:MetroTabItem>
+            <metro:MetroTabItem Header="Log">
+                <ListBox x:Name="Log"
+                         cal:Bind.Model="{Binding}"
                          Style="{StaticResource VirtualisedMetroListBox}">
                     <i:Interaction.Behaviors>
                         <controls:BringIntoViewBehavior/>
+                        <controls:UnselectableBehavior/>
                     </i:Interaction.Behaviors>
                 </ListBox>
             </metro:MetroTabItem>

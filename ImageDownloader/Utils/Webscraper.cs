@@ -15,9 +15,6 @@ namespace ImageDownloader.Utils
         private ICache cache;
         private Settings settings;
 
-        private Project project;
-        private IProgress<ScraperInfo> progress;
-
         private List<string> include_keywords;
         private List<string> exclude_keywords;
 
@@ -27,6 +24,8 @@ namespace ImageDownloader.Utils
         private List<string> accepted = new List<string>();
         private List<string> rejected = new List<string>();
 
+        public IProgress<ScraperInfo> Progress { get; set; }
+
         [ImportingConstructor]
         public Webscraper(ICache cache, Settings settings)
         {
@@ -34,11 +33,8 @@ namespace ImageDownloader.Utils
             this.settings = settings;
         }
 
-        public ScraperResult FindAllPages(Project project, IProgress<ScraperInfo> progress, CancellationToken token)
+        public ScraperResult FindAllPages(Project project, CancellationToken token)
         {
-            this.project = project;
-            this.progress = progress;
-
             include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
             exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
 
@@ -58,7 +54,7 @@ namespace ImageDownloader.Utils
 
             cache.Update();
 
-            return new ScraperResult();
+            return new ScraperResult(accepted);
         }
 
         private void FindPage(string url)
@@ -99,16 +95,16 @@ namespace ImageDownloader.Utils
         {
             accepted.Add(url);
 
-            if (progress != null)
-                progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Accepted));
+            if (Progress != null)
+                Progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Accepted));
         }
 
         private void Reject(string url)
         {
             rejected.Add(url);
 
-            if (progress != null)
-                progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Rejected));
+            if (Progress != null)
+                Progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Rejected));
         }
 
         private bool Filter(string url)
@@ -186,9 +182,9 @@ namespace ImageDownloader.Utils
             return result;
         }
 
-        public ScraperResult FindAllImages(IEnumerable<string> urls, IProgress<ScraperInfo> progress, CancellationToken token)
+        public ScraperResult FindAllImages(IEnumerable<string> urls, CancellationToken token)
         {
-            return new ScraperResult();
+            return new ScraperResult(urls);
         }
     }
 }

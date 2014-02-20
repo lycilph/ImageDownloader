@@ -6,19 +6,20 @@
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:vm="clr-namespace:ImageDownloader.ViewModels"
+             xmlns:controls="clr-namespace:ImageDownloader.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance vm:ImagesStepViewModel}">
     <Grid Margin="70,20,70,0">
-        <metro:FlipView cal:Message.Attach="[Event SelectionChanged] = [ItemChanged]"
-                        BannerText="{Binding BannerText}"
-                        IsBannerEnabled="{Binding ShowBanner}">
+        <controls:FlipView cal:Message.Attach="[Event SelectionChanged] = [ItemChanged]; [Event MouseEnter] = [ShowBanner]; [Event MouseLeave] = [HideBanner]"
+                           BannerText="{Binding BannerText}"
+                           IsBannerEnabled="{Binding IsBannerShown}">
             <Grid>
                 <TextBlock Text="Item 1"/>
             </Grid>
             <Grid>
                 <TextBlock Text="Item 2"/>
             </Grid>
-        </metro:FlipView>
+        </controls:FlipView>
     </Grid>
 </UserControl>
