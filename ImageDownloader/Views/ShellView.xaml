@@ -11,7 +11,7 @@
                    ShowWindowCommandsOnTop="False"
                    Height="600"
                    Width="800"
-                   cal:Message.Attach="[Shortcut Control+Shift+Alt+D] = [ToggleDebug]">
+                   cal:Message.Attach="[Shortcut Control+Shift+Alt+D] = [ToggleDebug]; [Shortcut F2] = [Edit]">
     <metro:MetroWindow.WindowCommands>
         <metro:WindowCommands>
             <ItemsControl x:Name="FlyoutCommands">

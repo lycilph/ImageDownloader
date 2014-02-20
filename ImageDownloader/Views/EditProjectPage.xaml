@@ -39,7 +39,7 @@
                          Margin="20,0"
                          Background="Transparent">
                     <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource WizardListBoxItem}">
                             <Setter Property="Margin" Value="0,10"/>
                             <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
                         </Style>

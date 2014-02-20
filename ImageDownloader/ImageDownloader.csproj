@@ -64,6 +64,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
@@ -113,6 +115,7 @@
     <Compile Include="Controls\EditableTextControl.xaml.cs">
       <DependentUpon>EditableTextControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScaleFontBehavior.cs" />
     <Compile Include="Controls\ScrollToEndBehavior.cs" />
     <Compile Include="Controls\UnsetOnZeroConverter.cs" />
     <Compile Include="Interfaces\ICache.cs" />
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\WizardListBoxItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CriteriaStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -301,6 +308,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

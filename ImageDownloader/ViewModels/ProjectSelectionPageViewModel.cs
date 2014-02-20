@@ -72,16 +72,13 @@ namespace ImageDownloader.ViewModels
             this.ObservableForProperty(x => x.SelectedProject)
                 .Subscribe(x => repository.Current = (SelectedProject == null ? Project.Empty : SelectedProject.Model));
 
-            _CanDeleteProject = this.ObservableForProperty(x => x.SelectedProject)
-                                    .Select(p => p.Value != null)
+            _CanDeleteProject = this.WhenAny(x => x.SelectedProject, x => x.Value != null)
                                     .ToProperty(this, x => x.CanDeleteProject);
 
-            _CanEditProject = this.ObservableForProperty(x => x.SelectedProject)
-                                  .Select(p => p.Value != null)
+            _CanEditProject = this.WhenAny(x => x.SelectedProject, x => x.Value != null)
                                   .ToProperty(this, x => x.CanEditProject);
 
-            _CanRunProject = this.ObservableForProperty(x => x.SelectedProject)
-                                 .Select(p => p.Value != null)
+            _CanRunProject = this.WhenAny(x => x.SelectedProject, x => x.Value != null)
                                  .ToProperty(this, x => x.CanRunProject);
         }
 
@@ -94,6 +91,11 @@ namespace ImageDownloader.ViewModels
 
             // DEBUG
             EditProject();
+        }
+
+        public void Edit()
+        {
+            SelectedProject.IsEditing = true;
         }
 
         public void AddProject()

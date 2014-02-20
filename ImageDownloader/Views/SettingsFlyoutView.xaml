@@ -33,8 +33,17 @@
         <StackPanel Margin="0,10,0,0"
                     Visibility="{Binding DebugEnabled, Converter={StaticResource visibility_converter}}">
             <Separator/>
-            <TextBlock Text="Debug settings" FontSize="16" Margin="0,10,0,0"/>
+            <TextBlock Text="Debug" FontSize="16" Margin="0,10,0,0"/>
             <metro:ToggleSwitch Content="Enable Caching" IsChecked="{Binding CachingEnabled}" Margin="0,10,0,0"/>
+            <DockPanel Margin="0,10,0,0">
+                <Button x:Name="ClearCache"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MetroCircleButtonStyle}"
+                        HorizontalAlignment="Right">
+                    <Image Source="..\images\appbar.delete.png" Height="45"/>
+                </Button>
+                <TextBlock Text="Clear cache" VerticalAlignment="Center" FontSize="16"/>
+            </DockPanel>
         </StackPanel>
 
         <Button x:Name="Accept"

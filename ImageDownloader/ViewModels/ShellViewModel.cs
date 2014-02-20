@@ -3,13 +3,11 @@ using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Interfaces;
 using ImageDownloader.Messages;
 using ImageDownloader.Models;
-using ImageDownloader.Utils;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Reactive.Linq;
 
 namespace ImageDownloader.ViewModels
 {
@@ -56,9 +54,9 @@ namespace ImageDownloader.ViewModels
             this.event_aggregator = event_aggregator;
             this.pages = new List<IPage>(pages);
 
-            this.WhenAnyDynamic(new string[] { "repository", "Current" },
-                                new string[] { "repository", "Current", "Name" },
-                                (p1, p2) => p1)
+            repository.WhenAnyDynamic(new string[] { "Current" },
+                                      new string[] { "Current", "Name" },
+                                      (p1, p2) => p1)
                 .Subscribe(x => CurrentProjectChanged((Project)x.Value));
 
             FlyoutViewModels = new ReactiveList<FlyoutBase>(flyouts);
@@ -76,6 +74,11 @@ namespace ImageDownloader.ViewModels
         public void ToggleDebug()
         {
             settings.ToggleDebug();
+        }
+
+        public void Edit()
+        {
+            ActiveItem.Edit();
         }
 
         private void CurrentProjectChanged(Project project)

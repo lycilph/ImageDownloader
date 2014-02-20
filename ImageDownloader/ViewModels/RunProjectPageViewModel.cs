@@ -26,6 +26,8 @@ namespace ImageDownloader.ViewModels
             this.event_aggregator = event_aggregator;
         }
 
+        public void Edit() { }
+
         public void Back()
         {
             event_aggregator.PublishOnCurrentThread(PageType.ProjectSelection);

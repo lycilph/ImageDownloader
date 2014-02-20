@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using ImageDownloader.Models;
 using System.ComponentModel;
+using ImageDownloader.Interfaces;
 
 namespace ImageDownloader.ViewModels
 {
@@ -16,6 +17,7 @@ namespace ImageDownloader.ViewModels
     public class SettingsFlyoutViewModel : FlyoutBase
     {
         private Settings settings;
+        private ICache cache;
 
         private string _OutputFolder;
         public string OutputFolder
@@ -38,9 +40,10 @@ namespace ImageDownloader.ViewModels
         }
 
         [ImportingConstructor]
-        public SettingsFlyoutViewModel(Settings settings) : base("Settings", Position.Right, true)
+        public SettingsFlyoutViewModel(Settings settings, ICache cache) : base("Settings", Position.Right, true)
         {
             this.settings = settings;
+            this.cache = cache;
 
             this.ObservableForProperty(x => x.IsOpen)
                 .Where(x => x.Value)
@@ -62,6 +65,11 @@ namespace ImageDownloader.ViewModels
             settings.CachingEnabled = CachingEnabled;
 
             IsOpen = false;
+        }
+
+        public void ClearCache()
+        {
+            cache.Clear();
         }
     }
 }

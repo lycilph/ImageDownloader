@@ -15,6 +15,12 @@ namespace ImageDownloader.Utils
         private ICache cache;
         private Settings settings;
 
+        private Project project;
+        private IProgress<ScraperInfo> progress;
+
+        private List<string> include_keywords;
+        private List<string> exclude_keywords;
+
         private string domain = string.Empty;
 
         private Stack<string> pages = new Stack<string>();
@@ -28,17 +34,23 @@ namespace ImageDownloader.Utils
             this.settings = settings;
         }
 
-        public ScraperResult FindAllPages(string url, IProgress<ScraperInfo> progress, CancellationToken token)
+        public ScraperResult FindAllPages(Project project, IProgress<ScraperInfo> progress, CancellationToken token)
         {
-            Reset();
-            domain = GetDomain(url);
-            cache.Initialize(url);
+            this.project = project;
+            this.progress = progress;
 
-            pages.Push(url);
+            include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
+            exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
+
+            Reset();
+            domain = GetDomain(project.Site);
+            cache.Initialize(domain);
+
+            pages.Push(project.Site);
             while (pages.Any())
             {
                 var page = pages.Pop();
-                FindPage(page, progress);
+                FindPage(page);
 
                 if (token.IsCancellationRequested)
                     break;
@@ -49,52 +61,81 @@ namespace ImageDownloader.Utils
             return new ScraperResult();
         }
 
-        private void FindPage(string url, IProgress<ScraperInfo> progress)
+        private void FindPage(string url)
         {
             if (IsProcessed(url)) return;
 
-            // Load page
-            string page = string.Empty;
-            try
+            if (Filter(url))
             {
-                page = cache.Get(url);
-                accepted.Add(url);
-
-                if (progress != null)
-                    progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Accepted));
-            }
-            catch (Exception)
-            {
-                rejected.Add(url + " (exception)");
-
-                if (progress != null)
-                    progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Rejected));
+                Reject(url);
                 return;
             }
 
+            // Load page
+            string page = cache.Get(url);
+            Accept(url);
+
             // Extract links
-            //var all_links = GetAllLinks(page);
-            //var accepted_pages = all_links.Where(l => l.EndsWith("html") || l.EndsWith("htm"));
-            //var rejected_pages = all_links.Except(accepted_pages);
+            var all_links = GetAllLinks(page);
+            var accepted_links = all_links.Where(l => l.EndsWith("html") || l.EndsWith("htm"));
+            var rejected_links = all_links.Except(accepted_links);
 
-            //foreach (var l in accepted_pages)
-            //{
-            //    var link = FixLink(url, l);
+            foreach (var l in accepted_links)
+            {
+                var link = FixLink(url, l);
 
-            //    if (!pages.Contains(link) && !IsProcessed(link) && IsInDomain(link))
-            //        pages.Push(link);
-            //}
+                if (!pages.Contains(link) && !IsProcessed(link) && IsInDomain(link))
+                    pages.Push(link);
+            }
 
-            //foreach (var l in rejected_pages)
-            //{
-            //    if (!rejected.Contains(l))
-            //    {
-            //        rejected.Add(l);
+            foreach (var l in rejected_links)
+            {
+                if (!rejected.Contains(l))
+                    Reject(l);
+            }
+        }
 
-            //        if (progress != null)
-            //            progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Rejected));
-            //    }
-            //}
+        private void Accept(string url)
+        {
+            accepted.Add(url);
+
+            if (progress != null)
+                progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Accepted));
+        }
+
+        private void Reject(string url)
+        {
+            rejected.Add(url);
+
+            if (progress != null)
+                progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Rejected));
+        }
+
+        private bool Filter(string url)
+        {
+            bool result = false;
+
+            // If there are any include keywords, the url MUST match at least 1 of them
+            if (include_keywords.Any())
+            {
+                result = true;
+                foreach (var keyword in include_keywords)
+                    if (url.Contains(keyword))
+                    {
+                        result = false;
+                        break;
+                    }
+            }
+
+            // A keyword MUST NOT match any exclude keywords
+            foreach (var keyword in exclude_keywords)
+                if (url.Contains(keyword))
+                {
+                    result = true;
+                    break;
+                }
+
+            return result;
         }
 
         private void Reset()

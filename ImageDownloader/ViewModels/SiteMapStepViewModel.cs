@@ -59,7 +59,7 @@ namespace ImageDownloader.ViewModels
 
             _CanStart = this.ObservableForProperty(x => x.IsBusy)
                             .Select(x => !x.Value)
-                            .ToProperty(this, x => x.CanStart );
+                            .ToProperty(this, x => x.CanStart);
         }
 
         private void UpdateNavigationState()
@@ -128,7 +128,7 @@ namespace ImageDownloader.ViewModels
             Pages.Clear();
             UpdateNavigationState();
 
-            task = Task.Factory.StartNew(() => scraper.FindAllPages(repository.Current.Site, progress, cancellation_source.Token))
+            task = Task.Factory.StartNew(() => scraper.FindAllPages(repository.Current, progress, cancellation_source.Token))
                                .ContinueWith(parent =>
                                {
                                    if (parent.IsFaulted)

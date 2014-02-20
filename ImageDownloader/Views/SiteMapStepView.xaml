@@ -21,6 +21,21 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="{x:Type metro:MetroTabItem}" BasedOn="{StaticResource {x:Type metro:MetroTabItem}}">
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <ContentPresenter Content="{TemplateBinding Content}">
+                            <ContentPresenter.LayoutTransform>
+                                <RotateTransform Angle="-90" />
+                            </ContentPresenter.LayoutTransform>
+                        </ContentPresenter>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <DockPanel Margin="70,20,70,0">
@@ -40,10 +55,19 @@
             <TextBlock Text="Site map" FontSize="24" VerticalAlignment="Top"/>
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" EllipseDiameter="5" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>
-        <ListBox x:Name="Pages" SelectionMode="Extended" cal:Message.Attach="[Shortcut Delete] = [DeletePages(Pages.SelectedItems)]">
-            <i:Interaction.Behaviors>
-                <controls:BringIntoViewBehavior/>
-            </i:Interaction.Behaviors>
-        </ListBox>
+        
+        <metro:MetroAnimatedTabControl TabStripPlacement="Left">
+            <metro:MetroTabItem Header="Pages"/>
+            <metro:MetroTabItem Header="Log">
+                <ListBox x:Name="Pages"
+                         SelectionMode="Extended"
+                         cal:Message.Attach="[Shortcut Delete] = [DeletePages(Pages.SelectedItems)]"
+                         Style="{StaticResource VirtualisedMetroListBox}">
+                    <i:Interaction.Behaviors>
+                        <controls:BringIntoViewBehavior/>
+                    </i:Interaction.Behaviors>
+                </ListBox>
+            </metro:MetroTabItem>
+        </metro:MetroAnimatedTabControl>
     </DockPanel>
 </UserControl>

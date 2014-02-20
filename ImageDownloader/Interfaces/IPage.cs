@@ -5,5 +5,7 @@
     public interface IPage
     {
         PageType Page { get; }
+
+        void Edit();
     }
 }

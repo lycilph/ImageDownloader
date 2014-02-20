@@ -6,6 +6,7 @@ namespace ImageDownloader.Interfaces
     {
         void Initialize(string url);
         void Update();
+        void Clear();
         string Get(string url);
     }
 }

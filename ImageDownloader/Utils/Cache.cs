@@ -1,9 +1,11 @@
-﻿using ImageDownloader.Interfaces;
+﻿using Caliburn.Micro;
+using ImageDownloader.Interfaces;
 using ImageDownloader.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 
 namespace ImageDownloader.Utils
@@ -11,8 +13,11 @@ namespace ImageDownloader.Utils
     [Export(typeof(ICache))]
     public class Cache : ICache
     {
+        private static ILog log = LogManager.GetLog(typeof(Cache));
+
         private Settings settings;
         private string base_url;
+        private bool dirty;
         private Dictionary<string, string> data = new Dictionary<string, string>();
 
         [ImportingConstructor]
@@ -25,6 +30,7 @@ namespace ImageDownloader.Utils
         {
             data.Clear();
             base_url = url;
+            dirty = false;
 
             if (!settings.CachingEnabled)
                 return;
@@ -35,17 +41,20 @@ namespace ImageDownloader.Utils
             if (!File.Exists(filepath))
                 return;
 
-            using (var fs = File.Open(filepath, FileMode.Open))
-            using (var sw = new StreamReader(fs))
+            using (var archive = ZipFile.OpenRead(filepath))
             {
-                var json = sw.ReadToEnd();
-                data = JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
+                var entry = archive.GetEntry("dictionary.cache");
+                using (var sw = new StreamReader(entry.Open()))
+                {
+                    var json = sw.ReadToEnd();
+                    data = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                }
             }
         }
 
         public void Update()
         {
-            if (!settings.CachingEnabled)
+            if (!(settings.CachingEnabled && dirty))
                 return;
 
             var filename = GetFilename(base_url);
@@ -55,11 +64,22 @@ namespace ImageDownloader.Utils
                 Directory.CreateDirectory(settings.CacheFolder);
 
             using (var fs = File.Open(filepath, FileMode.Create))
-            using (var sw = new StreamWriter(fs))
+            using (var archive = new ZipArchive(fs, ZipArchiveMode.Update))
             {
-                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-                sw.Write(json);
+                var entry = archive.CreateEntry("dictionary.cache");
+
+                using (var sw = new StreamWriter(entry.Open()))
+                {
+                    var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                    sw.Write(json);
+                }
             }
+        }
+
+        public void Clear()
+        {
+            if (!string.IsNullOrWhiteSpace(settings.CacheFolder) && Directory.Exists(settings.CacheFolder))
+                Directory.Delete(settings.CacheFolder, true);
         }
 
         public string Get(string url)
@@ -68,13 +88,26 @@ namespace ImageDownloader.Utils
                 return data[url];
 
             var page = string.Empty;
-            using (var client = new WebClient())
+            try
             {
-                page = client.DownloadString(url);
-                data.Add(url, page);
+                using (var client = new WebClient())
+                {
+                    page = client.DownloadString(url);
+                    AddCacheEntry(url, page);
+                }
             }
-
+            catch (WebException we)
+            {
+                log.Warn("Exception for \"{0}\" - {1}", url, we.Message);
+                AddCacheEntry(url, page);
+            }
             return page;
+        }
+
+        private void AddCacheEntry(string url, string page)
+        {
+            data.Add(url, page);
+            dirty = true;
         }
 
         private string GetFilename(string url)

@@ -31,7 +31,7 @@ namespace ImageDownloader.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Keyword, value); }
         }
 
-        private Keyword.RestrictionType _RestrictionType = Models.Keyword.RestrictionType.Include;
+        private Keyword.RestrictionType _RestrictionType = Models.Keyword.RestrictionType.Exclude;
         public Keyword.RestrictionType RestrictionType
         {
             get { return _RestrictionType; }

@@ -12,10 +12,12 @@
         <ControlTemplate TargetType="{x:Type local:EditableTextControl}">
             <Grid VerticalAlignment="Center">
                 <TextBlock x:Name="non_editable_text"
+                           Background="{TemplateBinding Background}"
                            Style="{DynamicResource MetroTextBlock}"
                            VerticalAlignment="Center"
                            Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <TextBox x:Name="editable_text"
+                         Background="{TemplateBinding Background}"
                          Style="{DynamicResource MetroTextBox}"
                          FontSize="{TemplateBinding FontSize}"
                          FontWeight="{TemplateBinding FontWeight}"

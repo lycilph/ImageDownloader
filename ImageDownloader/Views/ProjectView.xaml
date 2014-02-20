@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="ImageDownloader.Views.ProjectView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:ImageDownloader.ViewModels"
@@ -11,15 +12,19 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Column="0">
             <con:EditableTextControl Text="{Binding Model.Name}" IsEditing="{Binding IsEditing}" FontSize="24"/>
-            <TextBlock x:Name="Model_Site" FontSize="20"/>
+            <TextBlock x:Name="Model_Site" SnapsToDevicePixels="True" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap">
+                <i:Interaction.Behaviors>
+                    <con:ScaleFontBehavior MaxFontSize="20" MinFontSize="14"/>
+                </i:Interaction.Behaviors>
+            </TextBlock>
         </StackPanel>
         
-        <StackPanel Grid.ColumnSpan="2" Margin="140,0,10,0">
+        <StackPanel Grid.Column="1">
             <TextBlock Text="{Binding Model.Created, StringFormat=Created {0:dd-MM-yyyy}}" FontSize="16" HorizontalAlignment="Right"/>
             <TextBlock Text="{Binding Model.LastExecution, StringFormat=Last execution {0:dd-MM-yyyy}}" FontSize="16" HorizontalAlignment="Right"/>
             <TextBlock Text="{Binding Model.ImagesFound, StringFormat=Images found {0}}" FontSize="16" HorizontalAlignment="Right"/>

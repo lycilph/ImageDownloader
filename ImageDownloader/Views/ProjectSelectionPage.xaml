@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="Image">
@@ -21,8 +22,9 @@
         </Grid.RowDefinitions>
         
         <ListBox Grid.Row="0"
-                 Margin="150,20"
-                 x:Name="Projects">
+                 Margin="120,20"
+                 x:Name="Projects"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Margin" Value="0,10"/>
