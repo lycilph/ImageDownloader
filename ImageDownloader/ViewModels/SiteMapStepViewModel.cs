@@ -4,13 +4,14 @@ using ImageDownloader.Messages;
 using ImageDownloader.Utils;
 using ReactiveUI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Reactive.Linq;
-using System.Collections.Generic;
-using System.Collections;
-using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace ImageDownloader.ViewModels
 {
@@ -20,11 +21,15 @@ namespace ImageDownloader.ViewModels
     {
         private IRepository repository;
         private IEventAggregator event_aggregator;
+        private IWindowManager window_manager;
         private IProgress<ScraperInfo> progress;
         private CancellationTokenSource cancellation_source;
         private IScraper scraper;
         private Task task;
         private bool done;
+        private DispatcherTimer timer;
+        private int steps;
+        private int time_per_step;
 
         public enum Tab { Pages, Log };
         
@@ -54,6 +59,20 @@ namespace ImageDownloader.ViewModels
             get { return _CanStart.Value; }
         }
 
+        private int _Time;
+        public int Time
+        {
+            get { return _Time; }
+            set { this.RaiseAndSetIfChanged(ref _Time, value); }
+        }
+
+        private int _MaxTime;
+        public int MaxTime
+        {
+            get { return _MaxTime; }
+            set { this.RaiseAndSetIfChanged(ref _MaxTime, value); }
+        }
+
         private Tab _CurrentTab;
         public Tab CurrentTab
         {
@@ -62,24 +81,47 @@ namespace ImageDownloader.ViewModels
         }
 
         [ImportingConstructor]
-        public SiteMapStepViewModel(IRepository repository, IScraper scraper, IEventAggregator event_aggregator) : base("Site Map")
+        public SiteMapStepViewModel(IRepository repository, IScraper scraper, IEventAggregator event_aggregator, IWindowManager window_manager) : base("Site Map")
         {
             this.repository = repository;
             this.scraper = scraper;
             this.event_aggregator = event_aggregator;
+            this.window_manager = window_manager;
             progress = new Progress<ScraperInfo>(Update);
             done = false;
+
+            _Time = 0;
+            _MaxTime = 2000;
+            steps = 100;
+            time_per_step = _MaxTime / steps;
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(time_per_step);
+            timer.Tick += OnTimerTick;
 
             _CanCancel = this.WhenAnyValue(x => x.IsBusy)
                              .ToProperty(this, x => x.CanCancel);
 
             _CanStart = this.WhenAny(x => x.IsBusy, x => !x.Value)
                             .ToProperty(this, x => x.CanStart);
+
+            Pages.Changed.Subscribe(x => UpdateNavigationState());
+        }
+
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            Time += time_per_step;
+            if (Time >= MaxTime)
+            {
+                Time = 0;
+                CurrentTab = Tab.Pages;
+                timer.Stop();
+            }
         }
 
         private void UpdateNavigationState()
         {
-            var message = (done ? EditMessage.EnablePrevious | EditMessage.EnableNext : EditMessage.EnablePrevious);
+            var message = (Pages.Any() ? EditMessage.EnablePrevious | EditMessage.EnableNext : EditMessage.EnablePrevious);
             event_aggregator.PublishOnCurrentThread(message);
         }
 
@@ -128,11 +170,11 @@ namespace ImageDownloader.ViewModels
                 return base.Cancel();
         }
 
-        public void DeletePages(IList urls)
+        public void DeletePages(IEnumerable urls)
         {
-            while (urls.Count > 0)
+            using (var suppressor = Pages.SuppressChangeNotifications())
             {
-                Pages.Remove((string)urls[0]);
+                Pages.RemoveAll(urls.OfType<string>());
             }
         }
 
@@ -156,12 +198,13 @@ namespace ImageDownloader.ViewModels
                                    if (parent.IsFaulted)
                                    {
                                        var e = parent.Exception as AggregateException;
-                                       System.Windows.MessageBox.Show(e.InnerException.Message);
+                                       await DialogService.ShowMetroMessageBox("Error", e.InnerException.Message);
                                    }
                                    else
                                    {
                                        Pages.Clear();
-                                       Pages.AddRange(parent.Result.Pages);
+                                       if (parent.Result.Pages.Any())
+                                           Pages.AddRange(parent.Result.Pages);
                                    }
 
                                    // Add log messages
@@ -175,10 +218,26 @@ namespace ImageDownloader.ViewModels
                                        done = true;
                                    UpdateNavigationState();
 
-                                   // Wait 3 sec then change to result
-                                   await Task.Delay(3000);
-                                   CurrentTab = Tab.Pages;
+                                   // Switch to pages tab after a predefined time
+                                   timer.Start();
                                }, TaskScheduler.FromCurrentSynchronizationContext());
+                               //.ContinueWith(async parent =>
+                               //{
+                               //    Time = 0;
+
+                               //    var time_to_wait = 2000;
+                               //    var steps = 100;
+                               //    var time_per_step = time_to_wait / steps;
+
+                               //    // Wait 3 sec then change to result
+                               //    for (int i = 0; i < steps; i++)
+                               //    {
+                               //        await Task.Delay(time_per_step);
+                               //        Time += time_per_step;
+                               //    }
+
+                               //     CurrentTab = Tab.Pages;
+                               //}, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void Update(ScraperInfo info)

@@ -67,14 +67,22 @@
                          Style="{StaticResource VirtualisedMetroListBox}"/>
             </metro:MetroTabItem>
             <metro:MetroTabItem Header="Log">
-                <ListBox x:Name="Log"
-                         cal:Bind.Model="{Binding}"
-                         Style="{StaticResource VirtualisedMetroListBox}">
-                    <i:Interaction.Behaviors>
-                        <controls:BringIntoViewBehavior/>
-                        <controls:UnselectableBehavior/>
-                    </i:Interaction.Behaviors>
-                </ListBox>
+                <DockPanel>
+                    <metro:MetroProgressBar DockPanel.Dock="Bottom"
+                                            Minimum="0"
+                                            Maximum="{Binding MaxTime}"
+                                            x:Name="Time"
+                                            cal:Bind.Model="{Binding}"/>
+                    
+                    <ListBox x:Name="Log"
+                             cal:Bind.Model="{Binding}"
+                             Style="{StaticResource VirtualisedMetroListBox}">
+                        <i:Interaction.Behaviors>
+                            <controls:BringIntoViewBehavior/>
+                            <controls:UnselectableBehavior/>
+                        </i:Interaction.Behaviors>
+                    </ListBox>
+                </DockPanel>
             </metro:MetroTabItem>
         </metro:MetroAnimatedTabControl>
     </DockPanel>

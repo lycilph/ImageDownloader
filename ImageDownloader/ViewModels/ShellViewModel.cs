@@ -3,6 +3,7 @@ using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Interfaces;
 using ImageDownloader.Messages;
 using ImageDownloader.Models;
+using ImageDownloader.Utils;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 namespace ImageDownloader.ViewModels
 {
     [Export(typeof(IShell))]
-    public class ShellViewModel : ReactiveConductor<IPage>, IShell, IHandle<PageType>, IHandle<ShellMessage>
+    public class ShellViewModel : ReactiveConductor<IPage>, IShell, IHandle<PageType>, IHandle<ShellMessage>, IViewAware
     {
         private static ILog log = LogManager.GetLog(typeof(ShellViewModel));
 
@@ -66,9 +67,9 @@ namespace ImageDownloader.ViewModels
             Handle(PageType.ProjectSelection);
         }
 
-        public void ShowAbout()
+        public async void ShowAbout()
         {
-            System.Windows.MessageBox.Show("About");
+            await DialogService.ShowAboutDialog();
         }
 
         public void ToggleDebug()
