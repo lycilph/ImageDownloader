@@ -1,4 +1,5 @@
 ﻿using ImageDownloader.Interfaces;
+using ImageDownloader.Utils;
 using ReactiveUI;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace ImageDownloader.Models
         {
             Projects = new ReactiveList<Project>
             {
+                new Project {Name = "Test", Site = @"http://www.skovboernehave.dk", Keywords = new ReactiveList<Keyword> { new Keyword {Text = "thumbs", Type = Keyword.RestrictionType.Exclude}}},
                 new Project {Name = "Project 1", Site = @"http://www.skovboernehave.dk/Album/20131215Juletra/index.html"},
                 new Project {Name = "Project 2", Site = @"http://www.skovboernehave.dk/Album/20131215Juletra/index.html"},
                 new Project {Name = "Skovbørnehaven",

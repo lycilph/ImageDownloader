@@ -49,9 +49,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=0.13.0.23, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MahApps.Metro, Version=0.13.0.30, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.0.13.0.23-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.13.0.30-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,7 +97,7 @@
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.13.0.30-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -131,7 +131,6 @@
     <Compile Include="Controls\EditableTextControl.xaml.cs">
       <DependentUpon>EditableTextControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FlipView.cs" />
     <Compile Include="Controls\ScaleFontBehavior.cs" />
     <Compile Include="Controls\ScrollToEndBehavior.cs" />
     <Compile Include="Controls\EnumToIntConverter.cs" />
@@ -154,8 +153,8 @@
     <Compile Include="Utils\InputBindingTrigger.cs" />
     <Compile Include="Interfaces\IScraper.cs" />
     <Compile Include="Utils\OrderMetadata.cs" />
-    <Compile Include="Utils\ScraperInfo.cs" />
-    <Compile Include="Utils\ScraperResult.cs" />
+    <Compile Include="Utils\Info.cs" />
+    <Compile Include="Utils\Result.cs" />
     <Compile Include="Utils\StartupTasks.cs" />
     <Compile Include="Utils\Webscraper.cs" />
     <Compile Include="Messages\ShellMessage.cs" />
@@ -167,6 +166,7 @@
     <Compile Include="ViewModels\KeywordViewModel.cs" />
     <Compile Include="ViewModels\ProjectSelectionPageViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\ResultsPageViewModel.cs" />
     <Compile Include="ViewModels\RunProjectPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsFlyoutViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -194,6 +194,9 @@
     </Compile>
     <Compile Include="Views\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResultsPage.xaml.cs">
+      <DependentUpon>ResultsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RunProjectPage.xaml.cs">
       <DependentUpon>RunProjectPage.xaml</DependentUpon>
@@ -256,10 +259,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\CriteriaStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -285,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResultsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -336,6 +339,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.delete.white.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.delete.png" />

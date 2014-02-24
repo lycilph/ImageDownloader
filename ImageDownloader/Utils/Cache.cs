@@ -28,6 +28,9 @@ namespace ImageDownloader.Utils
 
         public void Initialize(string url)
         {
+            if (base_url == url)
+                return;
+
             data.Clear();
             base_url = url;
             dirty = false;

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
 using HtmlAgilityPack;
+using System.IO;
 
 namespace ImageDownloader.Utils
 {
@@ -17,6 +18,7 @@ namespace ImageDownloader.Utils
 
         private List<string> include_keywords;
         private List<string> exclude_keywords;
+        private Predicate<HtmlNode> is_valid_image;
 
         private string domain = string.Empty;
 
@@ -24,7 +26,7 @@ namespace ImageDownloader.Utils
         private List<string> accepted = new List<string>();
         private List<string> rejected = new List<string>();
 
-        public IProgress<ScraperInfo> Progress { get; set; }
+        public IProgress<Info> Progress { get; set; }
 
         [ImportingConstructor]
         public Webscraper(ICache cache, Settings settings)
@@ -33,7 +35,7 @@ namespace ImageDownloader.Utils
             this.settings = settings;
         }
 
-        public ScraperResult FindAllPages(Project project, CancellationToken token)
+        public Result FindAllPages(Project project, CancellationToken token)
         {
             include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
             exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
@@ -54,7 +56,29 @@ namespace ImageDownloader.Utils
 
             cache.Update();
 
-            return new ScraperResult(accepted);
+            return new Result(accepted);
+        }
+
+        public Result FindAllImages(Project project, Result urls, CancellationToken token)
+        {
+            include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
+            exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
+
+            Reset();
+            domain = GetDomain(project.Site);
+            cache.Initialize(domain);
+
+            is_valid_image = GetImagePredicate(project);
+
+            foreach (var url in urls.Items)
+            {
+                FindImages(url);
+
+                if (token.IsCancellationRequested)
+                    break;
+            }
+
+            return new Result(accepted);
         }
 
         private void FindPage(string url)
@@ -72,7 +96,7 @@ namespace ImageDownloader.Utils
             Accept(url);
 
             // Extract links
-            var all_links = GetAllLinks(page);
+            var all_links = ExtractAllLinks(page);
             var accepted_links = all_links.Where(l => l.EndsWith("html") || l.EndsWith("htm"));
             var rejected_links = all_links.Except(accepted_links);
 
@@ -91,12 +115,28 @@ namespace ImageDownloader.Utils
             }
         }
 
+        private void FindImages(string url)
+        {
+            // Load page
+            string page = cache.Get(url);
+
+            // Extract images
+            var all_images = ExtractAllImages(page);
+            foreach (var i in all_images)
+            {
+                var img = FixLink(url, i);
+
+                if (!accepted.Contains(img) && IsInDomain(img) && !Filter(img))
+                    Accept(img);
+            }
+        }
+
         private void Accept(string url)
         {
             accepted.Add(url);
 
             if (Progress != null)
-                Progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Accepted));
+                Progress.Report(new Info(url, Info.StateType.Accepted));
         }
 
         private void Reject(string url)
@@ -104,7 +144,7 @@ namespace ImageDownloader.Utils
             rejected.Add(url);
 
             if (Progress != null)
-                Progress.Report(new ScraperInfo(url, ScraperInfo.StateType.Rejected));
+                Progress.Report(new Info(url, Info.StateType.Rejected));
         }
 
         private bool Filter(string url)
@@ -141,7 +181,7 @@ namespace ImageDownloader.Utils
             rejected.Clear();
         }
 
-        private IEnumerable<string> GetAllLinks(string page)
+        private IEnumerable<string> ExtractAllLinks(string page)
         {
             var links = new List<string>();
 
@@ -156,6 +196,24 @@ namespace ImageDownloader.Utils
                 links.Add(node.Attributes["href"].Value);
 
             return links;
+        }
+
+        private IEnumerable<string> ExtractAllImages(string page)
+        {
+            var images = new List<string>();
+
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(page);
+
+            var nodes = doc.DocumentNode.SelectNodes("//img[@width and @height and @src]");
+            if (nodes == null)
+                return images;
+
+            foreach (var node in nodes)
+                if (is_valid_image(node))
+                    images.Add(node.Attributes["src"].Value);
+
+            return images;
         }
 
         private string GetDomain(string url)
@@ -182,9 +240,29 @@ namespace ImageDownloader.Utils
             return result;
         }
 
-        public ScraperResult FindAllImages(IEnumerable<string> urls, CancellationToken token)
+        private Predicate<HtmlNode> GetImagePredicate(Project project)
         {
-            return new ScraperResult(urls);
+            return node =>
+            {
+                var width = Int32.Parse(node.Attributes["width"].Value);
+                var height = Int32.Parse(node.Attributes["height"].Value);
+                var extension = Path.GetExtension(node.Attributes["src"].Value);
+
+                if (!project.Extensions.Contains(extension))
+                    return false;
+
+                if (project.MinWidth.HasValue && width < project.MinWidth)
+                    return false;
+                if (project.MaxWidth.HasValue && width > project.MaxWidth)
+                    return false;
+
+                if (project.MinHeight.HasValue && height < project.MinHeight)
+                    return false;
+                if (project.MaxHeight.HasValue && height > project.MaxHeight)
+                    return false;
+
+                return true;
+            };
         }
     }
 }

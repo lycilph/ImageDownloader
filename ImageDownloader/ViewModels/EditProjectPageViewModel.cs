@@ -72,7 +72,7 @@ namespace ImageDownloader.ViewModels
                 ActivateItem(Items.First());
 
             // DEBUG
-            ActivateItem(Items[2]);
+            //ActivateItem(Items[2]);
         }
 
         public void Edit() { }
@@ -98,7 +98,7 @@ namespace ImageDownloader.ViewModels
 
         public void Download()
         {
-            event_aggregator.PublishOnCurrentThread(PageType.RunProject);
+            event_aggregator.PublishOnCurrentThread(PageType.ShowResults);
         }
 
         public void Handle(EditMessage message)

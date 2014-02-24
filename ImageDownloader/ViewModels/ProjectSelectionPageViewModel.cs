@@ -90,7 +90,7 @@ namespace ImageDownloader.ViewModels
                 SelectedProject = Projects.First();
 
             // DEBUG
-            EditProject();
+            //EditProject();
         }
 
         public void Edit()

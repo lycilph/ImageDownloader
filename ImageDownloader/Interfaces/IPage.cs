@@ -1,6 +1,6 @@
 ﻿namespace ImageDownloader.Interfaces
 {
-    public enum PageType { ProjectSelection, EditProject, RunProject };
+    public enum PageType { ProjectSelection, EditProject, RunProject, ShowResults };
 
     public interface IPage
     {

@@ -53,6 +53,12 @@
                     ToolTip="Stop the process">
                 <Image Source="..\Images\appbar.control.stop.png" Height="36"/>
             </Button>
+            <Button DockPanel.Dock="Right"
+                    x:Name="Clear"
+                    Style="{StaticResource MetroCircleButtonStyle}"
+                    ToolTip="Clears all results">
+                <Image Source="..\Images\appbar.delete.png" Height="36"/>
+            </Button>
             <TextBlock Text="Site map" FontSize="24" VerticalAlignment="Top"/>
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" EllipseDiameter="5" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>

@@ -8,8 +8,8 @@ namespace ImageDownloader.Interfaces
 {
     public interface IScraper
     {
-        IProgress<ScraperInfo> Progress { get; set; }
-        ScraperResult FindAllPages(Project project, CancellationToken token);
-        ScraperResult FindAllImages(IEnumerable<string> urls, CancellationToken token);
+        IProgress<Info> Progress { get; set; }
+        Result FindAllPages(Project project, CancellationToken token);
+        Result FindAllImages(Project project, Result urls, CancellationToken token);
     }
 }

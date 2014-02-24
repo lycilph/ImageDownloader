@@ -1,4 +1,5 @@
 ﻿using ImageDownloader.Models;
+using ImageDownloader.Utils;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;

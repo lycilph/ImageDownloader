@@ -40,7 +40,7 @@
                         DockPanel.Dock="Right"
                         Style="{StaticResource MetroCircleButtonStyle}"
                         HorizontalAlignment="Right">
-                    <Image Source="..\images\appbar.delete.png" Height="45"/>
+                    <Image Source="..\images\appbar.delete.white.png" Height="45"/>
                 </Button>
                 <TextBlock Text="Clear cache" VerticalAlignment="Center" FontSize="16"/>
             </DockPanel>

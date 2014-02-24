@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ImageDownloader.Utils
 {
-    public class ScraperInfo
+    public class Info
     {
         public enum StateType { Undefined, Accepted, Rejected };
 
         public string Item { get; set; }
         public StateType State { get; set; }
 
-        public ScraperInfo(string item, StateType state)
+        public Info(string item, StateType state)
         {
             Item = item;
             State = state;

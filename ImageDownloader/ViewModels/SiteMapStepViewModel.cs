@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -22,11 +23,9 @@ namespace ImageDownloader.ViewModels
         private IRepository repository;
         private IEventAggregator event_aggregator;
         private IWindowManager window_manager;
-        private IProgress<ScraperInfo> progress;
         private CancellationTokenSource cancellation_source;
         private IScraper scraper;
         private Task task;
-        private bool done;
         private DispatcherTimer timer;
         private int steps;
         private int time_per_step;
@@ -51,6 +50,12 @@ namespace ImageDownloader.ViewModels
         public bool CanCancel
         {
             get { return _CanCancel.Value; }
+        }
+
+        private ObservableAsPropertyHelper<bool> _CanClear;
+        public bool CanClear
+        {
+            get { return _CanClear.Value; }
         }
 
         private ObservableAsPropertyHelper<bool> _CanStart;
@@ -87,9 +92,25 @@ namespace ImageDownloader.ViewModels
             this.scraper = scraper;
             this.event_aggregator = event_aggregator;
             this.window_manager = window_manager;
-            progress = new Progress<ScraperInfo>(Update);
-            done = false;
 
+            InitializeTimer();
+
+            _CanCancel = this.WhenAnyValue(x => x.IsBusy)
+                             .ToProperty(this, x => x.CanCancel);
+
+            _CanStart = this.WhenAny(x => x.IsBusy, x => !x.Value)
+                            .ToProperty(this, x => x.CanStart);
+
+            _CanClear = this.WhenAny(x => x.IsBusy, x => !x.Value)
+                            .ToProperty(this, x => x.CanClear);
+
+            Observable.Merge(this.WhenAnyValue(x => x.IsBusy),
+                             Pages.Changed.Select(x => true))
+                      .Subscribe(x => UpdateNavigationState());
+        }
+
+        private void InitializeTimer()
+        {
             _Time = 0;
             _MaxTime = 2000;
             steps = 100;
@@ -98,14 +119,6 @@ namespace ImageDownloader.ViewModels
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(time_per_step);
             timer.Tick += OnTimerTick;
-
-            _CanCancel = this.WhenAnyValue(x => x.IsBusy)
-                             .ToProperty(this, x => x.CanCancel);
-
-            _CanStart = this.WhenAny(x => x.IsBusy, x => !x.Value)
-                            .ToProperty(this, x => x.CanStart);
-
-            Pages.Changed.Subscribe(x => UpdateNavigationState());
         }
 
         private void OnTimerTick(object sender, EventArgs e)
@@ -121,7 +134,7 @@ namespace ImageDownloader.ViewModels
 
         private void UpdateNavigationState()
         {
-            var message = (Pages.Any() ? EditMessage.EnablePrevious | EditMessage.EnableNext : EditMessage.EnablePrevious);
+            var message = (Pages.Any() && !IsBusy ? EditMessage.EnablePrevious | EditMessage.EnableNext : EditMessage.EnablePrevious);
             event_aggregator.PublishOnCurrentThread(message);
         }
 
@@ -130,11 +143,9 @@ namespace ImageDownloader.ViewModels
             base.OnActivate();
 
             IsEnabled = true;
-            scraper.Progress = progress;
+            scraper.Progress = new Progress<Info>(Update);
 
-            UpdateNavigationState();
-
-            if (!done)
+            if (!Pages.Any())
                 Start();
         }
 
@@ -145,10 +156,9 @@ namespace ImageDownloader.ViewModels
             scraper.Progress = null;
 
             if (close)
-            {
                 IsEnabled = false;
-                done = false;
-            }
+
+            event_aggregator.PublishOnCurrentThread(new Result(Pages));
         }
 
         public override async void CanClose(Action<bool> callback)
@@ -170,6 +180,13 @@ namespace ImageDownloader.ViewModels
                 return base.Cancel();
         }
 
+        public void Clear()
+        {
+            Pages.Clear();
+            Log.Clear();
+            CurrentTab = Tab.Pages;
+        }
+
         public void DeletePages(IEnumerable urls)
         {
             using (var suppressor = Pages.SuppressChangeNotifications())
@@ -183,15 +200,14 @@ namespace ImageDownloader.ViewModels
             cancellation_source = new CancellationTokenSource();
 
             IsBusy = true;
-            done = false;
             Log.Clear();
-            UpdateNavigationState();
+            Pages.Clear();
             CurrentTab = Tab.Log;
 
             var sw = new Stopwatch();
             sw.Start();
 
-            task = Task.Factory.StartNew(() => scraper.FindAllPages(repository.Current, cancellation_source.Token))
+            task = Task.Factory.StartNew(() => scraper.FindAllPages(repository.Current, cancellation_source.Token), cancellation_source.Token)
                                .ContinueWith(async parent =>
                                {
                                    // Handle result or failure
@@ -202,9 +218,8 @@ namespace ImageDownloader.ViewModels
                                    }
                                    else
                                    {
-                                       Pages.Clear();
-                                       if (parent.Result.Pages.Any())
-                                           Pages.AddRange(parent.Result.Pages);
+                                       if (parent.Result.Items.Any())
+                                           Pages.AddRange(parent.Result.Items);
                                    }
 
                                    // Add log messages
@@ -212,35 +227,17 @@ namespace ImageDownloader.ViewModels
                                    Log.Add(string.Format("Scraping the site \"{0}\" took {1}", repository.Current.Site, sw.Elapsed));
                                    Log.Add("Done");
 
+                                   if (cancellation_source.IsCancellationRequested)
+                                       CurrentTab = Tab.Pages;
+                                   else
+                                       timer.Start(); // Switch to pages tab after a predefined time
+
                                    // Setup control states
                                    IsBusy = false;
-                                   if (!cancellation_source.IsCancellationRequested)
-                                       done = true;
-                                   UpdateNavigationState();
-
-                                   // Switch to pages tab after a predefined time
-                                   timer.Start();
                                }, TaskScheduler.FromCurrentSynchronizationContext());
-                               //.ContinueWith(async parent =>
-                               //{
-                               //    Time = 0;
-
-                               //    var time_to_wait = 2000;
-                               //    var steps = 100;
-                               //    var time_per_step = time_to_wait / steps;
-
-                               //    // Wait 3 sec then change to result
-                               //    for (int i = 0; i < steps; i++)
-                               //    {
-                               //        await Task.Delay(time_per_step);
-                               //        Time += time_per_step;
-                               //    }
-
-                               //     CurrentTab = Tab.Pages;
-                               //}, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void Update(ScraperInfo info)
+        private void Update(Info info)
         {
             Log.Add(string.Format("({0}) {1}", info.State.ToString(), info.Item));
         }
