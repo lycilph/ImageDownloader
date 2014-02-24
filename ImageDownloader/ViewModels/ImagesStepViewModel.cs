@@ -89,6 +89,8 @@ namespace ImageDownloader.ViewModels
 
             if (close)
                 IsEnabled = false;
+
+            event_aggregator.PublishOnCurrentThread(new Result(Images));
         }
         public override async void CanClose(Action<bool> callback)
         {
@@ -132,16 +134,11 @@ namespace ImageDownloader.ViewModels
             task = Task.Factory.StartNew(() => scraper.FindAllImages(repository.Current, pages_result, cancellation_source.Token))
                                .ContinueWith(async parent =>
                                {
-                                   // Handle result or failure
+                                   // Handle failure
                                    if (parent.IsFaulted)
                                    {
                                        var e = parent.Exception as AggregateException;
                                        await DialogService.ShowMetroMessageBox("Error", e.InnerException.Message);
-                                   }
-                                   else
-                                   {
-                                       if (parent.Result.Items.Any())
-                                           Images.AddRange(parent.Result.Items);
                                    }
 
                                    // Setup control states

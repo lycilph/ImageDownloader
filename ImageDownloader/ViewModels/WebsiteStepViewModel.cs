@@ -58,7 +58,7 @@ namespace ImageDownloader.ViewModels
             this.event_aggregator = event_aggregator;
             IsEnabled = true;
 
-            this.ObservableForProperty(x => x.Site)
+            this.WhenAnyValue(x => x.Site)
                 .Subscribe(x => Update());
 
             _CanAddKeyword = this.ObservableForProperty(x => x.Keyword)

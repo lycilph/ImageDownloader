@@ -163,6 +163,7 @@
     <Compile Include="ViewModels\FlyoutCommandViewModel.cs" />
     <Compile Include="ViewModels\ImagesStepViewModel.cs" />
     <Compile Include="ViewModels\EditProjectPageViewModel.cs" />
+    <Compile Include="ViewModels\ImageViewModel.cs" />
     <Compile Include="ViewModels\KeywordViewModel.cs" />
     <Compile Include="ViewModels\ProjectSelectionPageViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
@@ -185,6 +186,9 @@
     </Compile>
     <Compile Include="Views\EditProjectPage.xaml.cs">
       <DependentUpon>EditProjectPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\KeywordView.xaml.cs">
       <DependentUpon>KeywordView.xaml</DependentUpon>
@@ -275,6 +279,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\KeywordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -345,6 +353,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

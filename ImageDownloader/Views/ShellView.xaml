@@ -10,6 +10,7 @@
                    d:DataContext="{d:DesignInstance vm:ShellViewModel}"
                    ShowWindowCommandsOnTop="False"
                    ResizeMode="CanResizeWithGrip"
+                   GlowBrush="{DynamicResource AccentColorBrush}"
                    Height="600"
                    Width="800"
                    cal:Message.Attach="[Shortcut Control+Shift+Alt+D] = [ToggleDebug]; [Shortcut F2] = [Edit]">
