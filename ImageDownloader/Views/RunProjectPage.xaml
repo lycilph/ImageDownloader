@@ -7,20 +7,21 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="70,20,70,0">
-        <metro:FlipView cal:Message.Attach="[Event SelectionChanged] = [ItemChanged]; [Event MouseEnter] = [ShowBanner]; [Event MouseLeave] = [HideBanner]"
-                           BannerText="{Binding BannerText}"
-                           IsBannerEnabled="{Binding IsBannerShown}">
-            <StackPanel>
-                <TextBlock Text="Pages"/>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Images"/>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="Done"/>
-                <Button x:Name="Back" Content="Back"/>
-            </StackPanel>
-        </metro:FlipView>
+    <Grid>
+        <Button x:Name="Back"
+                Style="{StaticResource MetroCircleButtonStyle}"
+                Margin="10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                ToolTip="Back to project overview">
+            <Image Source="..\Images\appbar.arrow.left.png" Height="45"/>
+        </Button>
+
+        <DockPanel Margin="70,20">
+            <TextBlock DockPanel.Dock="Top" Text="Running project" FontSize="24"/>
+            <Button x:Name="Stop" DockPanel.Dock="Top" Content="Stop"/>
+
+            <ListBox x:Name="Log" Style="{StaticResource VirtualisedMetroListBox}"/>
+        </DockPanel>
     </Grid>
 </UserControl>

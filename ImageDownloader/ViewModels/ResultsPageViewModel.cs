@@ -39,7 +39,7 @@ namespace ImageDownloader.ViewModels
 
         public void Edit() { }
 
-        public void GoBack()
+        public void Back()
         {
             event_aggregator.PublishOnCurrentThread(PageType.ProjectSelection);
         }

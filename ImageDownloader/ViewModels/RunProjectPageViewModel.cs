@@ -9,6 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using ReactiveUI;
+using System.Reactive.Linq;
+using System.Reactive.Concurrency;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace ImageDownloader.ViewModels
 {
@@ -16,22 +20,13 @@ namespace ImageDownloader.ViewModels
     public class RunProjectPageViewModel : ReactiveScreen, IPage
     {
         private IEventAggregator event_aggregator;
-        private Random rnd = new Random();
-        private DispatcherTimer timer;
-        private bool is_changing_item;
+        private CancellationTokenSource cts;
 
-        private string _BannerText = "Item 0";
-        public string BannerText
+        private ReactiveList<string> _Log = new ReactiveList<string>();
+        public ReactiveList<string> Log
         {
-            get { return _BannerText; }
-            set { this.RaiseAndSetIfChanged(ref _BannerText, value); }
-        }
-
-        private bool _IsBannerShown = true;
-        public bool IsBannerShown
-        {
-            get { return _IsBannerShown; }
-            set { this.RaiseAndSetIfChanged(ref _IsBannerShown, value); }
+            get { return _Log; }
+            set { this.RaiseAndSetIfChanged(ref _Log, value); }
         }
 
         public PageType Page
@@ -43,45 +38,48 @@ namespace ImageDownloader.ViewModels
         public RunProjectPageViewModel(IEventAggregator event_aggregator)
         {
             this.event_aggregator = event_aggregator;
-
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(3000);
-            timer.Tick += TimerTick;
-            timer.Start();
         }
 
-        private void TimerTick(object sender, EventArgs e)
+        protected override void OnActivate()
         {
-            IsBannerShown = false;
-            timer.Stop();
-        }
+            base.OnActivate();
+            
+            var bc = new BlockingCollection<int>();
 
-        public void ItemChanged()
-        {
-            is_changing_item = true;
+            var disp = Observable.Generate(0,
+                                           x => true,
+                                           i => i + 1,
+                                           i => i,
+                                           i => TimeSpan.FromMilliseconds(250))
+                                 .Subscribe(x => bc.Add(x));
 
-            BannerText = string.Format("Item {0}", rnd.Next(1, 11));
-            IsBannerShown = true;
-            timer.Stop();
-            timer.Start();
-        }
-
-        public void ShowBanner()
-        {
-            IsBannerShown = true;
-            timer.Stop();
-        }
-
-        public void HideBanner()
-        {
-            if (is_changing_item)
+            cts = new CancellationTokenSource();
+            cts.Token.Register(() =>
             {
-                is_changing_item = false;
-                return;
-            }
+                disp.Dispose();
+                bc.CompleteAdding();
+            });
 
-            IsBannerShown = false;
-            timer.Stop();
+            IProgress<string> prog = new Progress<string>(str => Log.Add(str));
+
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var i in bc.GetConsumingEnumerable())
+                    prog.Report("Consumer 1 - Item " + i);
+                prog.Report("Consumer 1 done");
+            });
+
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var i in bc.GetConsumingEnumerable())
+                    prog.Report("Consumer 2 - Item " + i);
+                prog.Report("Consumer 2 done");
+            });
+        }
+
+        public void Stop()
+        {
+            cts.Cancel();
         }
 
         public void Edit() { }
