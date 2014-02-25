@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace ImageDownloader.Models
         public static Project Empty = new Project();
 
         private string _Name = string.Empty;
+        [DataMember]
         public string Name
         {
             get { return _Name; }
@@ -19,6 +21,7 @@ namespace ImageDownloader.Models
         }
 
         private string _Site = string.Empty;
+        [DataMember]
         public string Site
         {
             get { return _Site; }
@@ -26,6 +29,7 @@ namespace ImageDownloader.Models
         }
 
         private DateTime _Created = DateTime.Now;
+        [DataMember]
         public DateTime Created
         {
             get { return _Created; }
@@ -33,6 +37,7 @@ namespace ImageDownloader.Models
         }
 
         private DateTime _LastExecution = DateTime.Now;
+        [DataMember]
         public DateTime LastExecution
         {
             get { return _LastExecution; }
@@ -40,6 +45,7 @@ namespace ImageDownloader.Models
         }
 
         private int _ImagesFound = 0;
+        [DataMember]
         public int ImagesFound
         {
             get { return _ImagesFound; }
@@ -47,6 +53,7 @@ namespace ImageDownloader.Models
         }
 
         private ReactiveList<Keyword> _Keywords = new ReactiveList<Keyword>();
+        [DataMember]
         public ReactiveList<Keyword> Keywords
         {
             get { return _Keywords; }
@@ -54,6 +61,7 @@ namespace ImageDownloader.Models
         }
 
         private ReactiveList<string> _Extensions = new ReactiveList<string> { ".jpg", ".png", ".bmp" };
+        [DataMember]
         public ReactiveList<string> Extensions
         {
             get { return _Extensions; }
@@ -61,6 +69,7 @@ namespace ImageDownloader.Models
         }
 
         private int? _MinWidth = null;
+        [DataMember]
         public int? MinWidth
         {
             get { return _MinWidth; }
@@ -68,6 +77,7 @@ namespace ImageDownloader.Models
         }
 
         private int? _MaxWidth = null;
+        [DataMember]
         public int? MaxWidth
         {
             get { return _MaxWidth; }
@@ -75,6 +85,7 @@ namespace ImageDownloader.Models
         }
 
         private int? _MinHeight = null;
+        [DataMember]
         public int? MinHeight
         {
             get { return _MinHeight; }
@@ -82,15 +93,11 @@ namespace ImageDownloader.Models
         }
 
         private int? _MaxHeight = null;
+        [DataMember]
         public int? MaxHeight
         {
             get { return _MaxHeight; }
             set { this.RaiseAndSetIfChanged(ref _MaxHeight, value); }
-        }
-
-        public bool CanRun()
-        {
-            return !string.IsNullOrWhiteSpace(Site);
         }
     }
 }

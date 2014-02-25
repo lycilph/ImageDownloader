@@ -69,8 +69,8 @@ namespace ImageDownloader.ViewModels
                 SelectedProject.IsEditing = true;
             });
 
-            this.ObservableForProperty(x => x.SelectedProject)
-                .Subscribe(x => repository.Current = (SelectedProject == null ? Project.Empty : SelectedProject.Model));
+            this.WhenAny(x => x.SelectedProject, x => (x.Value == null ? Project.Empty : SelectedProject.Model))
+                .Subscribe(x => repository.Current = x);
 
             _CanDeleteProject = this.WhenAny(x => x.SelectedProject, x => x.Value != null)
                                     .ToProperty(this, x => x.CanDeleteProject);
@@ -115,10 +115,10 @@ namespace ImageDownloader.ViewModels
 
         public void RunProject()
         {
-            if (SelectedProject.Model.CanRun())
-                event_aggregator.PublishOnCurrentThread(PageType.RunProject);
-            else
+            if (string.IsNullOrWhiteSpace(SelectedProject.Model.Site))
                 event_aggregator.PublishOnCurrentThread(PageType.EditProject);
+            else
+                event_aggregator.PublishOnCurrentThread(PageType.RunProject);
         }
     }
 }

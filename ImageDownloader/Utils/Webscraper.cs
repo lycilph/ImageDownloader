@@ -1,42 +1,51 @@
-﻿using ImageDownloader.Interfaces;
+﻿using HtmlAgilityPack;
+using ImageDownloader.Interfaces;
 using ImageDownloader.Models;
 using System;
-using System.Linq;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading;
-using HtmlAgilityPack;
 using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace ImageDownloader.Utils
 {
-    [Export(typeof(IScraper))]
-    public class Webscraper : IScraper
+    [Export(typeof(IWebscraper))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class Webscraper : IWebscraper
     {
         private ICache cache;
-        private Settings settings;
+
+        private IProgress<Info> progress;
+        private BlockingCollection<string> output;
 
         private List<string> include_keywords;
         private List<string> exclude_keywords;
-        private Predicate<HtmlNode> is_valid_image;
-
         private string domain = string.Empty;
+
+        private Predicate<HtmlNode> is_valid_image;
 
         private Stack<string> pages = new Stack<string>();
         private List<string> accepted = new List<string>();
         private List<string> rejected = new List<string>();
 
-        public IProgress<Info> Progress { get; set; }
-
         [ImportingConstructor]
-        public Webscraper(ICache cache, Settings settings)
+        public Webscraper(ICache cache)
         {
             this.cache = cache;
-            this.settings = settings;
         }
 
-        public Result FindAllPages(Project project, CancellationToken token)
+        public Result FindAllPages(Project project, IProgress<Info> progress, CancellationToken token)
         {
+            return FindAllPages(project, progress, token, null);
+        }
+
+        public Result FindAllPages(Project project, IProgress<Info> progress, CancellationToken token, BlockingCollection<string> output)
+        {
+            this.progress = progress;
+            this.output = output;
+
             include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
             exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
 
@@ -54,29 +63,10 @@ namespace ImageDownloader.Utils
                     break;
             }
 
+            if (output != null)
+                output.CompleteAdding();
+
             cache.Update();
-
-            return new Result(accepted);
-        }
-
-        public Result FindAllImages(Project project, Result urls, CancellationToken token)
-        {
-            include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
-            exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
-
-            Reset();
-            domain = GetDomain(project.Site);
-            cache.Initialize(domain);
-
-            is_valid_image = GetImagePredicate(project);
-
-            foreach (var url in urls.Items)
-            {
-                FindImages(url);
-
-                if (token.IsCancellationRequested)
-                    break;
-            }
 
             return new Result(accepted);
         }
@@ -115,6 +105,30 @@ namespace ImageDownloader.Utils
             }
         }
 
+        public Result FindAllImages(Project project, IEnumerable<string> urls, IProgress<Info> progress, CancellationToken token)
+        {
+            this.progress = progress;
+
+            include_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Include).Select(k => k.Text).ToList();
+            exclude_keywords = project.Keywords.Where(k => k.Type == Keyword.RestrictionType.Exclude).Select(k => k.Text).ToList();
+
+            Reset();
+            domain = GetDomain(project.Site);
+            cache.Initialize(domain);
+
+            is_valid_image = GetImagePredicate(project);
+
+            foreach (var url in urls)
+            {
+                FindImages(url);
+
+                if (token.IsCancellationRequested)
+                    break;
+            }
+
+            return new Result(accepted);
+        }
+
         private void FindImages(string url)
         {
             // Load page
@@ -129,56 +143,6 @@ namespace ImageDownloader.Utils
                 if (!accepted.Contains(img) && IsInDomain(img) && !Filter(img))
                     Accept(img);
             }
-        }
-
-        private void Accept(string url)
-        {
-            accepted.Add(url);
-
-            if (Progress != null)
-                Progress.Report(new Info(url, Info.StateType.Accepted));
-        }
-
-        private void Reject(string url)
-        {
-            rejected.Add(url);
-
-            if (Progress != null)
-                Progress.Report(new Info(url, Info.StateType.Rejected));
-        }
-
-        private bool Filter(string url)
-        {
-            bool result = false;
-
-            // If there are any include keywords, the url MUST match at least 1 of them
-            if (include_keywords.Any())
-            {
-                result = true;
-                foreach (var keyword in include_keywords)
-                    if (url.Contains(keyword))
-                    {
-                        result = false;
-                        break;
-                    }
-            }
-
-            // A keyword MUST NOT match any exclude keywords
-            foreach (var keyword in exclude_keywords)
-                if (url.Contains(keyword))
-                {
-                    result = true;
-                    break;
-                }
-
-            return result;
-        }
-
-        private void Reset()
-        {
-            pages.Clear();
-            accepted.Clear();
-            rejected.Clear();
         }
 
         private IEnumerable<string> ExtractAllLinks(string page)
@@ -216,6 +180,13 @@ namespace ImageDownloader.Utils
             return images;
         }
 
+        private void Reset()
+        {
+            pages.Clear();
+            accepted.Clear();
+            rejected.Clear();
+        }
+
         private string GetDomain(string url)
         {
             var uri = new Uri(url);
@@ -225,6 +196,52 @@ namespace ImageDownloader.Utils
         private bool IsInDomain(string url)
         {
             return domain == GetDomain(url);
+        }
+
+        private void Accept(string url)
+        {
+            accepted.Add(url);
+
+            if (output != null)
+                output.Add(url);
+
+            if (progress != null)
+                progress.Report(new Info(url, Info.StateType.Accepted));
+        }
+
+        private void Reject(string url)
+        {
+            rejected.Add(url);
+
+            if (progress != null)
+                progress.Report(new Info(url, Info.StateType.Rejected));
+        }
+
+        private bool Filter(string url)
+        {
+            bool result = false;
+
+            // If there are any include keywords, the url MUST match at least 1 of them
+            if (include_keywords.Any())
+            {
+                result = true;
+                foreach (var keyword in include_keywords)
+                    if (url.Contains(keyword))
+                    {
+                        result = false;
+                        break;
+                    }
+            }
+
+            // A keyword MUST NOT match any exclude keywords
+            foreach (var keyword in exclude_keywords)
+                if (url.Contains(keyword))
+                {
+                    result = true;
+                    break;
+                }
+
+            return result;
         }
 
         private bool IsProcessed(string url)
@@ -244,24 +261,8 @@ namespace ImageDownloader.Utils
         {
             return node =>
             {
-                var width = Int32.Parse(node.Attributes["width"].Value);
-                var height = Int32.Parse(node.Attributes["height"].Value);
-                var extension = Path.GetExtension(node.Attributes["src"].Value);
-
-                if (!project.Extensions.Contains(extension))
-                    return false;
-
-                if (project.MinWidth.HasValue && width < project.MinWidth)
-                    return false;
-                if (project.MaxWidth.HasValue && width > project.MaxWidth)
-                    return false;
-
-                if (project.MinHeight.HasValue && height < project.MinHeight)
-                    return false;
-                if (project.MaxHeight.HasValue && height > project.MaxHeight)
-                    return false;
-
-                return true;
+                var extension = Path.GetExtension(node.Attributes["src"].Value).ToLower();
+                return project.Extensions.Contains(extension);
             };
         }
     }

@@ -58,15 +58,15 @@ namespace ImageDownloader.ViewModels
             this.event_aggregator = event_aggregator;
             IsEnabled = true;
 
-            this.WhenAnyValue(x => x.Site)
-                .Subscribe(x => Update());
+            Observable.Merge(Observable.FromEventPattern(this, "Activated").IgnoreValue(),
+                             this.WhenAnyValue(x => x.Site).IgnoreValue())
+                      .Subscribe(x => UpdateNavigationState());
 
-            _CanAddKeyword = this.ObservableForProperty(x => x.Keyword)
-                                 .Select(x => !string.IsNullOrWhiteSpace(x.Value))
+            _CanAddKeyword = this.WhenAny(x => x.Keyword, x => !string.IsNullOrWhiteSpace(x.Value))
                                  .ToProperty(this, x => x.CanAddKeyword);
         }
 
-        private void Update()
+        protected override void UpdateNavigationState()
         {
             var message = (string.IsNullOrWhiteSpace(Site) ? EditMessage.AllDisabled : EditMessage.EnableNext);
             event_aggregator.PublishOnCurrentThread(message);
@@ -77,7 +77,6 @@ namespace ImageDownloader.ViewModels
             base.OnActivate();
 
             Site = repository.Current.Site;
-
             Keywords = repository.Current.Keywords.CreateDerivedCollection(k => new KeywordViewModel(k));
         }
 

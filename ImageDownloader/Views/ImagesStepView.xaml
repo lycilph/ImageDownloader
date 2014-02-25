@@ -28,7 +28,7 @@
             <Button DockPanel.Dock="Right"
                     x:Name="Start"
                     Style="{StaticResource MetroCircleButtonStyle}"
-                    ToolTip="Refresh the site map">
+                    ToolTip="Refresh the images results">
                 <Image Source="..\Images\appbar.refresh.png" Height="36"/>
             </Button>
             <Button DockPanel.Dock="Right"
@@ -46,7 +46,9 @@
             <TextBlock Text="Images" FontSize="24" VerticalAlignment="Top"/>
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" EllipseDiameter="5" Visibility="{Binding IsBusy, Converter={StaticResource visibility_converter}}"/>
-        
+
+        <TextBlock DockPanel.Dock="Bottom" Margin="5,0,0,0" Text="{Binding ElementName=Images, Path=Items.Count, StringFormat=Count: {0}}"/>
+
         <ListBox x:Name="Images"
                  SelectionMode="Extended"
                  cal:Message.Attach="[Shortcut Delete] = [DeleteImages(Images.SelectedItems)]"

@@ -5,7 +5,7 @@
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                        mc:Ignorable="d" 
-                       d:DesignHeight="300" d:DesignWidth="300"
+                       d:DesignHeight="300" d:DesignWidth="600"
                        Title="About"
                        Loaded="OnLoaded">
     <metro:BaseMetroDialog.DialogBody>
@@ -15,7 +15,11 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <TextBlock Grid.Row="0" Text="test"/>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Image downloader V0.1" FontSize="24"/>
+                <Separator/>
+                <TextBlock Text="Made by: Ly Cilph" FontSize="16" Margin="10,10,0,30"/>
+            </StackPanel>
 
             <Button Grid.Row="1"
                     Height="35"
@@ -24,7 +28,8 @@
                     Style="{DynamicResource AccentedDialogSquareButton}"
                     Content="Ok"
                     Click="OkClick"
-                    Margin="0,0,5,0"/>
+                    Margin="0,0,5,0"
+                    IsDefault="True"/>
         </Grid>
     </metro:BaseMetroDialog.DialogBody>
 </metro:BaseMetroDialog>

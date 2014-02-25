@@ -1,11 +1,5 @@
 ﻿using ImageDownloader.Models;
-using ImageDownloader.Utils;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageDownloader.Interfaces
 {
@@ -16,5 +10,8 @@ namespace ImageDownloader.Interfaces
 
         void Add(Project project);
         void Remove(Project project);
+
+        void Load();
+        void Save();
     }
 }

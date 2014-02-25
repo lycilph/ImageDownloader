@@ -9,11 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Linq;
 
 namespace ImageDownloader.ViewModels
 {
     [Export(typeof(IShell))]
-    public class ShellViewModel : ReactiveConductor<IPage>, IShell, IHandle<PageType>, IHandle<ShellMessage>, IViewAware
+    public class ShellViewModel : ReactiveConductor<IPage>, IShell, IHandle<PageType>, IHandle<ShellMessage>
     {
         private static ILog log = LogManager.GetLog(typeof(ShellViewModel));
 
@@ -57,14 +58,30 @@ namespace ImageDownloader.ViewModels
 
             repository.WhenAnyDynamic(new string[] { "Current" },
                                       new string[] { "Current", "Name" },
-                                      (p1, p2) => p1)
-                .Subscribe(x => CurrentProjectChanged((Project)x.Value));
+                                      (p1, p2) => p1.Value)
+                      .Cast<Project>()
+                      .Subscribe(x => CurrentProjectChanged(x));
 
             FlyoutViewModels = new ReactiveList<FlyoutBase>(flyouts);
             FlyoutCommands = FlyoutViewModels.CreateDerivedCollection(f => new FlyoutCommandViewModel(f), f => f.ShowInTitlebar);
 
             event_aggregator.Subscribe(this);
             Handle(PageType.ProjectSelection);
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            repository.Load();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            if (close)
+                repository.Save();
         }
 
         public async void ShowAbout()

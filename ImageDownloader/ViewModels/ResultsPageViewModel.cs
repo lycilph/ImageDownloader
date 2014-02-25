@@ -16,6 +16,7 @@ namespace ImageDownloader.ViewModels
     public class ResultsPageViewModel : ReactiveScreen, IPage, IHandle<Result>
     {
         private IEventAggregator event_aggregator;
+        private ICache cache;
 
         private ReactiveList<ImageViewModel> _Images;
         public ReactiveList<ImageViewModel> Images
@@ -30,11 +31,19 @@ namespace ImageDownloader.ViewModels
         }
 
         [ImportingConstructor]
-        public ResultsPageViewModel(IEventAggregator event_aggregator)
+        public ResultsPageViewModel(ICache cache, IEventAggregator event_aggregator)
         {
             this.event_aggregator = event_aggregator;
+            this.cache = cache;
 
             event_aggregator.Subscribe(this);
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            Images.Apply(i => i.Update());
         }
 
         public void Edit() { }
@@ -46,7 +55,7 @@ namespace ImageDownloader.ViewModels
 
         public void Handle(Result images_result)
         {
-            Images = new ReactiveList<ImageViewModel>(images_result.Items.Select(i => new ImageViewModel(i)));
+            Images = new ReactiveList<ImageViewModel>(images_result.Items.Select(i => new ImageViewModel(i, cache)));
         }
     }
 }

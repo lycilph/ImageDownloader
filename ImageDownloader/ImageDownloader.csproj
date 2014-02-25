@@ -95,6 +95,7 @@
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\packages\Rx-XAML.2.2.2\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.0.13.0.30-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -151,7 +152,8 @@
     <Compile Include="Utils\DialogService.cs" />
     <Compile Include="Utils\InputBindingParser.cs" />
     <Compile Include="Utils\InputBindingTrigger.cs" />
-    <Compile Include="Interfaces\IScraper.cs" />
+    <Compile Include="Interfaces\IWebscraper.cs" />
+    <Compile Include="Utils\ObservableExtensions.cs" />
     <Compile Include="Utils\OrderMetadata.cs" />
     <Compile Include="Utils\Info.cs" />
     <Compile Include="Utils\Result.cs" />

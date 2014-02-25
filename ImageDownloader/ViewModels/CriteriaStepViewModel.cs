@@ -1,8 +1,9 @@
 ﻿using Caliburn.Micro;
 using ImageDownloader.Interfaces;
-using System.ComponentModel.Composition;
-using ReactiveUI;
 using ImageDownloader.Messages;
+using ReactiveUI;
+using System;
+using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 
 namespace ImageDownloader.ViewModels
@@ -68,16 +69,22 @@ namespace ImageDownloader.ViewModels
             this.repository = repository;
             this.event_aggregator = event_aggregator;
 
-            _CanAddExtension = this.ObservableForProperty(x => x.Extension)
-                                   .Select(x => !string.IsNullOrWhiteSpace(x.Value))
+            Observable.FromEventPattern(this, "Activated")
+                      .Subscribe(x => UpdateNavigationState());
+
+            _CanAddExtension = this.WhenAny(x => x.Extension, x => !string.IsNullOrWhiteSpace(x.Value))
                                    .ToProperty(this, x => x.CanAddExtension);
+        }
+
+        protected override void UpdateNavigationState()
+        {
+            event_aggregator.PublishOnCurrentThread(EditMessage.EnablePrevious | EditMessage.EnableNext);
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
             IsEnabled = true;
-            event_aggregator.PublishOnCurrentThread(EditMessage.EnablePrevious | EditMessage.EnableNext);
 
             MinWidth = repository.Current.MinWidth;
             MaxWidth = repository.Current.MaxWidth;

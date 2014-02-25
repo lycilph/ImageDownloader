@@ -66,20 +66,24 @@
         <metro:MetroAnimatedTabControl TabStripPlacement="Left"
                                        SelectedIndex="{Binding CurrentTab, Converter={StaticResource enum_converter}, ConverterParameter={x:Type vm:SiteMapStepViewModel+Tab}}">
             <metro:MetroTabItem Header="Pages">
-                <ListBox x:Name="Pages"
-                         SelectionMode="Extended"
-                         cal:Bind.Model="{Binding}"
-                         cal:Message.Attach="[Shortcut Delete] = [DeletePages(Pages.SelectedItems)]"
-                         Style="{StaticResource VirtualisedMetroListBox}"/>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Bottom" Margin="5,5,0,0" Text="{Binding ElementName=Pages, Path=Items.Count, StringFormat=Count: {0}}"/>
+                    <ListBox x:Name="Pages"
+                             SelectionMode="Extended"
+                             cal:Bind.Model="{Binding}"
+                             cal:Message.Attach="[Shortcut Delete] = [DeletePages(Pages.SelectedItems)]"
+                             Style="{StaticResource VirtualisedMetroListBox}"/>
+                </DockPanel>
             </metro:MetroTabItem>
             <metro:MetroTabItem Header="Log">
                 <DockPanel>
+                    <TextBlock DockPanel.Dock="Bottom" Margin="5,0,0,0" Text="{Binding ElementName=Log, Path=Items.Count, StringFormat=Count: {0}}"/>
                     <metro:MetroProgressBar DockPanel.Dock="Bottom"
                                             Minimum="0"
                                             Maximum="{Binding MaxTime}"
                                             x:Name="Time"
                                             cal:Bind.Model="{Binding}"/>
-                    
+
                     <ListBox x:Name="Log"
                              cal:Bind.Model="{Binding}"
                              Style="{StaticResource VirtualisedMetroListBox}">

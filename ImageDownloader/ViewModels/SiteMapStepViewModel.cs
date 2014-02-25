@@ -24,7 +24,7 @@ namespace ImageDownloader.ViewModels
         private IEventAggregator event_aggregator;
         private IWindowManager window_manager;
         private CancellationTokenSource cancellation_source;
-        private IScraper scraper;
+        private IWebscraper webscraper;
         private Task task;
         private DispatcherTimer timer;
         private int steps;
@@ -86,10 +86,10 @@ namespace ImageDownloader.ViewModels
         }
 
         [ImportingConstructor]
-        public SiteMapStepViewModel(IRepository repository, IScraper scraper, IEventAggregator event_aggregator, IWindowManager window_manager) : base("Site Map")
+        public SiteMapStepViewModel(IRepository repository, IWebscraper scraper, IEventAggregator event_aggregator, IWindowManager window_manager) : base("Site Map")
         {
             this.repository = repository;
-            this.scraper = scraper;
+            this.webscraper = scraper;
             this.event_aggregator = event_aggregator;
             this.window_manager = window_manager;
 
@@ -104,8 +104,9 @@ namespace ImageDownloader.ViewModels
             _CanClear = this.WhenAny(x => x.IsBusy, x => !x.Value)
                             .ToProperty(this, x => x.CanClear);
 
-            Observable.Merge(this.WhenAnyValue(x => x.IsBusy),
-                             Pages.Changed.Select(x => true))
+            Observable.Merge(Observable.FromEventPattern(this, "Activated").IgnoreValue(),
+                             this.WhenAnyValue(x => x.IsBusy).IgnoreValue(),
+                             Pages.Changed.IgnoreValue())
                       .Subscribe(x => UpdateNavigationState());
         }
 
@@ -132,7 +133,7 @@ namespace ImageDownloader.ViewModels
             }
         }
 
-        private void UpdateNavigationState()
+        protected override void UpdateNavigationState()
         {
             var message = (Pages.Any() && !IsBusy ? EditMessage.EnablePrevious | EditMessage.EnableNext : EditMessage.EnablePrevious);
             event_aggregator.PublishOnCurrentThread(message);
@@ -143,7 +144,6 @@ namespace ImageDownloader.ViewModels
             base.OnActivate();
 
             IsEnabled = true;
-            scraper.Progress = new Progress<Info>(Update);
 
             if (!Pages.Any())
                 Start();
@@ -152,8 +152,6 @@ namespace ImageDownloader.ViewModels
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
-
-            scraper.Progress = null;
 
             if (close)
                 IsEnabled = false;
@@ -207,7 +205,8 @@ namespace ImageDownloader.ViewModels
             var sw = new Stopwatch();
             sw.Start();
 
-            task = Task.Factory.StartNew(() => scraper.FindAllPages(repository.Current, cancellation_source.Token), cancellation_source.Token)
+            var progress = new Progress<Info>(Update);
+            task = Task.Factory.StartNew(() => webscraper.FindAllPages(repository.Current, progress, cancellation_source.Token), cancellation_source.Token)
                                .ContinueWith(async parent =>
                                {
                                    // Handle result or failure

@@ -20,7 +20,7 @@ namespace ImageDownloader.ViewModels
     {
         private IRepository repository;
         private IEventAggregator event_aggregator;
-        private IScraper scraper;
+        private IWebscraper webscraper;
         private CancellationTokenSource cancellation_source;
         private Result pages_result;
         private Task task;
@@ -38,6 +38,12 @@ namespace ImageDownloader.ViewModels
             get { return _CanCancel.Value; }
         }
 
+        private ObservableAsPropertyHelper<bool> _CanClear;
+        public bool CanClear
+        {
+            get { return _CanClear.Value; }
+        }
+
         private ObservableAsPropertyHelper<bool> _CanStart;
         public bool CanStart
         {
@@ -45,10 +51,10 @@ namespace ImageDownloader.ViewModels
         }
 
         [ImportingConstructor]
-        public ImagesStepViewModel(IRepository repository, IScraper scraper, IEventAggregator event_aggregator) : base("Images")
+        public ImagesStepViewModel(IRepository repository, IWebscraper scraper, IEventAggregator event_aggregator) : base("Images")
         {
             this.repository = repository;
-            this.scraper = scraper;
+            this.webscraper = scraper;
             this.event_aggregator = event_aggregator;
             
             _CanCancel = this.WhenAnyValue(x => x.IsBusy)
@@ -57,14 +63,18 @@ namespace ImageDownloader.ViewModels
             _CanStart = this.WhenAny(x => x.IsBusy, x => !x.Value)
                             .ToProperty(this, x => x.CanStart);
 
-            Observable.Merge(this.WhenAny(x => x.IsBusy, x => x.Value),
-                             Images.Changed.Select(x => true))
+            _CanClear = this.WhenAny(x => x.IsBusy, x => !x.Value)
+                            .ToProperty(this, x => x.CanClear);
+
+            Observable.Merge(Observable.FromEventPattern(this, "Activated").IgnoreValue(),
+                             this.WhenAnyValue(x => x.IsBusy).IgnoreValue(),
+                             Images.Changed.IgnoreValue())
                       .Subscribe(x => UpdateNavigationState());
 
             event_aggregator.Subscribe(this);
         }
 
-        private void UpdateNavigationState()
+        protected override void UpdateNavigationState()
         {
             var message = (Images.Any() && !IsBusy ? EditMessage.EnablePrevious | EditMessage.EnableDownload : EditMessage.EnablePrevious);
             event_aggregator.PublishOnCurrentThread(message);
@@ -75,7 +85,6 @@ namespace ImageDownloader.ViewModels
             base.OnActivate();
 
             IsEnabled = true;
-            scraper.Progress = new Progress<Info>(Update);
 
             if (!Images.Any() && (pages_result != null && pages_result.Items.Any()))
                 Start();
@@ -84,8 +93,6 @@ namespace ImageDownloader.ViewModels
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
-
-            scraper.Progress = null;
 
             if (close)
                 IsEnabled = false;
@@ -131,7 +138,8 @@ namespace ImageDownloader.ViewModels
             IsBusy = true;
             Images.Clear();
 
-            task = Task.Factory.StartNew(() => scraper.FindAllImages(repository.Current, pages_result, cancellation_source.Token))
+            var progress = new Progress<Info>(Update);
+            task = Task.Factory.StartNew(() => webscraper.FindAllImages(repository.Current, pages_result.Items, progress, cancellation_source.Token), cancellation_source.Token)
                                .ContinueWith(async parent =>
                                {
                                    // Handle failure

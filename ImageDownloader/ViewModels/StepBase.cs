@@ -30,5 +30,7 @@ namespace ImageDownloader.ViewModels
         {
             return Task.FromResult(0);
         }
+
+        protected virtual void UpdateNavigationState() { }
     }
 }
