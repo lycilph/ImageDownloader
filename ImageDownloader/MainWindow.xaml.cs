@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageDownloader.Views
+namespace ImageDownloader
 {
     /// <summary>
-    /// Interaction logic for SettingsFlyoutView.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class SettingsFlyoutView : UserControl
+    public partial class MainWindow : Window
     {
-        public SettingsFlyoutView()
+        public MainWindow()
         {
             InitializeComponent();
         }

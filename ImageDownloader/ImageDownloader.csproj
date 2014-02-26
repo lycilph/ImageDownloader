@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4044EEEB-1252-4E78-ABF3-E1A8A8E95BF8}</ProjectGuid>
+    <ProjectGuid>{B4F2D0C2-3CFB-466D-8A86-689E5EA6247D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImageDownloader</RootNamespace>
@@ -34,72 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=2.0.0.5, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.0-beta\lib\portable-net45+sl5+win8+wp8\Caliburn.Micro.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=2.0.0.5, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro.ReactiveUI, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\bin\Release\Caliburn.Micro.ReactiveUI.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=0.13.0.30, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.0.13.0.30-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI, Version=5.99.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-core.5.99.3-beta\lib\Portable-Net45+WinRT45+WP8\ReactiveUI.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Blend">
-      <HintPath>..\packages\reactiveui-platforms.5.99.3-beta\lib\net45\ReactiveUI.Blend.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Xaml">
-      <HintPath>..\packages\reactiveui-platforms.5.99.3-beta\lib\net45\ReactiveUI.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Splat, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Splat.1.2.0\lib\Net45\Splat.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Reactive.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rx-Interfaces.2.2.2\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rx-Linq.2.2.2\lib\net45\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rx-PlatformServices.2.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\packages\Rx-XAML.2.2.2\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.13.0.30-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -111,117 +47,26 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WpfAutoGrid">
-      <HintPath>..\packages\WpfAutoGrid.1.2.0.0\lib\net45\WpfAutoGrid.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Controls\BringIntoViewBehavior.cs" />
-    <Compile Include="Controls\EditableTextControl.xaml.cs">
-      <DependentUpon>EditableTextControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ScaleFontBehavior.cs" />
-    <Compile Include="Controls\ScrollToEndBehavior.cs" />
-    <Compile Include="Controls\EnumToIntConverter.cs" />
-    <Compile Include="Controls\UnselectableBehavior.cs" />
-    <Compile Include="Controls\UnsetOnZeroConverter.cs" />
-    <Compile Include="Interfaces\ICache.cs" />
-    <Compile Include="Interfaces\IPage.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IShell.cs" />
-    <Compile Include="Interfaces\IStep.cs" />
-    <Compile Include="Messages\EditMessage.cs" />
-    <Compile Include="Models\Keyword.cs" />
-    <Compile Include="Models\Project.cs" />
-    <Compile Include="Models\Repository.cs" />
-    <Compile Include="Models\Settings.cs" />
-    <Compile Include="Utils\Cache.cs" />
-    <Compile Include="Utils\DebugLogger.cs" />
-    <Compile Include="Utils\DialogService.cs" />
-    <Compile Include="Utils\InputBindingParser.cs" />
-    <Compile Include="Utils\InputBindingTrigger.cs" />
-    <Compile Include="Interfaces\IWebscraper.cs" />
-    <Compile Include="Utils\ObservableExtensions.cs" />
-    <Compile Include="Utils\OrderMetadata.cs" />
-    <Compile Include="Utils\Info.cs" />
-    <Compile Include="Utils\Result.cs" />
-    <Compile Include="Utils\StartupTasks.cs" />
-    <Compile Include="Utils\Webscraper.cs" />
-    <Compile Include="Messages\ShellMessage.cs" />
-    <Compile Include="ViewModels\CriteriaStepViewModel.cs" />
-    <Compile Include="ViewModels\FlyoutBase.cs" />
-    <Compile Include="ViewModels\FlyoutCommandViewModel.cs" />
-    <Compile Include="ViewModels\ImagesStepViewModel.cs" />
-    <Compile Include="ViewModels\EditProjectPageViewModel.cs" />
-    <Compile Include="ViewModels\ImageViewModel.cs" />
-    <Compile Include="ViewModels\KeywordViewModel.cs" />
-    <Compile Include="ViewModels\ProjectSelectionPageViewModel.cs" />
-    <Compile Include="ViewModels\ProjectViewModel.cs" />
-    <Compile Include="ViewModels\ResultsPageViewModel.cs" />
-    <Compile Include="ViewModels\RunProjectPageViewModel.cs" />
-    <Compile Include="ViewModels\SettingsFlyoutViewModel.cs" />
-    <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\SiteMapStepViewModel.cs" />
-    <Compile Include="ViewModels\StepBase.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\WebsiteStepViewModel.cs" />
-    <Compile Include="Views\CriteriaStepView.xaml.cs">
-      <DependentUpon>CriteriaStepView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FlyoutCommandView.xaml.cs">
-      <DependentUpon>FlyoutCommandView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ImagesStepView.xaml.cs">
-      <DependentUpon>ImagesStepView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditProjectPage.xaml.cs">
-      <DependentUpon>EditProjectPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ImageView.xaml.cs">
-      <DependentUpon>ImageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\KeywordView.xaml.cs">
-      <DependentUpon>KeywordView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ProjectSelectionPage.xaml.cs">
-      <DependentUpon>ProjectSelectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ProjectView.xaml.cs">
-      <DependentUpon>ProjectView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ResultsPage.xaml.cs">
-      <DependentUpon>ResultsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RunProjectPage.xaml.cs">
-      <DependentUpon>RunProjectPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsFlyoutView.xaml.cs">
-      <DependentUpon>SettingsFlyoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SiteMapStepView.xaml.cs">
-      <DependentUpon>SiteMapStepView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WebsiteStepView.xaml.cs">
-      <DependentUpon>WebsiteStepView.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -239,7 +84,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -248,116 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.edit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\EditableTextControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\WizardListBoxItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CriteriaStepView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FlyoutCommandView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ImagesStepView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditProjectPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ImageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\KeywordView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ProjectSelectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ProjectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ResultsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RunProjectPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsFlyoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SiteMapStepView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WebsiteStepView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.minus.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.arrow.right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.chevron.left.png" />
-    <Resource Include="Images\appbar.chevron.right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.download.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.arrow.left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.control.stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.check.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.delete.white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
