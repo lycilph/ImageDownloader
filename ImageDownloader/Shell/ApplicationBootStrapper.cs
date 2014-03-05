@@ -17,7 +17,7 @@ namespace ImageDownloader.Shell
 
         static ApplicationBootStrapper()
         {
-            LogManager.GetLog = type => new DebugLogger(type);
+            LogManager.GetLog = type => new DebugLog(type);
         }
 
         public ApplicationBootStrapper()

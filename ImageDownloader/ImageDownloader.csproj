@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -43,8 +43,9 @@
     <Reference Include="Caliburn.Micro.ReactiveUI">
       <HintPath>..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\bin\Release\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\packages\MahApps.Metro.0.13.0.30-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=0.13.0.47, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MahApps.Metro.0.13.0.47-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -59,11 +60,13 @@
     <Reference Include="ReactiveUI.Xaml">
       <HintPath>..\packages\reactiveui-platforms.5.99.3-beta\lib\net45\ReactiveUI.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Splat">
-      <HintPath>..\packages\Splat.1.1.1\lib\Net45\Splat.dll</HintPath>
+    <Reference Include="Splat, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Splat.1.2.0\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -82,7 +85,7 @@
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.13.0.47-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -120,8 +123,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\DebugLogger.cs" />
+    <Compile Include="Core\Content.cs" />
+    <Compile Include="Core\IContent.cs" />
+    <Compile Include="Core\ILayoutItem.cs" />
+    <Compile Include="Core\ITool.cs" />
+    <Compile Include="Core\LayoutItem.cs" />
+    <Compile Include="Core\Messages\LogMessage.cs" />
+    <Compile Include="Core\PaneLocation.cs" />
+    <Compile Include="Core\Tool.cs" />
     <Compile Include="Shell\ApplicationBootStrapper.cs" />
+    <Compile Include="Shell\Utils\LayoutStrategy.cs" />
     <Compile Include="Shell\StartupTasks.cs" />
     <Compile Include="Shell\Utils\InputBindingParser.cs" />
     <Compile Include="Shell\Utils\InputBindingTrigger.cs" />
@@ -131,8 +142,15 @@
     <Compile Include="Shell\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Test\ViewModels\ContentViewModel.cs" />
-    <Compile Include="Test\ViewModels\ToolViewModel.cs" />
+    <Compile Include="Tools\Utils\BringIntoViewBehavior.cs" />
+    <Compile Include="Tools\ViewModels\LogToolViewModel.cs" />
+    <Compile Include="Tools\ViewModels\TestContentViewModel.cs" />
+    <Compile Include="Tools\Views\LogToolView.xaml.cs">
+      <DependentUpon>LogToolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Views\TestContentView.xaml.cs">
+      <DependentUpon>TestContentView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -163,10 +181,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Test\Views\" />
+    <Resource Include="Images\appbar.delete.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Shell\Views\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tools\Views\LogToolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tools\Views\TestContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,13 +4,19 @@
                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:behaviors="http://metro.mahapps.com/winfx/xaml/shared"
+                   xmlns:cal="http://www.caliburnproject.org"
                    xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
+                   xmlns:avalonDockControls="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock"
                    xmlns:utils="clr-namespace:ImageDownloader.Shell.Utils"
                    GlowBrush="{DynamicResource AccentColorBrush}"
                    Height="600"
                    Width="800">
     <Window.Resources>
         <avalon:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <Style TargetType="avalonDockControls:AnchorablePaneTitle" BasedOn="{StaticResource {x:Type avalonDockControls:AnchorablePaneTitle}}">
+            <Setter Property="BorderThickness" Value="0,3,0,0"/>
+        </Style>
     </Window.Resources>
 
     <i:Interaction.Behaviors>
@@ -46,6 +52,11 @@
             <MenuItem Header="_Window">
                 <MenuItem Header="_Start page"/>
                 <MenuItem Header="_Opened windows"/>
+                <MenuItem Header="_Log"/>
+                <Separator/>
+                <MenuItem Header="Window 1"/>
+                <MenuItem Header="Window 2"/>
+                <MenuItem Header="Window 3"/>
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Options"/>
@@ -56,42 +67,46 @@
         </Menu>
         
         <avalon:DockingManager Grid.Row="1"
+                               x:Name="docking_manager"
                                AllowMixedOrientation="True"
-                               AnchorablesSource="{Binding Tools}">
-            <avalon:DockingManager.Theme>
-                <avalon:MetroTheme/>
-            </avalon:DockingManager.Theme>
+                               AnchorablesSource="{Binding Tools}"
+                               DocumentsSource="{Binding Content}"
+                               ActiveContent="{Binding ActiveItem, Mode=TwoWay}">
+            <avalon:DockingManager.LayoutUpdateStrategy>
+                <utils:LayoutStrategy/>
+            </avalon:DockingManager.LayoutUpdateStrategy>
+            
             <avalon:DockingManager.LayoutItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="Tool"/>
+                    <ContentControl cal:View.Model="{Binding}" IsTabStop="False" />
                 </DataTemplate>
             </avalon:DockingManager.LayoutItemTemplate>
+            
             <avalon:DockingManager.LayoutItemContainerStyleSelector>
                 <utils:PanesStyleSelector>
                     <utils:PanesStyleSelector.ToolStyle>
                         <Style TargetType="{x:Type avalon:LayoutAnchorableItem}">
-                            <Setter Property="Title" Value="{Binding Model.Name}"/>
+                            <Setter Property="Title" Value="{Binding Model.DisplayName}"/>
+                            <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
+                            <Setter Property="IsSelected" Value="{Binding Model.IsSelected}"/>
                             <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
                         </Style>
                     </utils:PanesStyleSelector.ToolStyle>
                     <utils:PanesStyleSelector.ContentStyle>
                         <Style TargetType="{x:Type avalon:LayoutItem}">
-                            <Setter Property="Title" Value="{Binding Name}"/>
+                            <Setter Property="Title" Value="{Binding Model.DisplayName}"/>
+                            <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
+                            <Setter Property="IsSelected" Value="{Binding Model.IsSelected}"/>
                         </Style>
                     </utils:PanesStyleSelector.ContentStyle>
                 </utils:PanesStyleSelector>
             </avalon:DockingManager.LayoutItemContainerStyleSelector>
+            
             <avalon:LayoutRoot>
-                <avalon:LayoutPanel>
-                    <avalon:LayoutDocumentPane>
-                        <avalon:LayoutDocument Title="Doc 1">
-                            <TextBlock Text="Text 1"/>
-                        </avalon:LayoutDocument>
-                        <avalon:LayoutDocument Title="Doc 2">
-                            <TextBlock Text="Text 2"/>
-                        </avalon:LayoutDocument>
-                    </avalon:LayoutDocumentPane>
-                    <avalon:LayoutAnchorablePane/>
+                <avalon:LayoutPanel Orientation="Horizontal">
+                    <avalon:LayoutPanel Orientation="Vertical">
+                        <avalon:LayoutDocumentPane/>
+                    </avalon:LayoutPanel>
                 </avalon:LayoutPanel>
             </avalon:LayoutRoot>
         </avalon:DockingManager>

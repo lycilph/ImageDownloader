@@ -1,4 +1,4 @@
-﻿using ImageDownloader.Test.ViewModels;
+﻿using ImageDownloader.Core;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,10 +12,10 @@ namespace ImageDownloader.Shell.Utils
 
         public override Style SelectStyle(object item, DependencyObject container)
         {
-            if (item is ToolViewModel)
+            if (item is ITool)
                 return ToolStyle;
 
-            if (item is ContentViewModel)
+            if (item is IContent)
                 return ContentStyle;
 
             return base.SelectStyle(item, container);
