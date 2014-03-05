@@ -1,4 +1,4 @@
-﻿using ImageDownloader.Core;
+using ImageDownloader.Core;
 using System;
 using System.Linq;
 using System.Windows;

@@ -1,4 +1,4 @@
-﻿using Caliburn.Micro.ReactiveUI;
+using Caliburn.Micro.ReactiveUI;
 using ReactiveUI;
 using System;
 

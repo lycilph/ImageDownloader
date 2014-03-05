@@ -1,7 +1,7 @@
-﻿<Application x:Class="ImageDownloader.App"
+<Application x:Class="ImageDownloader.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:shell="clr-namespace:ImageDownloader.Shell">
+             xmlns:local="clr-namespace:ImageDownloader.Shell">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,7 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Xceed.Wpf.AvalonDock.Themes.Metro;component/Theme.xaml" />
                 <ResourceDictionary>
-                    <shell:ApplicationBootStrapper x:Key="bootstrapper"/>
+                    <local:ApplicationBootstrapper x:Key="bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

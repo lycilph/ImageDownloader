@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ImageDownloader.Shell.ViewModels
 {
-    public interface IShell
-    {
-    }
+    public interface IShell { }
 }

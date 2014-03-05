@@ -1,4 +1,4 @@
-﻿namespace ImageDownloader.Shell.Views
+namespace ImageDownloader.Shell.Views
 {
     public partial class ShellView
     {

@@ -1,6 +1,6 @@
-﻿using Caliburn.Micro;
-using ImageDownloader.Shell.Utils;
+using Caliburn.Micro;
 using MahApps.Metro.Controls;
+using ImageDownloader.Shell.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;

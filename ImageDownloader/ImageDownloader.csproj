@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B4F2D0C2-3CFB-466D-8A86-689E5EA6247D}</ProjectGuid>
+    <ProjectGuid>{9973F6AC-7AEB-4E5A-AE8E-2453EE9E1CE5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImageDownloader</RootNamespace>
@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -41,35 +41,29 @@
       <HintPath>..\packages\Caliburn.Micro.2.0.0-beta\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.ReactiveUI">
-      <HintPath>..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\bin\Release\Caliburn.Micro.ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.ReactiveUI.Private.1.0.1-alpha\lib\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=0.13.0.50, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.13.0.50-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI, Version=5.99.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.5.99.4-beta\lib\Portable-Net45+WinRT45+WP8\ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Blend, Version=5.99.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ReactiveUI.Blend">
       <HintPath>..\packages\reactiveui-platforms.5.99.4-beta\lib\net45\ReactiveUI.Blend.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Xaml, Version=5.99.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ReactiveUI.Xaml">
       <HintPath>..\packages\reactiveui-platforms.5.99.4-beta\lib\net45\ReactiveUI.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="Splat, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Splat">
       <HintPath>..\packages\Splat.1.2.0\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -81,14 +75,14 @@
       <HintPath>..\packages\Rx-Linq.2.2.2\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\packages\Rx-PlatformServices.2.2.2\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\packages\Rx-XAML.2.2.2\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.13.0.50-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -122,23 +116,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\Content.cs" />
     <Compile Include="Core\IContent.cs" />
     <Compile Include="Core\ILayoutItem.cs" />
     <Compile Include="Core\ITool.cs" />
     <Compile Include="Core\LayoutItem.cs" />
-    <Compile Include="Core\Messages\LogMessage.cs" />
+    <Compile Include="Core\Messages\OutputMessage.cs" />
     <Compile Include="Core\PaneLocation.cs" />
     <Compile Include="Core\Tool.cs" />
-    <Compile Include="Shell\ApplicationBootStrapper.cs" />
-    <Compile Include="Shell\Utils\LayoutStrategy.cs" />
+    <Compile Include="Modules\ViewModels\HelloWorldContentViewModel.cs" />
+    <Compile Include="Modules\Views\HelloWorldContentView.xaml.cs">
+      <DependentUpon>HelloWorldContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\ApplicationBootstrapper.cs" />
     <Compile Include="Shell\StartupTasks.cs" />
     <Compile Include="Shell\Utils\InputBindingParser.cs" />
     <Compile Include="Shell\Utils\InputBindingTrigger.cs" />
+    <Compile Include="Shell\Utils\LayoutStrategy.cs" />
     <Compile Include="Shell\Utils\PanesStyleSelector.cs" />
     <Compile Include="Shell\ViewModels\IShell.cs" />
     <Compile Include="Shell\ViewModels\ShellViewModel.cs" />
@@ -146,14 +140,34 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\Utils\BringIntoViewBehavior.cs" />
-    <Compile Include="Tools\ViewModels\LogToolViewModel.cs" />
-    <Compile Include="Tools\ViewModels\TestContentViewModel.cs" />
-    <Compile Include="Tools\Views\LogToolView.xaml.cs">
-      <DependentUpon>LogToolView.xaml</DependentUpon>
+    <Compile Include="Tools\ViewModels\OutputToolViewModel.cs" />
+    <Compile Include="Tools\Views\OutputToolView.xaml.cs">
+      <DependentUpon>OutputToolView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Views\TestContentView.xaml.cs">
-      <DependentUpon>TestContentView.xaml</DependentUpon>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Modules\Views\HelloWorldContentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shell\Views\ShellView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tools\Views\OutputToolView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -185,20 +199,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Shell\Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tools\Views\LogToolView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tools\Views\TestContentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

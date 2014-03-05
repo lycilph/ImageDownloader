@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro;
-using ImageDownloader.Core;
+using Caliburn.Micro;
+using ImageDownloader.Shell.Utils;
 using ImageDownloader.Shell.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,16 +11,16 @@ using System.Windows;
 
 namespace ImageDownloader.Shell
 {
-    public class ApplicationBootStrapper : BootstrapperBase
+    public class ApplicationBootstrapper : BootstrapperBase
     {
         private CompositionContainer container;
 
-        static ApplicationBootStrapper()
+        static ApplicationBootstrapper()
         {
             LogManager.GetLog = type => new DebugLog(type);
         }
 
-        public ApplicationBootStrapper()
+        public ApplicationBootstrapper()
         {
             Start();
         }

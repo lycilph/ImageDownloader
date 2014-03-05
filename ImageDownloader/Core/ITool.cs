@@ -1,4 +1,4 @@
-﻿namespace ImageDownloader.Core
+namespace ImageDownloader.Core
 {
     public interface ITool : ILayoutItem
     {
