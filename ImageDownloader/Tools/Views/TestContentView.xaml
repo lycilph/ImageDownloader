@@ -12,6 +12,5 @@
             <Button x:Name="Home" Content="Home" Margin="10,0,0,0"/>
             <TextBox x:Name="Address" Margin="10,0,0,0"/>
         </StackPanel>
-        <WebBrowser Source="{Binding Address}"/>
     </DockPanel>
 </UserControl>
