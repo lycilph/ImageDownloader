@@ -43,6 +43,12 @@
     <Reference Include="Caliburn.Micro.ReactiveUI">
       <HintPath>..\packages\Caliburn.Micro.ReactiveUI.Private.1.0.1-alpha\lib\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
+    <Reference Include="CefSharp">
+      <HintPath>..\packages\CefSharp.Wpf.1.25.7\lib\net40\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Wpf">
+      <HintPath>..\packages\CefSharp.Wpf.1.25.7\lib\net40\CefSharp.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.13.0.50-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -64,6 +70,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -124,10 +131,16 @@
     <Compile Include="Core\Messages\OutputMessage.cs" />
     <Compile Include="Core\PaneLocation.cs" />
     <Compile Include="Core\Tool.cs" />
+    <Compile Include="Modules\ViewModels\BrowserContentViewModel.cs" />
     <Compile Include="Modules\ViewModels\HelloWorldContentViewModel.cs" />
+    <Compile Include="Modules\Views\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Modules\Views\BrowserContentView.xaml.cs">
+      <DependentUpon>BrowserContentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Views\HelloWorldContentView.xaml.cs">
       <DependentUpon>HelloWorldContentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Views\WebViewContentControl.cs" />
     <Compile Include="Shell\ApplicationBootstrapper.cs" />
     <Compile Include="Shell\StartupTasks.cs" />
     <Compile Include="Shell\Utils\InputBindingParser.cs" />
@@ -156,6 +169,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modules\Views\BrowserContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Views\HelloWorldContentView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -199,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Modules\Resources\theme.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

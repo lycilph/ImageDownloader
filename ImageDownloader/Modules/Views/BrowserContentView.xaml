@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="ImageDownloader.Modules.Views.BrowserContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:view="clr-namespace:ImageDownloader.Modules.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <view:BooleanToVisibilityConverter x:Key="visibility_converter" Collapse="false"/>
+    </UserControl.Resources>
+    
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Left" Content="Home" x:Name="Home"/>
+            <TextBox x:Name="Address"/>
+        </DockPanel>
+        <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" Visibility="{Binding ElementName=web_view, Path=IsLoading, Converter={StaticResource visibility_converter}}"/>
+
+        <view:WebViewContentControl x:Name="web_view" Address="{Binding Address, Mode=TwoWay}"/>
+    </DockPanel>
+</UserControl>

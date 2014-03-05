@@ -19,6 +19,11 @@
         <Style TargetType="avalonDockControls:AnchorablePaneTitle" BasedOn="{StaticResource {x:Type avalonDockControls:AnchorablePaneTitle}}">
             <Setter Property="BorderThickness" Value="0,3,0,0"/>
         </Style>
+
+        <Style TargetType="avalon:DockingManager" BasedOn="{StaticResource {x:Type avalon:DockingManager}}">
+            <Setter Property="GridSplitterWidth" Value="8"/>
+            <Setter Property="GridSplitterHeight" Value="8"/>
+        </Style>
     </Window.Resources>
 
     <i:Interaction.Behaviors>

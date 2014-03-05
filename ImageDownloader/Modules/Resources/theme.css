@@ -1,0 +1,32 @@
+﻿::-webkit-scrollbar {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(240, 240, 240);
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: none;
+    border: 1px solid rgb(240, 240, 240);
+    background-color: rgb(206, 206, 206);
+}
+
+:hover::-webkit-scrollbar-thumb,
+:focus::-webkit-scrollbar-thumb {
+    background-color: rgb(166, 166, 166);
+}
+
+:active::-webkit-scrollbar-thumb {
+    background-color: rgb(96, 96, 96);
+}
+
+::-webkit-scrollbar-track:vertical {
+    min-height: 20px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+    min-width: 20px;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
