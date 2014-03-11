@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageDownloader.Modules.Views
+namespace ImageDownloader.Shell.Views
 {
     /// <summary>
-    /// Interaction logic for HelloWorldContentView.xaml
+    /// Interaction logic for MainMenuView.xaml
     /// </summary>
-    public partial class HelloWorldContentView : UserControl
+    public partial class MainMenuView : UserControl
     {
-        public HelloWorldContentView()
+        public MainMenuView()
         {
             InitializeComponent();
         }

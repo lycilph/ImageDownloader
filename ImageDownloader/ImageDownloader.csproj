@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -130,29 +130,39 @@
     <Compile Include="Core\LayoutItem.cs" />
     <Compile Include="Core\Messages\OutputMessage.cs" />
     <Compile Include="Core\PaneLocation.cs" />
+    <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="Core\Tool.cs" />
     <Compile Include="Modules\ViewModels\BrowserContentViewModel.cs" />
-    <Compile Include="Modules\ViewModels\HelloWorldContentViewModel.cs" />
     <Compile Include="Modules\Views\BooleanToVisibilityConverter.cs" />
     <Compile Include="Modules\Views\BrowserContentView.xaml.cs">
       <DependentUpon>BrowserContentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Views\HelloWorldContentView.xaml.cs">
-      <DependentUpon>HelloWorldContentView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\Views\WebViewContentControl.cs" />
     <Compile Include="Shell\ApplicationBootstrapper.cs" />
+    <Compile Include="Shell\Controls\MenuEx.cs" />
+    <Compile Include="Shell\Controls\MenuItemEx.cs" />
+    <Compile Include="Shell\Services\IInputManager.cs" />
+    <Compile Include="Shell\Services\InputManager.cs" />
     <Compile Include="Shell\StartupTasks.cs" />
     <Compile Include="Shell\Utils\InputBindingParser.cs" />
     <Compile Include="Shell\Utils\InputBindingTrigger.cs" />
     <Compile Include="Shell\Utils\LayoutStrategy.cs" />
     <Compile Include="Shell\Utils\PanesStyleSelector.cs" />
+    <Compile Include="Shell\ViewModels\IMenu.cs" />
     <Compile Include="Shell\ViewModels\IShell.cs" />
+    <Compile Include="Shell\ViewModels\MainMenuViewModel.cs" />
+    <Compile Include="Shell\ViewModels\MenuItem.cs" />
+    <Compile Include="Shell\ViewModels\MenuItemBase.cs" />
+    <Compile Include="Shell\ViewModels\MenuItemSeparator.cs" />
     <Compile Include="Shell\ViewModels\ShellViewModel.cs" />
+    <Compile Include="Shell\Views\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shell\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\Utils\BringIntoViewBehavior.cs" />
+    <Compile Include="Tools\ViewModels\IOutput.cs" />
     <Compile Include="Tools\ViewModels\OutputToolViewModel.cs" />
     <Compile Include="Tools\Views\OutputToolView.xaml.cs">
       <DependentUpon>OutputToolView.xaml</DependentUpon>
@@ -173,9 +183,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Views\HelloWorldContentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Shell\Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>

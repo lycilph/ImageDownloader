@@ -10,7 +10,7 @@ using System.Windows.Threading;
 
 namespace ImageDownloader.Modules.Views
 {
-    public class WebViewContentControl : ContentControl
+    public class WebViewContentControl : ContentControl, ILifeSpanHandler
     {
         private WebView internal_web_view;
         private bool internal_update = false;
@@ -47,7 +47,9 @@ namespace ImageDownloader.Modules.Views
                 UserStyleSheetLocation = @"data:text/css;charset=utf-8;base64," + data
             };
             internal_web_view = new WebView("http://www.google.com", bs);
+            internal_web_view.LifeSpanHandler = this;
             internal_web_view.PropertyChanged += WebViewPropertyChanged;
+
             Content = internal_web_view;
         }
 
@@ -74,8 +76,18 @@ namespace ImageDownloader.Modules.Views
             var wvcc = d as WebViewContentControl;
             if (wvcc == null) return;
 
+            System.Diagnostics.Debug.Print("Address changed: " + e.NewValue);
+
             if (wvcc.internal_web_view.IsBrowserInitialized && !wvcc.internal_update)
                 wvcc.internal_web_view.Load(wvcc.Address);
+        }
+
+        public void OnBeforeClose(IWebBrowser browser) { }
+
+        public bool OnBeforePopup(IWebBrowser browser, string url, ref int x, ref int y, ref int width, ref int height)
+        {
+            Dispatcher.Invoke(() => Address = url);
+            return true;
         }
     }
 }

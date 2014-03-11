@@ -4,7 +4,7 @@ using System;
 
 namespace ImageDownloader.Core
 {
-    public class LayoutItem : ReactiveScreen, ILayoutItem
+    public abstract class LayoutItem : ReactiveScreen, ILayoutItem
     {
         private readonly Guid id = Guid.NewGuid();
 

@@ -1,5 +1,6 @@
 using Caliburn.Micro;
 using System;
+using System.Windows.Input;
 
 namespace ImageDownloader.Core
 {

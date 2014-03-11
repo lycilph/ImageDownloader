@@ -6,8 +6,9 @@ using System.ComponentModel.Composition;
 
 namespace ImageDownloader.Tools.ViewModels
 {
-    [Export(typeof(ILayoutItem))]
-    public class OutputToolViewModel : Tool, IHandle<OutputMessage>
+    [Export(typeof(ITool))]
+    [Export(typeof(IOutput))]
+    public class OutputToolViewModel : Tool, IOutput, IHandle<OutputMessage>
     {
         private ReactiveList<string> _Messages = new ReactiveList<string>();
         public ReactiveList<string> Messages
@@ -34,7 +35,7 @@ namespace ImageDownloader.Tools.ViewModels
         [ImportingConstructor]
         public OutputToolViewModel(IEventAggregator event_aggregator)
         {
-            DisplayName = "Log";
+            DisplayName = "Output";
 
             event_aggregator.Subscribe(this);
         }
@@ -44,9 +45,14 @@ namespace ImageDownloader.Tools.ViewModels
             Messages.Clear();
         }
 
+        public void Write(string text)
+        {
+            Messages.Add(text);
+        }
+
         public void Handle(OutputMessage message)
         {
-            Messages.Add(message.Text);
+            Write(message.Text);
         }
     }
 }

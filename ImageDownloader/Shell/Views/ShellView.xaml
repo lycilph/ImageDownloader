@@ -11,8 +11,8 @@
                    GlowBrush="{DynamicResource AccentColorBrush}"
                    WindowStartupLocation="CenterScreen"
                    WindowTransitionsEnabled="False"
-                   Height="600"
-                   Width="800">
+                   Height="768"
+                   Width="1024">
     <Window.Resources>
         <avalon:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
@@ -44,7 +44,9 @@
         </metro:WindowCommands>
     </metro:MetroWindow.WindowCommands>
     
-    <Grid>
+    <DockPanel>
+        <ContentControl DockPanel.Dock="Top" x:Name="MainMenu"/>
+        
         <avalon:DockingManager Grid.Row="1"
                                AllowMixedOrientation="True"
                                AnchorablesSource="{Binding Tools}"
@@ -75,6 +77,7 @@
                             <Setter Property="Title" Value="{Binding Model.DisplayName}"/>
                             <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
                             <Setter Property="IsSelected" Value="{Binding Model.IsSelected}"/>
+                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}"/>
                         </Style>
                     </utils:PanesStyleSelector.ContentStyle>
                 </utils:PanesStyleSelector>
@@ -88,5 +91,5 @@
                 </avalon:LayoutPanel>
             </avalon:LayoutRoot>
         </avalon:DockingManager>
-    </Grid>
+    </DockPanel>
 </metro:MetroWindow>
