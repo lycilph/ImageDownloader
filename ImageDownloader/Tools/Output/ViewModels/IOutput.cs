@@ -1,4 +1,4 @@
-﻿namespace ImageDownloader.Tools.ViewModels
+﻿namespace ImageDownloader.Tools.Output.ViewModels
 {
     interface IOutput
     {

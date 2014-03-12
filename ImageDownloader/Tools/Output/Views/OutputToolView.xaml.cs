@@ -1,4 +1,4 @@
-namespace ImageDownloader.Tools.Views
+namespace ImageDownloader.Tools.Output.Views
 {
     public partial class OutputToolView
     {

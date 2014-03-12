@@ -161,10 +161,10 @@
     <Compile Include="Framework\Shell\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Utils\BringIntoViewBehavior.cs" />
-    <Compile Include="Tools\ViewModels\IOutput.cs" />
-    <Compile Include="Tools\ViewModels\OutputToolViewModel.cs" />
-    <Compile Include="Tools\Views\OutputToolView.xaml.cs">
+    <Compile Include="Tools\Output\Utils\BringIntoViewBehavior.cs" />
+    <Compile Include="Tools\Output\ViewModels\IOutput.cs" />
+    <Compile Include="Tools\Output\ViewModels\OutputToolViewModel.cs" />
+    <Compile Include="Tools\Output\Views\OutputToolView.xaml.cs">
       <DependentUpon>OutputToolView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -191,7 +191,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tools\Views\OutputToolView.xaml">
+    <Page Include="Tools\Output\Views\OutputToolView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -9,15 +9,16 @@ namespace ImageDownloader.Framework.Shell.Utils
     {
         public static bool CanParse(string trigger_text)
         {
-            return !string.IsNullOrWhiteSpace(trigger_text) && trigger_text.Contains("Shortcut");
+            return !string.IsNullOrWhiteSpace(trigger_text) && trigger_text.ToLower().Contains("shortcut");
         }
 
         public static TriggerBase CreateTrigger(string trigger_text)
         {
             var trigger_detail = trigger_text
+                .ToLower()
                 .Replace("[", string.Empty)
                 .Replace("]", string.Empty)
-                .Replace("Shortcut", string.Empty)
+                .Replace("shortcut", string.Empty)
                 .Trim();
 
             var mod_keys = ModifierKeys.None;

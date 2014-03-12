@@ -3,6 +3,7 @@ using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Core;
 using ImageDownloader.Framework.MainMenu.ViewModels;
 using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             set { this.RaiseAndSetIfChanged(ref _MainMenu, value); }
         }
 
+        public event EventHandler ViewLoaded = delegate { };
+
         public ShellViewModel()
         {
             DisplayName = "Shell";
@@ -44,10 +47,15 @@ namespace ImageDownloader.Framework.Shell.ViewModels
         protected override void OnActivate()
         {
             base.OnActivate();
-
             NewContent();
         }
 
+        protected override void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            ViewLoaded(this, new EventArgs());
+        }
+        
         public void ShowTool<TTool>()
         {
             var tool = Tools.OfType<TTool>().Cast<ITool>().FirstOrDefault();

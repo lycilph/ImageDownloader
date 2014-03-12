@@ -4,7 +4,7 @@ using ImageDownloader.Core.Messages;
 using ReactiveUI;
 using System.ComponentModel.Composition;
 
-namespace ImageDownloader.Tools.ViewModels
+namespace ImageDownloader.Tools.Output.ViewModels
 {
     [Export(typeof(ITool))]
     [Export(typeof(IOutput))]
@@ -36,6 +36,7 @@ namespace ImageDownloader.Tools.ViewModels
         public OutputToolViewModel(IEventAggregator event_aggregator)
         {
             DisplayName = "Output";
+            IsVisible = false;
 
             event_aggregator.Subscribe(this);
         }

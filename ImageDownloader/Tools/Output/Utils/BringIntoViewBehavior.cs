@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace ImageDownloader.Tools.Utils
+namespace ImageDownloader.Tools.Output.Utils
 {
     public class BringIntoViewBehavior : Behavior<ItemsControl>
     {

@@ -11,7 +11,7 @@
         <Style x:Key="MenuItem" TargetType="{x:Type controls:MenuItemEx}" BasedOn="{StaticResource {x:Type MenuItem}}">
             <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
             <Setter Property="cal:Action.Target" Value="{Binding}" />
-            <Setter Property="cal:Message.Attach" Value="Execute" />
+            <Setter Property="cal:Message.Attach" Value="{Binding ActionText}" />
         </Style>
         
         <Style TargetType="{x:Type controls:MenuEx}" BasedOn="{StaticResource {x:Type Menu}}"/>
