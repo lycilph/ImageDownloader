@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace ImageDownloader.Shell.Utils
+namespace ImageDownloader.Framework.Shell.Utils
 {
     public static class InputBindingParser
     {

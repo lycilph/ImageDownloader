@@ -3,7 +3,7 @@ using ReactiveUI;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ImageDownloader.Shell.ViewModels
+namespace ImageDownloader.Framework.MainMenu.ViewModels
 {
     public class MenuItemBase : ReactiveObject, IEnumerable<MenuItemBase>
     {

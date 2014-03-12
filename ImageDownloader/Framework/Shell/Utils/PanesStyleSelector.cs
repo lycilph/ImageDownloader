@@ -2,7 +2,7 @@ using ImageDownloader.Core;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ImageDownloader.Shell.Utils
+namespace ImageDownloader.Framework.Shell.Utils
 {
     public class PanesStyleSelector : StyleSelector
     {

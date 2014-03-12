@@ -1,13 +1,14 @@
 using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Core;
+using ImageDownloader.Framework.MainMenu.ViewModels;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 
-namespace ImageDownloader.Shell.ViewModels
+namespace ImageDownloader.Framework.Shell.ViewModels
 {
     [Export(typeof(IShell))]
     public class ShellViewModel : ReactiveConductor<ILayoutItem>.Collection.OneActive, IShell, IPartImportsSatisfiedNotification
@@ -44,10 +45,7 @@ namespace ImageDownloader.Shell.ViewModels
         {
             base.OnActivate();
 
-            var content = IoC.Get<IContent>();
-            Content.Add(content);
-
-            ActivateItem(content);
+            NewContent();
         }
 
         public void ShowTool<TTool>()
@@ -58,6 +56,20 @@ namespace ImageDownloader.Shell.ViewModels
                 tool.IsVisible = true;
                 ActivateItem(tool);
             }
+        }
+
+        public void NewContent()
+        {
+            var content = IoC.Get<IContent>();
+            content.IsSelected = true;
+
+            Content.Add(content);
+            ActivateItem(content);
+        }
+
+        public void CloseContent(IContent content)
+        {
+            Content.Remove(content);
         }
 
         public void Close()

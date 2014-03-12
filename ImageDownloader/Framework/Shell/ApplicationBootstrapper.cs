@@ -1,6 +1,5 @@
 using Caliburn.Micro;
-using ImageDownloader.Shell.Utils;
-using ImageDownloader.Shell.ViewModels;
+using ImageDownloader.Framework.Shell.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ImageDownloader.Shell.ViewModels
+namespace ImageDownloader.Framework.MainMenu.ViewModels
 {
     public interface IMenu : IEnumerable<MenuItemBase>
     {

@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
 
-namespace ImageDownloader.Shell.Utils
+namespace ImageDownloader.Framework.Shell.Utils
 {
     public class LayoutStrategy : ILayoutUpdateStrategy
     {

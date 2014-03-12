@@ -1,13 +1,15 @@
 using System.Windows.Input;
 using ReactiveUI;
 using System.ComponentModel.Composition;
-using ImageDownloader.Shell.ViewModels;
 using ImageDownLoader.Core;
+using ImageDownloader.Framework.Shell.ViewModels;
 
 namespace ImageDownloader.Core
 {
     public class Content : LayoutItem, IContent
     {
+        private IShell shell;
+
         private ICommand _CloseCommand;
         public ICommand CloseCommand
         {
@@ -18,12 +20,14 @@ namespace ImageDownloader.Core
         [ImportingConstructor]
         public Content(IShell shell)
         {
+            this.shell = shell;
+
             CloseCommand = new RelayCommand(obj => Close());
         }
 
         private void Close()
         {
-            System.Diagnostics.Debug.Print("closing");
+            shell.CloseContent(this);
         }
     }
 }

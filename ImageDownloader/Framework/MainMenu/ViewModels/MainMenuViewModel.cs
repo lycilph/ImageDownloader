@@ -1,9 +1,10 @@
-﻿using ImageDownloader.Tools.ViewModels;
+﻿using ImageDownloader.Framework.Shell.ViewModels;
+using ImageDownloader.Tools.ViewModels;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
-namespace ImageDownloader.Shell.ViewModels
+namespace ImageDownloader.Framework.MainMenu.ViewModels
 {
     [Export(typeof(IMenu))]
     public class MainMenuViewModel : ReactiveList<MenuItemBase>, IMenu
@@ -17,6 +18,7 @@ namespace ImageDownloader.Shell.ViewModels
             {
                 new MenuItem("_File")
                 {
+                    new MenuItem("_New", New),
                     new MenuItem("_Open"),
                     MenuItemBase.Separator,
                     new MenuItem("_Close"),
@@ -38,6 +40,11 @@ namespace ImageDownloader.Shell.ViewModels
                     new MenuItem("_About")
                 }
             });
+        }
+
+        public void New()
+        {
+            shell.NewContent();
         }
 
         public void ShowOutput()

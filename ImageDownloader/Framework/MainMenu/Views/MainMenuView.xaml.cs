@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageDownloader.Shell.Views
+namespace ImageDownloader.Framework.MainMenu.Views
 {
     /// <summary>
     /// Interaction logic for MainMenuView.xaml

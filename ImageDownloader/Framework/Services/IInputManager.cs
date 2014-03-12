@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace ImageDownloader.Shell.Services
+namespace ImageDownloader.Framework.Services
 {
     interface IInputManager
     {

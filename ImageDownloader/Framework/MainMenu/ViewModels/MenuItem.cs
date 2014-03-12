@@ -1,10 +1,10 @@
 ﻿using Caliburn.Micro;
-using ImageDownloader.Shell.Services;
+using ImageDownloader.Framework.Services;
 using ReactiveUI;
 using System.Globalization;
 using System.Windows.Input;
 
-namespace ImageDownloader.Shell.ViewModels
+namespace ImageDownloader.Framework.MainMenu.ViewModels
 {
     public class MenuItem : MenuItemBase
     {

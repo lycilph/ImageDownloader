@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
-using ImageDownloader.Shell.Utils;
+using ImageDownloader.Framework.Shell.Utils;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace ImageDownloader.Shell.Services
+namespace ImageDownloader.Framework.Services
 {
     [Export(typeof(IInputManager))]
     public class InputManager : IInputManager

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ImageDownloader.Shell.Controls
+namespace ImageDownloader.Framework.MainMenu.Controls
 {
     public class MenuEx : System.Windows.Controls.Menu
     {

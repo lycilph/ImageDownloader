@@ -1,11 +1,12 @@
 ﻿using ImageDownloader.Core;
 using System.ComponentModel.Composition;
 using ReactiveUI;
-using ImageDownloader.Shell.ViewModels;
+using ImageDownloader.Framework.Shell.ViewModels;
 
 namespace ImageDownloader.Modules.ViewModels
 {
     [Export(typeof(IContent))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class BrowserContentViewModel : Content
     {
         private string home_url = "http://www.google.com";

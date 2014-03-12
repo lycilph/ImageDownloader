@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace ImageDownloader.Shell.Utils
+namespace ImageDownloader.Framework.Shell.Utils
 {
     public class InputBindingTrigger : TriggerBase<FrameworkElement>, ICommand
     {

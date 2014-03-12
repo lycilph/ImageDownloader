@@ -1,8 +1,8 @@
-﻿using ImageDownloader.Shell.ViewModels;
+﻿using ImageDownloader.Framework.MainMenu.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ImageDownloader.Shell.Controls
+namespace ImageDownloader.Framework.MainMenu.Controls
 {
     public class MenuItemEx : System.Windows.Controls.MenuItem
     {
