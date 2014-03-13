@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.Wpf;
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
@@ -10,7 +11,7 @@ using System.Windows.Threading;
 
 namespace ImageDownloader.Modules.Views
 {
-    public class WebViewContentControl : ContentControl, ILifeSpanHandler
+    public class WebViewContentControl : ContentControl
     {
         private WebView internal_web_view;
         private bool internal_update = false;
@@ -33,8 +34,12 @@ namespace ImageDownloader.Modules.Views
 
         public WebViewContentControl()
         {
+            var name = Assembly.GetExecutingAssembly().GetManifestResourceNames().FirstOrDefault(n => n.ToLower().Contains("theme.css"));
+            if (name == null)
+                throw new InvalidOperationException();
+
             string data;
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ImageDownloader.Modules.Resources.theme.css"))
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
             using (var reader = new StreamReader(stream))
             {
                 data = reader.ReadToEnd();
@@ -47,9 +52,7 @@ namespace ImageDownloader.Modules.Views
                 UserStyleSheetLocation = @"data:text/css;charset=utf-8;base64," + data
             };
             internal_web_view = new WebView("http://www.google.com", bs);
-            internal_web_view.LifeSpanHandler = this;
             internal_web_view.PropertyChanged += WebViewPropertyChanged;
-
             Content = internal_web_view;
         }
 
@@ -76,18 +79,8 @@ namespace ImageDownloader.Modules.Views
             var wvcc = d as WebViewContentControl;
             if (wvcc == null) return;
 
-            System.Diagnostics.Debug.Print("Address changed: " + e.NewValue);
-
             if (wvcc.internal_web_view.IsBrowserInitialized && !wvcc.internal_update)
                 wvcc.internal_web_view.Load(wvcc.Address);
-        }
-
-        public void OnBeforeClose(IWebBrowser browser) { }
-
-        public bool OnBeforePopup(IWebBrowser browser, string url, ref int x, ref int y, ref int width, ref int height)
-        {
-            Dispatcher.Invoke(() => Address = url);
-            return true;
         }
     }
 }

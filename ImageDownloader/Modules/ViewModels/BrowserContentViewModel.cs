@@ -1,7 +1,7 @@
 ﻿using ImageDownloader.Core;
-using System.ComponentModel.Composition;
-using ReactiveUI;
 using ImageDownloader.Framework.Shell.ViewModels;
+using ReactiveUI;
+using System.ComponentModel.Composition;
 
 namespace ImageDownloader.Modules.ViewModels
 {
@@ -10,7 +10,7 @@ namespace ImageDownloader.Modules.ViewModels
     public class BrowserContentViewModel : Content
     {
         private string home_url = "http://www.google.com";
-
+        
         private string _Address;
         public string Address
         {

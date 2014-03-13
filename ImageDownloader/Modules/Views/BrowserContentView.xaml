@@ -14,7 +14,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Left" Content="Home" x:Name="Home"/>
-            <TextBox x:Name="Address"/>
+            <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, Delay=1000}"/>
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" Visibility="{Binding ElementName=web_view, Path=IsLoading, Converter={StaticResource visibility_converter}}"/>
 

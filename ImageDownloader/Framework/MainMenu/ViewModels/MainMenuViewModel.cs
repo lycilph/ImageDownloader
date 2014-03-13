@@ -39,7 +39,7 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
                 },
                 new MenuItem("_Help")
                 {
-                    new MenuItem("_Help"),
+                    new MenuItem("_Help").WithGlobalShortcut(ModifierKeys.None, Key.F1),
                     new MenuItem("_About")
                 }
             });
