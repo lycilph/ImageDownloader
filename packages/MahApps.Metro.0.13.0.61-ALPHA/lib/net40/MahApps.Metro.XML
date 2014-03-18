@@ -198,6 +198,11 @@
             Gets/sets whether the metro dialog should use the default black/white appearance (theme) or try to use the current accent.
             </summary>
         </member>
+        <member name="P:MahApps.Metro.Controls.Dialogs.MetroDialogSettings.DefaultText">
+            <summary>
+            Gets/sets the default text( just the inputdialog needed)
+            </summary>
+        </member>
         <member name="T:MahApps.Metro.Controls.Dialogs.MetroDialogColorScheme">
             <summary>
             An enum representing the different choices for a color scheme in a Metro Dialog.
@@ -1009,6 +1014,7 @@
             An Enum representing different positions, such as Left or Right.
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:MahApps.Metro.Controls.SplitButton" -->
         <member name="M:MahApps.Metro.Converters.BackgroundToForegroundConverter.IdealTextColor(System.Windows.Media.Color)">
             <summary>
             Determining Ideal Text Color Based on Specified Background Color

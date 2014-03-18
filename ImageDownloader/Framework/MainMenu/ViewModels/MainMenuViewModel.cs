@@ -1,5 +1,5 @@
-﻿using ImageDownloader.Framework.Shell.ViewModels;
-using ImageDownloader.Tools.Output.ViewModels;
+﻿using Caliburn.Micro;
+using ImageDownloader.Core.Messages;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -10,54 +10,69 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
     [Export(typeof(IMenu))]
     public class MainMenuViewModel : ReactiveList<MenuItemBase>, IMenu
     {
-        [Import]
-        private IShell shell;
+        private IEventAggregator event_aggregator;
+        private IWindowManager window_manager;
 
-        public MainMenuViewModel()
+        public IEnumerable<MenuItemBase> All
         {
+            get { return this; }
+        }
+
+        [ImportingConstructor]
+        public MainMenuViewModel(IEventAggregator event_aggregator, IWindowManager window_manager)
+        {
+            this.event_aggregator = event_aggregator;
+            this.window_manager = window_manager;
+
             AddRange(new List<MenuItemBase>
             {
                 new MenuItem("_File")
                 {
-                    new MenuItem("_New", New).WithGlobalShortcut(ModifierKeys.Control, Key.N),
+                    new MenuItem("_New", NewJob).WithGlobalShortcut(ModifierKeys.Control, Key.N),
                     new MenuItem("_Open"),
                     MenuItemBase.Separator,
-                    new MenuItem("_Close"),
+                    new MenuItem("_Close", CloseCurrent).WithGlobalShortcut(ModifierKeys.Control, Key.W),
                     new MenuItem("Close _All"),
+                    MenuItemBase.Separator,
+                    new MenuItem("_Save").WithGlobalShortcut(ModifierKeys.Control, Key.S),
+                    new MenuItem("Save _As"),
                     MenuItemBase.Separator,
                     new MenuItem ("_Recent"), 
                     MenuItemBase.Separator,
                     new MenuItem("E_xit", Exit).WithGlobalShortcut(ModifierKeys.Alt, Key.F4),
                 },
                 new MenuItem("_Window")
-                {
-                    new MenuItem("_Start"),
-                    new MenuItem("_Output", ShowOutput),
+                /*{
                     new MenuItem("_Settings"),
                     MenuItemBase.Separator,
                     new MenuItem("[Opened windows]")
+                }*/,
+                new MenuItem("_Debug")
+                {
+                    new MenuItem("_Save layout", SaveLayout)
                 },
                 new MenuItem("_Help")
-                {
-                    new MenuItem("_Help").WithGlobalShortcut(ModifierKeys.None, Key.F1),
-                    new MenuItem("_About")
-                }
             });
         }
 
-        public void New()
+        private void SaveLayout()
         {
-            shell.NewContent();
+            event_aggregator.PublishOnCurrentThread(ShellMessage.SaveLayout);
         }
 
-        public void ShowOutput()
+        private void NewJob()
         {
-            shell.ShowTool<IOutput>();
+            event_aggregator.PublishOnCurrentThread(ShellMessage.NewJob);
         }
 
-        public void Exit()
+        private void CloseCurrent()
         {
-            shell.Close();
+            event_aggregator.PublishOnCurrentThread(ShellMessage.CloseCurrent);
+        }
+
+        private void Exit()
+        {
+            event_aggregator.PublishOnCurrentThread(ShellMessage.Exit);
         }
     }
 }

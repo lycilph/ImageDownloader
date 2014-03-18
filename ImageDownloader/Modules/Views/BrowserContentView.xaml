@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:view="clr-namespace:ImageDownloader.Modules.Views"
+             xmlns:view="clr-namespace:ImageDownloader.Core.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -13,11 +13,43 @@
     
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <Button DockPanel.Dock="Left" Content="Home" x:Name="Home"/>
+            <Button DockPanel.Dock="Left"
+                    ToolTip="Go back"
+                    Height="30"
+                    Command="{Binding ElementName=web_view, Path=BackCommand}"
+                    Style="{StaticResource ChromelessButtonStyle}">
+                <Image Source="..\..\..\Images\appbar.arrow.left.png"/>
+            </Button>
+            <Button DockPanel.Dock="Left"
+                    ToolTip="Go forward"
+                    Height="30"
+                    Command="{Binding ElementName=web_view, Path=ForwardCommand}" 
+                    Style="{StaticResource ChromelessButtonStyle}">
+                <Image Source="..\..\..\Images\appbar.arrow.right.png"/>
+            </Button>
+            <Button ToolTip="Refreshes the current page"
+                    Height="30"
+                    Command="{Binding ElementName=web_view, Path=RefreshCommand}" 
+                    Style="{StaticResource ChromelessButtonStyle}">
+                <Image Source="..\..\..\Images\appbar.refresh.png"/>
+            </Button>
+            <Button x:Name="Home"
+                    ToolTip="Open home page"
+                    Height="30"
+                    Style="{StaticResource ChromelessButtonStyle}">
+                <Image Source="..\..\..\Images\appbar.home.empty.png"/>
+            </Button>
+            <Button DockPanel.Dock="Right"
+                    x:Name="Help"
+                    ToolTip="Open help page"
+                    Height="30"
+                    Style="{StaticResource ChromelessButtonStyle}">
+                <Image Source="..\..\..\Images\appbar.question.png"/>
+            </Button>
             <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, Delay=1000}"/>
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" Visibility="{Binding ElementName=web_view, Path=IsLoading, Converter={StaticResource visibility_converter}}"/>
 
-        <view:WebViewContentControl x:Name="web_view" Address="{Binding Address, Mode=TwoWay}"/>
+        <view:WebViewContentControl x:Name="web_view" Address="{Binding Address, Mode=TwoWay}" UserStyleSheet="theme.css"/>
     </DockPanel>
 </UserControl>

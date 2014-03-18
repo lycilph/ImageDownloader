@@ -1,4 +1,5 @@
-﻿using ImageDownloader.Core;
+﻿using Caliburn.Micro;
+using ImageDownloader.Core;
 using ImageDownloader.Framework.Shell.ViewModels;
 using ReactiveUI;
 using System.ComponentModel.Composition;
@@ -10,6 +11,7 @@ namespace ImageDownloader.Modules.ViewModels
     public class BrowserContentViewModel : Content
     {
         private string home_url = "http://www.google.com";
+        private string help_url = "help://help.html";
         
         private string _Address;
         public string Address
@@ -19,7 +21,7 @@ namespace ImageDownloader.Modules.ViewModels
         }
 
         [ImportingConstructor]
-        public BrowserContentViewModel(IShell shell) : base(shell)
+        public BrowserContentViewModel(IEventAggregator event_aggregator) : base(event_aggregator)
         {
             DisplayName = "Browser";
 
@@ -29,6 +31,11 @@ namespace ImageDownloader.Modules.ViewModels
         public void Home()
         {
             Address = home_url;
+        }
+
+        public void Help()
+        {
+            Address = help_url;
         }
     }
 }

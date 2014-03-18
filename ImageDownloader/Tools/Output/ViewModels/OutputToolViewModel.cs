@@ -22,14 +22,14 @@ namespace ImageDownloader.Tools.Output.ViewModels
             get { return PaneLocation.Bottom; }
         }
 
-        public override double DefaultWidth
+        public override double DefaultSize
         {
             get { return 200; }
         }
 
-        public override double DefaultHeight
+        public override bool CanAutoHide
         {
-            get { return 200; }
+            get { return true; }
         }
 
         [ImportingConstructor]

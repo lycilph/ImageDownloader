@@ -4,6 +4,8 @@ namespace ImageDownloader.Core
     {
         Left,
         Right,
-        Bottom
+        Bottom,
+        Top,
+        Content
     }
 }

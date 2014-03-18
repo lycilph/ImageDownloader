@@ -1,0 +1,50 @@
+﻿<dialogs:BaseMetroDialog x:Class="ImageDownloader.Framework.Dialogs.AboutDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                         xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                         mc:Ignorable="d" 
+                         d:DesignHeight="300"
+                         d:DesignWidth="300"
+                         Title="About">
+    <dialogs:BaseMetroDialog.Resources>
+        <!-- Workaround -->
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="{DynamicResource BlackColorBrush}"/>
+        </Style>
+    </dialogs:BaseMetroDialog.Resources>
+    
+    <dialogs:BaseMetroDialog.DialogBody>
+        <Grid Margin="0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Image downloader V0.1" FontSize="24"/>
+                <Separator/>
+                <TextBlock Text="Made by: Ly Cilph" FontSize="16" Margin="10,0,0,30"/>
+                <TextBlock Text="Packages used:" Margin="10,5"/>
+                <TextBlock Text="MahApps.Metro 0.13.0.61-ALPHA" Margin="10,2"/>
+                <TextBlock Text="Caliburn.Micro 2.0.0-beta" Margin="10,2"/>
+                <TextBlock Text="AvalonDock 2.0.2000" Margin="10,2"/>
+                <TextBlock Text="CefSharp.Wpf 1.25.7" Margin="10,2"/>
+                <TextBlock Text="Newtonsoft.Json 6.0.1" Margin="10,2"/>
+                <TextBlock Text="reactiveui 5.99.4-beta" Margin="10,2"/>
+            </StackPanel>
+
+            <Button Grid.Row="1"
+                    Height="35"
+                    MinWidth="80"
+                    HorizontalAlignment="Right"
+                    Style="{DynamicResource AccentedDialogSquareButton}"
+                    Content="Ok"
+                    Click="OkClick"
+                    Margin="0,0,5,0"
+                    IsDefault="True"/>
+        </Grid>
+    </dialogs:BaseMetroDialog.DialogBody>
+</dialogs:BaseMetroDialog>

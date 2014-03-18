@@ -14,6 +14,11 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
 
         public ReactiveList<MenuItemBase> Children { get; private set; }
 
+        public virtual string Name
+        {
+            get { return "-"; }
+        }
+
         public MenuItemBase()
         {
             Children = new ReactiveList<MenuItemBase>();

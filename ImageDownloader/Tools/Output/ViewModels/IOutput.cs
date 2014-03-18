@@ -1,6 +1,8 @@
-﻿namespace ImageDownloader.Tools.Output.ViewModels
+﻿using ImageDownloader.Core;
+
+namespace ImageDownloader.Tools.Output.ViewModels
 {
-    interface IOutput
+    public interface IOutput : ITool
     {
         void Write(string text);
         void Clear();

@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using ImageDownloader.Framework.Services;
-using ImageDownloader.Framework.Shell.Utils;
 using ReactiveUI;
 using System.Globalization;
 using System.Windows.Input;
@@ -20,15 +19,15 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
         }
 
         public string ActionText { get; private set; }
+        
+        public override string Name
+        {
+            get { return string.IsNullOrEmpty(Text) ? null : Text.Replace("_", string.Empty); }
+        }
 
         public string InputGestureText
         {
-            get
-            {
-                return key_gesture == null
-                    ? string.Empty
-                    : key_gesture.GetDisplayStringForCulture(CultureInfo.CurrentUICulture);
-            }
+            get { return key_gesture == null ? string.Empty : key_gesture.GetDisplayStringForCulture(CultureInfo.CurrentUICulture); }
         }
 
         private bool _CanExecute = true;

@@ -1,14 +1,15 @@
-using System.Windows.Input;
+using Caliburn.Micro;
+using ImageDownloader.Core.Messages;
+using ImageDownLoader.Core;
 using ReactiveUI;
 using System.ComponentModel.Composition;
-using ImageDownLoader.Core;
-using ImageDownloader.Framework.Shell.ViewModels;
+using System.Windows.Input;
 
 namespace ImageDownloader.Core
 {
     public class Content : LayoutItem, IContent
     {
-        private IShell shell;
+        private IEventAggregator event_aggregator;
 
         private ICommand _CloseCommand;
         public ICommand CloseCommand
@@ -18,16 +19,16 @@ namespace ImageDownloader.Core
         }
 
         [ImportingConstructor]
-        public Content(IShell shell)
+        public Content(IEventAggregator event_aggregator)
         {
-            this.shell = shell;
+            this.event_aggregator = event_aggregator;
 
             CloseCommand = new RelayCommand(obj => Close());
         }
 
         private void Close()
         {
-            shell.CloseContent(this);
+            event_aggregator.PublishOnCurrentThread(ShellMessage.CloseContent(this));
         }
     }
 }
