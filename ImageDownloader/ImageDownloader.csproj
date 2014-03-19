@@ -160,20 +160,51 @@
     <Compile Include="Core\PaneLocation.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="Core\Tool.cs" />
+    <Compile Include="Flyouts\Settings\SettingsModule.cs" />
+    <Compile Include="Flyouts\Settings\SettingsWindowCommand.cs" />
+    <Compile Include="Flyouts\Settings\ViewModels\ISettings.cs" />
+    <Compile Include="Flyouts\Settings\Views\SettingsFlyoutView.xaml.cs">
+      <DependentUpon>SettingsFlyoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Framework\AboutModule.cs" />
+    <Compile Include="Framework\Dialogs\AboutWindowCommand.cs" />
+    <Compile Include="Core\IWindowCommand.cs" />
+    <Compile Include="Core\WindowCommandBase.cs" />
     <Compile Include="Framework\Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Core\FlyoutBase.cs" />
+    <Compile Include="Core\IFlyout.cs" />
+    <Compile Include="Flyouts\Settings\ViewModels\SettingsFlyoutViewModel.cs" />
     <Compile Include="Framework\Services\WindowManagerExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Contents\Job\ViewModels\IJob.cs" />
+    <Compile Include="Contents\Job\ViewModels\IJobStep.cs" />
+    <Compile Include="Contents\Job\ViewModels\JobStepBase.cs" />
+    <Compile Include="Contents\Job\ViewModels\JobStepExecuteViewModel.cs" />
+    <Compile Include="Contents\Job\ViewModels\JobStepOptionsViewModel.cs" />
+    <Compile Include="Contents\Job\ViewModels\JobStepResultsViewModel.cs" />
+    <Compile Include="Contents\Job\ViewModels\JobViewModel.cs" />
+    <Compile Include="Contents\Job\Views\JobStepExecuteView.xaml.cs">
+      <DependentUpon>JobStepExecuteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Contents\Job\Views\JobStepOptionsView.xaml.cs">
+      <DependentUpon>JobStepOptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Contents\Job\Views\JobStepResultsView.xaml.cs">
+      <DependentUpon>JobStepResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Contents\Job\Views\JobView.xaml.cs">
+      <DependentUpon>JobView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Help\HelpModule.cs" />
     <Compile Include="Tools\Help\Utils\SchemeHandler.cs" />
     <Compile Include="Tools\Help\Utils\SchemeHandlerFactory.cs" />
     <Compile Include="Framework\Shell\Views\IShellView.cs" />
-    <Compile Include="Modules\ViewModels\BrowserContentViewModel.cs" />
+    <Compile Include="Contents\Browser\ViewModels\BrowserViewModel.cs" />
     <Compile Include="Core\View\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Modules\Views\BrowserContentView.xaml.cs">
-      <DependentUpon>BrowserContentView.xaml</DependentUpon>
+    <Compile Include="Contents\Browser\Views\BrowserView.xaml.cs">
+      <DependentUpon>BrowserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Framework\Shell\ApplicationBootstrapper.cs" />
     <Compile Include="Framework\MainMenu\Controls\MenuEx.cs" />
@@ -221,7 +252,23 @@
     <Compile Include="Tools\StartPage\Views\StartPageView.xaml.cs">
       <DependentUpon>StartPageView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Core\Resources\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Core\Resources\FontSizes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Core\Resources\ControlResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Core\Resources\ImageStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Flyouts\Settings\Views\SettingsFlyoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,7 +288,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Modules\Views\BrowserContentView.xaml">
+    <Page Include="Contents\Job\Views\JobStepExecuteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\Job\Views\JobStepOptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\Job\Views\JobStepResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\Job\Views\JobView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\Browser\Views\BrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -252,6 +315,10 @@
     <Page Include="Framework\Shell\Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Contents\Job\Views\WizardListBoxItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Tools\Help\Views\HelpView.xaml">
       <SubType>Designer</SubType>
@@ -305,7 +372,9 @@
     <EmbeddedResource Include="Core\Resources\theme.css" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Tools\StartPage\Resources\" />
+    <Folder Include="Contents\Host\ViewModels\" />
+    <Folder Include="Contents\Host\Views\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.refresh.png" />
@@ -322,6 +391,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Tools\Help\Resources\Help.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.browser.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

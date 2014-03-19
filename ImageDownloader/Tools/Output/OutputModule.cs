@@ -21,7 +21,7 @@ namespace ImageDownloader.Tools.Output
 
         private void ShowOutput()
         {
-            event_aggregator.PublishOnCurrentThread(ShellMessage.ShowTool(typeof(IOutput)));
+            event_aggregator.PublishOnCurrentThread(ShellMessage.ToggleTool(typeof(IOutput)));
         }
     }
 }

@@ -24,16 +24,16 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <TextBlock Text="Image downloader V0.1" FontSize="24"/>
+                <TextBlock Text="Image downloader V0.1" FontSize="{StaticResource HeaderFontSize}"/>
                 <Separator/>
-                <TextBlock Text="Made by: Ly Cilph" FontSize="16" Margin="10,0,0,30"/>
+                <TextBlock Text="Made by: Ly Cilph" FontSize="{StaticResource SubHeaderFontSize}" Margin="10,0,0,30"/>
                 <TextBlock Text="Packages used:" Margin="10,5"/>
                 <TextBlock Text="MahApps.Metro 0.13.0.61-ALPHA" Margin="10,2"/>
                 <TextBlock Text="Caliburn.Micro 2.0.0-beta" Margin="10,2"/>
                 <TextBlock Text="AvalonDock 2.0.2000" Margin="10,2"/>
                 <TextBlock Text="CefSharp.Wpf 1.25.7" Margin="10,2"/>
                 <TextBlock Text="Newtonsoft.Json 6.0.1" Margin="10,2"/>
-                <TextBlock Text="reactiveui 5.99.4-beta" Margin="10,2"/>
+                <TextBlock Text="Reactiveui 5.99.4-beta" Margin="10,2"/>
             </StackPanel>
 
             <Button Grid.Row="1"

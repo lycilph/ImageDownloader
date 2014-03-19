@@ -13,16 +13,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Xceed.Wpf.AvalonDock.Themes.Metro;component/Theme.xaml" />
                 <ResourceDictionary Source="Core\Resources\FontSizes.xaml"/>
+                <ResourceDictionary Source="Core\Resources\ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Core\Resources\ImageStyle.xaml"/>
+                <ResourceDictionary Source="Core\Resources\ControlResources.xaml"/>
                 <ResourceDictionary>
                     <local:ApplicationBootstrapper x:Key="bootstrapper"/>
-
-                    <Style TargetType="Image">
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Opacity" Value="0.3"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

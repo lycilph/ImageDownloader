@@ -21,7 +21,7 @@ namespace ImageDownloader.Tools.Help
 
         private void ShowHelp()
         {
-            event_aggregator.PublishOnCurrentThread(ShellMessage.ShowTool(typeof(IHelp)));
+            event_aggregator.PublishOnCurrentThread(ShellMessage.ToggleTool(typeof(IHelp)));
         }
     }
 }

@@ -1,8 +1,10 @@
 using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using Core;
+using ImageDownloader.Contents.Job.ViewModels;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
+using ImageDownloader.Framework.Commands;
 using ImageDownloader.Framework.MainMenu.ViewModels;
 using ImageDownloader.Framework.Shell.Views;
 using ReactiveUI;
@@ -33,6 +35,20 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Content, value); }
         }
 
+        private ReactiveList<IWindowCommand> _WindowCommands;
+        public ReactiveList<IWindowCommand> WindowCommands
+        {
+            get { return _WindowCommands; }
+            set { this.RaiseAndSetIfChanged(ref _WindowCommands, value); }
+        }
+
+        private ReactiveList<IFlyout> _Flyouts;
+        public ReactiveList<IFlyout> Flyouts
+        {
+            get { return _Flyouts; }
+            set { this.RaiseAndSetIfChanged(ref _Flyouts, value); }
+        }
+
         private IMenu _MainMenu;
         public IMenu MainMenu
         {
@@ -41,7 +57,12 @@ namespace ImageDownloader.Framework.Shell.ViewModels
         }
 
         [ImportingConstructor]
-        public ShellViewModel([ImportMany] IEnumerable<ITool> tools, [ImportMany] IEnumerable<Lazy<IModule, OrderMetadata>> modules, IMenu main_menu, IEventAggregator event_aggregator)
+        public ShellViewModel([ImportMany] IEnumerable<ITool> tools,
+                              [ImportMany] IEnumerable<Lazy<IModule, OrderMetadata>> modules,
+                              [ImportMany] IEnumerable<Lazy<IWindowCommand, OrderMetadata>> commands,
+                              [ImportMany] IEnumerable<IFlyout> flyouts,
+                              IMenu main_menu,
+                              IEventAggregator event_aggregator)
         {
             DisplayName = "Shell";
 
@@ -53,6 +74,11 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             var sorted_modules = modules.OrderBy(m => m.Metadata.Order).Select(m => m.Value);
             this.modules = new List<IModule>(sorted_modules);
 
+            var sorted_commands = commands.OrderBy(c => c.Metadata.Order).Select(c => c.Value);
+            WindowCommands = new ReactiveList<IWindowCommand>(sorted_commands);
+
+            Flyouts = new ReactiveList<IFlyout>(flyouts);
+
             this.event_aggregator = event_aggregator;
             event_aggregator.Subscribe(this);
         }
@@ -63,33 +89,49 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             InitializeModules();
         }
 
+        public override void ActivateItem(ILayoutItem item)
+        {
+            base.ActivateItem(item);
+            item.IsSelected = true;
+        }
+
         private void InitializeModules()
         {
             modules.Apply(m => m.Initialize());
         }
 
-        private void ShowTool(Type tool_type)
+        private void ToggleTool(Type tool_type)
         {
             var tool = Tools.FirstOrDefault(t => tool_type.IsAssignableFrom(t.GetType()));
-            if (tool != null)
-            {
-                tool.IsVisible = true;
+            if (tool == null) return;
+
+            if (tool.IsVisible)
+                DeactivateItem(tool, false);
+            else
                 ActivateItem(tool);
-            }
+
+            tool.IsVisible = !tool.IsVisible;
+        }
+
+        private void ToggleFlyout(Type flyout_type)
+        {
+            var flyout = Flyouts.FirstOrDefault(t => flyout_type.IsAssignableFrom(t.GetType()));
+            if (flyout != null)
+                flyout.Toggle();
         }
 
         private void NewJob()
         {
-            var content = IoC.Get<IContent>();
-            content.IsSelected = true;
+            var job = IoC.Get<IJob>() as IContent;
+            Content.Add(job);
 
-            Content.Add(content);
-            ActivateItem(content);
+            ActivateItem(job);
         }
 
         private void Close(IContent content)
         {
             Content.Remove(content);
+            DeactivateItem(content, true);
         }
 
         private void CloseCurrent()
@@ -98,6 +140,7 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             {
                 var tool = ActiveItem as ITool;
                 tool.IsVisible = false;
+                DeactivateItem(tool, false);
             }
             else
             {
@@ -135,8 +178,11 @@ namespace ImageDownloader.Framework.Shell.ViewModels
                 case ShellMessage.MessageTypes.CloseCurrent:
                     CloseCurrent();
                     break;
-                case ShellMessage.MessageTypes.ShowTool:
-                    ShowTool(message.ToolType);
+                case ShellMessage.MessageTypes.ToggleTool:
+                    ToggleTool(message.PayloadType);
+                    break;
+                case ShellMessage.MessageTypes.ToggleFlyout:
+                    ToggleFlyout(message.PayloadType);
                     break;
                 default:
                     throw new InvalidOperationException();

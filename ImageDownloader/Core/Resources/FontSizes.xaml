@@ -2,7 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:Double x:Key="HeaderFontSize">24</sys:Double>
+    <sys:Double x:Key="SubHeaderFontSize">16</sys:Double>
     <sys:Double x:Key="LinkButtonFontSize">14</sys:Double>
+    <sys:Double x:Key="WizardListBoxItemFontSize">18</sys:Double>
+    
+    <!-- Rss -->
     <sys:Double x:Key="RssHeaderFontSize">20</sys:Double>
     <sys:Double x:Key="RssContentFontSize">16</sys:Double>
 </ResourceDictionary>

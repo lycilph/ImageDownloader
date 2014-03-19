@@ -5,12 +5,12 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
     public class RssItemViewModel : ReactiveObject
     {
         public string Title { get; set; }
-        public string Content { get; set; }
+        public string Summary { get; set; }
 
-        public RssItemViewModel(string title, string content)
+        public RssItemViewModel(string title, string summary)
         {
             Title = title;
-            Content = content;
+            Summary = summary;
         }
     }
 }

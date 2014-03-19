@@ -12,6 +12,7 @@
                    GlowBrush="{DynamicResource AccentColorBrush}"
                    WindowStartupLocation="CenterScreen"
                    WindowTransitionsEnabled="False"
+                   ShowWindowCommandsOnTop="False"
                    Height="768"
                    Width="1024">
     <Window.Resources>
@@ -34,17 +35,35 @@
 
     <metro:MetroWindow.WindowCommands>
         <metro:WindowCommands>
-            <ItemsControl x:Name="FlyoutCommands">
+            <ItemsControl x:Name="WindowCommands">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding DisplayName}"
+                                x:Name="Execute"
+                                cal:Bind.Model="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button x:Name="ShowAbout" Content="About"/>
         </metro:WindowCommands>
     </metro:MetroWindow.WindowCommands>
-    
+
+    <metro:MetroWindow.Flyouts>
+        <metro:FlyoutsControl x:Name="Flyouts">
+            <metro:FlyoutsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type metro:Flyout}" BasedOn="{StaticResource {x:Type metro:Flyout}}" >
+                    <Setter Property="Header" Value="{Binding DisplayName}" />
+                    <Setter Property="IsOpen" Value="{Binding IsOpen}" />
+                    <Setter Property="Position" Value="{Binding Position}" />
+                </Style>
+            </metro:FlyoutsControl.ItemContainerStyle>
+        </metro:FlyoutsControl>
+    </metro:MetroWindow.Flyouts>
+
     <DockPanel>
         <ContentControl DockPanel.Dock="Top" x:Name="MainMenu"/>
         

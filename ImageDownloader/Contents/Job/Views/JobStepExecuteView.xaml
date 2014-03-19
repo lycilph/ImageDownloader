@@ -1,13 +1,11 @@
-﻿<UserControl x:Class="ImageDownloader.Tools.StartPage.Views.RssItemView"
+﻿<UserControl x:Class="ImageDownloader.Modules.Job.Views.JobStepExecuteView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Margin="0,10">
-        <TextBlock x:Name="Title" FontSize="{StaticResource RssHeaderFontSize}"/>
-        <Separator/>
-        <TextBlock x:Name="Summary" TextWrapping="Wrap" FontSize="{StaticResource RssContentFontSize}"/>
-    </StackPanel>
+    <Grid>
+        <TextBlock Text="Execute"/>
+    </Grid>
 </UserControl>
