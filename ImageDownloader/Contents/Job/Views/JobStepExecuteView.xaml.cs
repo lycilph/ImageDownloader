@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageDownloader.Modules.Job.Views
+namespace ImageDownloader.Contents.Job.Views
 {
     /// <summary>
     /// Interaction logic for JobStepExecuteView.xaml

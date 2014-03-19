@@ -4,7 +4,6 @@ using Core;
 using ImageDownloader.Contents.Job.ViewModels;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
-using ImageDownloader.Framework.Commands;
 using ImageDownloader.Framework.MainMenu.ViewModels;
 using ImageDownloader.Framework.Shell.Views;
 using ReactiveUI;

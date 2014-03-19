@@ -3,7 +3,7 @@ using ImageDownloader.Core;
 using ImageDownloader.Framework.Services;
 using System.ComponentModel.Composition;
 
-namespace ImageDownloader.Framework.Commands
+namespace ImageDownloader.Framework.Dialogs.About
 {
     [Export(typeof(IWindowCommand))]
     [ExportMetadata("Order", 2)]

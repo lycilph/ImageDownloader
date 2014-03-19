@@ -1,11 +1,10 @@
 ﻿using Caliburn.Micro;
-using ImageDownloader.Framework.Dialogs;
+using ImageDownloader.Framework.Dialogs.About;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Linq;
 
 namespace ImageDownloader.Framework.Services
 {

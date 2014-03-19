@@ -43,7 +43,6 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
                 },
                 new MenuItem("_Window")
                 /*{
-                    new MenuItem("_Settings"),
                     MenuItemBase.Separator,
                     new MenuItem("[Opened windows]")
                 }*/,
