@@ -1,8 +1,11 @@
 ﻿using Caliburn.Micro;
 using ImageDownloader.Framework.Services;
 using ReactiveUI;
+using System;
 using System.Globalization;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace ImageDownloader.Framework.MainMenu.ViewModels
 {
@@ -17,6 +20,8 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
             get { return _Text; }
             set { this.RaiseAndSetIfChanged(ref _Text, value); }
         }
+
+        public Image Icon { get; private set; }
 
         public string ActionText { get; private set; }
         
@@ -59,6 +64,18 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
             key_gesture = new KeyGesture(key, modifier);
             var input_manager = IoC.Get<IInputManager>();
             input_manager.SetShortcut(key_gesture, this);
+            return this;
+        }
+
+        public MenuItem WithIcon(string uri)
+        {
+            Icon = new Image
+            {
+                Source = new BitmapImage(new Uri(uri, UriKind.Relative)),
+                Width = 24,
+                Height = 24
+            };
+
             return this;
         }
     }

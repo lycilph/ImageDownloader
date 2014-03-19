@@ -177,6 +177,7 @@
     <Compile Include="Core\IFlyout.cs" />
     <Compile Include="Flyouts\Settings\ViewModels\SettingsFlyoutViewModel.cs" />
     <Compile Include="Framework\Dialogs\About\Package.cs" />
+    <Compile Include="Framework\Dialogs\DialogBase.cs" />
     <Compile Include="Framework\Services\WindowManagerExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Contents\Job\ViewModels\IJob.cs" />

@@ -16,7 +16,8 @@ namespace ImageDownloader.Tools.Help
         public override void Initialize()
         {
             main_menu.All.First(m => m.Name.ToLower() == "help")
-                         .Add(new MenuItem("_Help", ShowHelp).WithGlobalShortcut(ModifierKeys.None, Key.F1));
+                         .Add(new MenuItem("_Help", ShowHelp).WithGlobalShortcut(ModifierKeys.None, Key.F1)
+                                                             .WithIcon("/Images/appbar.question.png"));
         }
 
         private void ShowHelp()

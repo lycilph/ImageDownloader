@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
@@ -13,8 +12,6 @@ namespace ImageDownloader.Framework.Dialogs.About
 {
     public partial class AboutDialog
     {
-        private Func<Task> close;
-
         public ObservableCollection<Package> Packages
         {
             get { return (ObservableCollection<Package>)GetValue(PackagesProperty); }
@@ -37,16 +34,6 @@ namespace ImageDownloader.Framework.Dialogs.About
                 var packages = nodes.OfType<XmlNode>().Select(n => new Package { Name = n.Attributes["id"].Value, Version = n.Attributes["version"].Value });
                 Packages = new ObservableCollection<Package>(packages);
             }
-        }
-
-        public void Initialize(Func<Task> close)
-        {
-            this.close = close;
-        }
-
-        private async void OkClick(object sender, RoutedEventArgs e)
-        {
-            await close();
         }
     }
 }

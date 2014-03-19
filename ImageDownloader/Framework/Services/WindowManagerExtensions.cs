@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using ImageDownloader.Framework.Dialogs;
 using ImageDownloader.Framework.Dialogs.About;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -15,8 +16,6 @@ namespace ImageDownloader.Framework.Services
             var window = Application.Current.Windows.OfType<MetroWindow>().First();
             var settings = new MetroDialogSettings { ColorScheme = MetroDialogColorScheme.Theme };
             var dialog = new AboutDialog(window, settings);
-
-            dialog.Initialize(() => window.HideMetroDialogAsync(dialog));
             return window.ShowMetroDialogAsync(dialog);
         }
     }

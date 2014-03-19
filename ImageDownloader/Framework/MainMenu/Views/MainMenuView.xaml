@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <Style x:Key="MenuItem" TargetType="{x:Type controls:MenuItemEx}" BasedOn="{StaticResource {x:Type MenuItem}}">
             <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
+            <Setter Property="Icon" Value="{Binding Icon}"/>
             <Setter Property="cal:Action.Target" Value="{Binding}" />
             <Setter Property="cal:Message.Attach" Value="{Binding ActionText}" />
         </Style>
