@@ -68,7 +68,6 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
 
         public void OpenJob()
         {
-            throw new NotImplementedException();
         }
     }
 }

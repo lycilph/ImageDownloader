@@ -35,7 +35,7 @@
 
     <metro:MetroWindow.WindowCommands>
         <metro:WindowCommands>
-            <ItemsControl x:Name="WindowCommands">
+            <ItemsControl x:Name="ShellWindowCommands">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -53,7 +53,7 @@
     </metro:MetroWindow.WindowCommands>
 
     <metro:MetroWindow.Flyouts>
-        <metro:FlyoutsControl x:Name="Flyouts">
+        <metro:FlyoutsControl x:Name="ShellFlyouts">
             <metro:FlyoutsControl.ItemContainerStyle>
                 <Style TargetType="{x:Type metro:Flyout}" BasedOn="{StaticResource {x:Type metro:Flyout}}" >
                     <Setter Property="Header" Value="{Binding DisplayName}" />

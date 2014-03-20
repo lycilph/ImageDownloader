@@ -31,24 +31,14 @@
             Gets/sets the name of the Accent.
             </summary>
         </member>
-        <member name="F:MahApps.Metro.Behaviours.BorderlessWindowBehavior.BackgroundSetPropertyKey">
+        <member name="T:MahApps.Metro.Behaviours.BorderlessWindowBehavior">
             <summary>
-            NO TOUCHY! This is a workaround for issue #897
+            With this class we can make custom window styles.
             </summary>
         </member>
         <member name="M:MahApps.Metro.Behaviours.BorderlessWindowBehavior.AdjustWorkingAreaForAutoHide(System.IntPtr,MahApps.Metro.Native.MINMAXINFO)">
             <summary>
             This method handles the window size if the taskbar is set to auto-hide.
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Behaviours.BorderlessWindowBehavior.AddBorder">
-            <summary>
-            show activated border with given brush and thickness from associated object
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Behaviours.BorderlessWindowBehavior.RemoveBorder">
-            <summary>
-            show deactivated border with thickness from associated object
             </summary>
         </member>
         <member name="M:MahApps.Metro.Behaviours.GlowWindowBehavior.Update">
@@ -714,6 +704,16 @@
             Gets/sets the brush used for the Window's glow.
             </summary>
         </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveGlowBrush">
+            <summary>
+            Gets/sets the brush used for the Window's non-active glow.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.Controls.MetroWindow.NonActiveBorderBrush">
+            <summary>
+            Gets/sets the brush used for the Window's non-active border.
+            </summary>
+        </member>
         <member name="P:MahApps.Metro.Controls.MetroWindow.WindowTitle">
             <summary>
             Gets/sets the TitleBar/Window's Text.
@@ -1307,11 +1307,41 @@
             hit testing.</param>
             <param name="point">The position to be evaluated on the origin.</param>
         </member>
+        <member name="F:Standard.IID.ApplicationAssociationRegistration">
+            <summary>IID_IApplicationAssociationRegistration</summary>
+        </member>
+        <member name="F:Standard.IID.ConnectionPoint">
+            <summary>IID_IConnectionPoint</summary>
+        </member>
+        <member name="F:Standard.IID.ConnectionPointContainer">
+            <summary>IID_IConnectionPointContainer</summary>
+        </member>
+        <member name="F:Standard.IID.EnumConnectionPoints">
+            <summary>IID_IEnumConnectionPoints</summary>
+        </member>
+        <member name="F:Standard.IID.EnumConnections">
+            <summary>IID_IEnumConnections</summary>
+        </member>
         <member name="F:Standard.IID.EnumIdList">
             <summary>IID_IEnumIDList</summary>
         </member>
         <member name="F:Standard.IID.EnumObjects">
             <summary>IID_IEnumObjects</summary>
+        </member>
+        <member name="F:Standard.IID.FileDialog">
+            <summary>IID_IFileDialog</summary>
+        </member>
+        <member name="F:Standard.IID.FileDialogEvents">
+            <summary>IID_IFileDialogEvents</summary>
+        </member>
+        <member name="F:Standard.IID.FileOpenDialog">
+            <summary>IID_IFileOpenDialog</summary>
+        </member>
+        <member name="F:Standard.IID.FileSaveDialog">
+            <summary>IID_IFileSaveDialog</summary>
+        </member>
+        <member name="F:Standard.IID.HtmlDocument">
+            <summary>IID_IHTMLDocument</summary>
         </member>
         <member name="F:Standard.IID.HtmlDocument2">
             <summary>IID_IHTMLDocument2</summary>
@@ -1358,6 +1388,39 @@
         <member name="F:Standard.IID.Unknown">
             <summary>IID_IUnknown</summary>
         </member>
+        <member name="F:Standard.IID.WebBrowser2">
+            <summary>IID_IWebBrowser2</summary>
+        </member>
+        <member name="F:Standard.IID.WebBrowserEvents">
+            <summary>DIID_DWebBrowserEvents</summary>
+        </member>
+        <member name="F:Standard.IID.WebBrowserEvents2">
+            <summary>IID_DWebBrowserEvents2</summary>
+        </member>
+        <member name="F:Standard.IID.WICBitmapDecoder">
+            <summary>IID_IWICBitmapDecoder</summary>
+        </member>
+        <member name="F:Standard.IID.WICBitmapFlipRotator">
+            <summary>IID_IWICBitmapFlipRotator</summary>
+        </member>
+        <member name="F:Standard.IID.WICBitmapFrameDecode">
+            <summary>IID_IWICBitmapFrameDecode</summary>
+        </member>
+        <member name="F:Standard.IID.WICBitmap">
+            <summary>IID_IWICBitmap</summary>
+        </member>
+        <member name="F:Standard.IID.WICBitmapSource">
+            <summary>IID_IWICBitmapSource</summary>
+        </member>
+        <member name="F:Standard.IID.WICFormatConverter">
+            <summary>IID_IWICFormatConverter</summary>
+        </member>
+        <member name="F:Standard.IID.WICImagingFactory">
+            <summary>IID_IWICImagingFactory</summary>
+        </member>
+        <member name="F:Standard.IID.WICStream">
+            <summary>IID_IWICStream</summary>
+        </member>
         <member name="F:Standard.IID.ApplicationDestinations">
             <summary>IID_IApplicationDestinations</summary>
         </member>
@@ -1379,6 +1442,24 @@
         <member name="F:Standard.IID.TaskbarList4">
             <summary>IID_ITaskbarList4</summary>
         </member>
+        <member name="F:Standard.SID.SWebBrowserApp">
+            <summary>SID_SWebBrowserApp</summary>
+        </member>
+        <member name="F:Standard.CLSID.ApplicationAssociationRegistration">
+            <summary>CLSID_ApplicationAssociationRegistration</summary>
+            <remarks>IID_IApplicationAssociationRegistration</remarks>
+        </member>
+        <member name="F:Standard.CLSID.DragDropHelper">
+            <summary>CLSID_DragDropHelper</summary>
+        </member>
+        <member name="F:Standard.CLSID.FileOpenDialog">
+            <summary>CLSID_FileOpenDialog</summary>
+            <remarks>IID_IFileOpenDialog</remarks>
+        </member>
+        <member name="F:Standard.CLSID.FileSaveDialog">
+            <summary>CLSID_FileSaveDialog</summary>
+            <remarks>IID_IFileSaveDialog</remarks>
+        </member>
         <member name="F:Standard.CLSID.TaskbarList">
             <summary>CLSID_TaskbarList</summary>
             <remarks>IID_ITaskbarList</remarks>
@@ -1390,6 +1471,9 @@
         <member name="F:Standard.CLSID.ShellLink">
             <summary>CLSID_ShellLink</summary>
             <remarks>IID_IShellLink</remarks>
+        </member>
+        <member name="F:Standard.CLSID.WICImagingFactory">
+            <summary>CLSID_WICImagingFactory</summary>
         </member>
         <member name="F:Standard.CLSID.DestinationList">
             <summary>CLSID_DestinationList</summary>
@@ -1584,7 +1668,7 @@
             <param name="value2">The second double to compare.</param>
             <returns>The result of the AreClose comparision.</returns>
         </member>
-        <member name="M:Standard.DoubleUtilities.LessThan(System.Double,System.Double)">
+        <member name="M:Standard.DoubleUtilities.IsStrictlyLessThan(System.Double,System.Double)">
             <summary>
             LessThan returns whether or not the first double is less than the second double.
             That is, whether or not the first is strictly less than *and* not within epsilon of
@@ -1597,7 +1681,7 @@
             <param name="value2">The second double to compare.</param>
             <returns>The result of the LessThan comparision.</returns>
         </member>
-        <member name="M:Standard.DoubleUtilities.GreaterThan(System.Double,System.Double)">
+        <member name="M:Standard.DoubleUtilities.IsStrictlyGreaterThan(System.Double,System.Double)">
             <summary>
             GreaterThan returns whether or not the first double is greater than the second double.
             That is, whether or not the first is strictly greater than *and* not within epsilon of
@@ -1610,7 +1694,7 @@
             <param name="value2">The second double to compare.</param>
             <returns>The result of the GreaterThan comparision.</returns>
         </member>
-        <member name="M:Standard.DoubleUtilities.LessThanOrClose(System.Double,System.Double)">
+        <member name="M:Standard.DoubleUtilities.IsLessThanOrCloseTo(System.Double,System.Double)">
             <summary>
             LessThanOrClose returns whether or not the first double is less than or close to
             the second double.  That is, whether or not the first is strictly less than or within
@@ -1623,7 +1707,7 @@
             <param name="value2">The second double to compare.</param>
             <returns>The result of the LessThanOrClose comparision.</returns>
         </member>
-        <member name="M:Standard.DoubleUtilities.GreaterThanOrClose(System.Double,System.Double)">
+        <member name="M:Standard.DoubleUtilities.IsGreaterThanOrCloseTo(System.Double,System.Double)">
             <summary>
             GreaterThanOrClose returns whether or not the first double is greater than or close to
             the second double.  That is, whether or not the first is strictly greater than or within
@@ -1661,7 +1745,7 @@
             <summary>
             Convert a point in system coordinates to a point in device independent pixels (1/96").
             </summary>
-            <param name="devicePoint">A point in the physical coordinate system.</param>
+            <param name="logicalPoint">A point in the physical coordinate system.</param>
             <returns>Returns the parameter converted to the device independent coordinate system.</returns>
         </member>
         <member name="T:Standard.Win32Error">
@@ -1723,6 +1807,9 @@
         <member name="F:Standard.Win32Error.ERROR_CANCELLED">
             <summary>The operation was canceled by the user.</summary>
         </member>
+        <member name="F:Standard.Win32Error.ERROR_CANNOT_FIND_WND_CLASS">
+            <summary>Cannot find window class.</summary>
+        </member>
         <member name="F:Standard.Win32Error.ERROR_CLASS_ALREADY_EXISTS">
             <summary>The window class was already registered.</summary>
         </member>
@@ -1742,6 +1829,7 @@
         </member>
         <member name="M:Standard.Win32Error.ToHRESULT">
             <summary>Performs HRESULT_FROM_WIN32 conversion.</summary>
+            <param name="error">The Win32 error being converted to an HRESULT.</param>
             <returns>The equivilent HRESULT value.</returns>
         </member>
         <member name="M:Standard.Win32Error.GetLastError">
@@ -1872,6 +1960,11 @@
             </summary>
             <param name="i"></param>
         </member>
+        <member name="M:Standard.HRESULT.op_Explicit(Standard.HRESULT)~System.Int32">
+            <summary>
+            Convert an HRESULT to an int.  Used for COM interface declarations out of our control.
+            </summary>
+        </member>
         <member name="M:Standard.HRESULT.ToString">
             <summary>
             Get a string representation of this HRESULT.
@@ -1896,6 +1989,11 @@
         <member name="T:Standard.HCF">
             <summary>
             HIGHCONTRAST flags
+            </summary>
+        </member>
+        <member name="T:Standard.DROPIMAGETYPE">
+            <summary>
+            DROPIMAGE_*
             </summary>
         </member>
         <member name="T:Standard.BI">
@@ -2236,9 +2334,6 @@
         <member name="T:Standard.WndProc">
             <summary>Delegate declaration that matches native WndProc signatures.</summary>
         </member>
-        <member name="T:Standard.WndProcHook">
-            <summary>Delegate declaration that matches native WndProc signatures.</summary>
-        </member>
         <member name="T:Standard.MessageHandler">
             <summary>Delegate declaration that matches managed WndProc signatures.</summary>
         </member>
@@ -2280,6 +2375,24 @@
             Retrieves the User Model AppID that has been explicitly set for the current process via SetCurrentProcessExplicitAppUserModelID
             </summary>
             <param name="AppID"></param>
+        </member>
+        <member name="T:Standard.AL">
+            <summary>ASSOCIATIONLEVEL, AL_*</summary>
+        </member>
+        <member name="T:Standard.AT">
+            <summary>ASSOCIATIONTYPE, AT_*</summary>
+        </member>
+        <member name="T:Standard.FDAP">
+            <summary>FileDialog AddPlace options.  FDAP_*</summary>
+        </member>
+        <member name="T:Standard.FOS">
+            <summary>IFileDialog options.  FOS_*</summary>
+        </member>
+        <member name="T:Standard.FDEOR">
+            <summary>FDE_OVERWRITE_RESPONSE.  FDEOR_*</summary>
+        </member>
+        <member name="T:Standard.FDESVR">
+            <summary>FDE_SHAREVIOLATION_RESPONSE.  FDESVR_*</summary>
         </member>
         <member name="T:Standard.SIATTRIBFLAGS">
             <summary>ShellItem attribute flags.  SIATTRIBFLAGS_*</summary>
@@ -2586,9 +2699,7 @@
             Retrieve an IEnumObjects or IObjectArray for IShellItems and/or IShellLinks. 
             Items may appear in both the frequent and recent lists.  
             </summary>
-            <param name="cItemsDesired"></param>
-            <param name="listtype"></param>
-            <param name="riid"></param>
+            <param name="?"></param>
             <returns></returns>
         </member>
         <member name="T:Standard.IObjectWithAppUserModelId">
@@ -2600,6 +2711,28 @@
             <summary>
             Provides access to the ProgID associated with an object 
             </summary>
+        </member>
+        <member name="T:Standard.ComStream">
+            <summary>
+            Wraps an IStream interface pointer from COM into a form consumable by .Net.
+            </summary>
+            <remarks>
+            This implementation is immutable, though it's possible that the underlying
+            stream can be changed in another context.
+            </remarks>
+        </member>
+        <member name="M:Standard.ComStream.#ctor(System.Runtime.InteropServices.ComTypes.IStream@)">
+            <summary>
+            Wraps a native IStream interface into a CLR Stream subclass.
+            </summary>
+            <param name="stream">
+            The stream that this object wraps.
+            </param>
+            <remarks>
+            Note that the parameter is passed by ref.  On successful creation it is
+            zeroed out to the caller.  This object becomes responsible for the lifetime
+            management of the wrapped IStream.
+            </remarks>
         </member>
         <member name="T:Standard.ManagedIStream">
             <summary>
@@ -2789,20 +2922,14 @@
             after it has been disposed will generally throw ObjectDisposedExceptions.
             </remarks>
         </member>
-        <member name="M:Standard.Utility.RGB(System.Windows.Media.Color)">
-            <summary>The native RGB macro.</summary>
-            <param name="c"></param>
+        <member name="M:Standard.Utility.SafeCopyFile(System.String,System.String,Standard.SafeCopyFileOptions)">
+            <summary>
+            Wrapper around File.Copy to provide feedback as to whether the file wasn't copied because it didn't exist.
+            </summary>
+            <param name="cachePath"></param>
+            <param name="suggestedPath"></param>
+            <param name="overwrite"></param>
             <returns></returns>
-        </member>
-        <member name="M:Standard.Utility.ColorFromArgbDword(System.UInt32)">
-            <summary>Convert a native integer that represent a color with an alpha channel into a Color struct.</summary>
-            <param name="color">The integer that represents the color.  Its bits are of the format 0xAARRGGBB.</param>
-            <returns>A Color representation of the parameter.</returns>
-        </member>
-        <member name="M:Standard.Utility._GetBestMatch(System.Collections.Generic.IList{System.Windows.Media.Imaging.BitmapFrame},System.Int32,System.Int32,System.Int32)">
-            From a list of BitmapFrames find the one that best matches the requested dimensions.
-            The methods used here are copied from Win32 sources.  We want to be consistent with
-            system behaviors.
         </member>
         <member name="M:Standard.Utility.SafeDeleteFile(System.String)">
             <summary>
@@ -2813,13 +2940,6 @@
             Note that File.Delete, and by extension SafeDeleteFile, does not throw an exception
             if the file does not exist.
             </remarks>
-        </member>
-        <member name="M:Standard.Utility.SafeDeleteObject(System.IntPtr@)">
-            <summary>GDI's DeleteObject</summary>
-        </member>
-        <member name="M:Standard.Utility.SafeDisposeImage(System.IntPtr@)">
-            <summary>GDI+'s DisposeImage</summary>
-            <param name="gdipImage"></param>
         </member>
         <member name="M:Standard.Utility.GeneratePropertyString(System.Text.StringBuilder,System.String,System.String)">
             <summary>
@@ -2854,14 +2974,22 @@
             This implementation does not treat '~' as a safe character to be consistent with the System.Web version.
             </remarks>
         </member>
-        <member name="P:Standard.Utility.IsPresentationFrameworkVersionLessThan4">
-            <summary>
-            Is this using WPF4?
-            </summary>
-            <remarks>
-            There are a few specific bugs in Window in 3.5SP1 and below that require workarounds
-            when handling WM_NCCALCSIZE on the HWND.
-            </remarks>
+        <member name="M:Standard.Utility.SafeDeleteObject(System.IntPtr@)">
+            <summary>GDI's DeleteObject</summary>
+        </member>
+        <member name="M:Standard.Utility.SafeDisposeImage(System.IntPtr@)">
+            <summary>GDI+'s DisposeImage</summary>
+            <param name="gdipImage"></param>
+        </member>
+        <member name="M:Standard.Utility._GetBestMatch(System.Collections.Generic.IList{System.Windows.Media.Imaging.BitmapFrame},System.Int32,System.Int32,System.Int32)">
+            From a list of BitmapFrames find the one that best matches the requested dimensions.
+            The methods used here are copied from Win32 sources.  We want to be consistent with
+            system behaviors.
+        </member>
+        <member name="M:Standard.Utility.ColorFromArgbDword(System.UInt32)">
+            <summary>Convert a native integer that represent a color with an alpha channel into a Color struct.</summary>
+            <param name="color">The integer that represents the color.  Its bits are of the format 0xAARRGGBB.</param>
+            <returns>A Color representation of the parameter.</returns>
         </member>
         <member name="T:Standard.Verify">
             <summary>
@@ -2915,13 +3043,6 @@
             <param name="obj">The object to validate.</param>
             <param name="name">The name of the parameter that will be presented if an exception is thrown.</param>
         </member>
-        <member name="M:Standard.Verify.IsTrue(System.Boolean,System.String)">
-            <summary>
-            Verifies the specified statement is true.  Throws an ArgumentException if it's not.
-            </summary>
-            <param name="statement">The statement to be verified as true.</param>
-            <param name="name">Name of the parameter to include in the ArgumentException.</param>
-        </member>
         <member name="M:Standard.Verify.IsTrue(System.Boolean,System.String,System.String)">
             <summary>
             Verifies the specified statement is true.  Throws an ArgumentException if it's not.
@@ -2937,11 +3058,9 @@
             <param name="lowerBoundInclusive">The lower bound inclusive value.</param>
             <param name="value">The value to verify.</param>
             <param name="upperBoundExclusive">The upper bound exclusive value.</param>
-            <param name="parameterName">The paramater name value.</param>
         </member>
         <member name="M:Microsoft.Windows.Shell.SystemCommands.ShowSystemMenu(System.Windows.Window,System.Windows.Point)">
             <summary>Display the system menu at a specified location.</summary>
-            <param name="window">The window to display the menu on.</param>
             <param name="screenLocation">The location to display the system menu, in logical screen coordinates.</param>
         </member>
         <member name="M:Microsoft.Windows.Shell.SystemParameters2.#ctor">
@@ -2993,6 +3112,15 @@
             <summary>
             Matrix of the HT values to return when responding to NC window messages.
             </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Shell.WindowChromeWorker._IsPresentationFrameworkVersionLessThan4">
+            <summary>
+            Is this using WPF4?
+            </summary>
+            <remarks>
+            There are a few specific bugs in Window in 3.5SP1 and below that require workarounds
+            when handling WM_NCCALCSIZE on the HWND.
+            </remarks>
         </member>
         <member name="T:MahApps.Metro.Models.Win32.WM">
             <summary>

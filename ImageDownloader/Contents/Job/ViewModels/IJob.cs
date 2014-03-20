@@ -1,4 +1,10 @@
-﻿namespace ImageDownloader.Contents.Job.ViewModels
+﻿using ImageDownloader.Core;
+using ImageDownloader.Model;
+
+namespace ImageDownloader.Contents.Job.ViewModels
 {
-    public interface IJob { }
+    public interface IJob : IContent
+    {
+        JobModel Model { get; set; }
+    }
 }

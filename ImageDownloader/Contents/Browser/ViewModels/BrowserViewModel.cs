@@ -5,9 +5,9 @@ using System.ComponentModel.Composition;
 
 namespace ImageDownloader.Contents.Browser.ViewModels
 {
-    [Export(typeof(IContent))]
+    [Export(typeof(IBrowser))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class BrowserViewModel : Content
+    public class BrowserViewModel : Content, IBrowser
     {
         private string home_url = "http://www.google.com";
         private string help_url = "help://help.html";

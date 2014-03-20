@@ -69,9 +69,12 @@
     <Reference Include="CefSharp.Wpf">
       <HintPath>..\packages\CefSharp.Wpf.1.25.7\lib\net40\CefSharp.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=0.12.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.0.13.0.65-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.13.0.71-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -113,7 +116,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.13.0.65-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.0.13.0.71-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -147,6 +150,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Contents\Browser\BrowserModule.cs" />
+    <Compile Include="Contents\Browser\ViewModels\IBrowser.cs" />
     <Compile Include="Core\Content.cs" />
     <Compile Include="Core\IContent.cs" />
     <Compile Include="Core\ILayoutItem.cs" />
@@ -199,6 +204,13 @@
     <Compile Include="Contents\Job\Views\JobView.xaml.cs">
       <DependentUpon>JobView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Cache.cs" />
+    <Compile Include="Model\ICache.cs" />
+    <Compile Include="Model\JobModel.cs" />
+    <Compile Include="Model\SiteAnalyzer.cs" />
+    <Compile Include="Model\SiteBase.cs" />
+    <Compile Include="Model\SiteCrawler.cs" />
+    <Compile Include="Model\SiteLoader.cs" />
     <Compile Include="Tools\Help\HelpModule.cs" />
     <Compile Include="Tools\Help\Utils\SchemeHandler.cs" />
     <Compile Include="Tools\Help\Utils\SchemeHandlerFactory.cs" />
@@ -376,7 +388,6 @@
   <ItemGroup>
     <Folder Include="Contents\Host\ViewModels\" />
     <Folder Include="Contents\Host\Views\" />
-    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.refresh.png" />

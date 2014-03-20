@@ -18,7 +18,7 @@
                         Style="{StaticResource ImageButtonStyle}">
                     <Image Source="..\..\..\Images\appbar.browser.png"/>
                 </Button>
-                <TextBox x:Name="Site"
+                <TextBox x:Name="Model_Website"
                          metro:TextboxHelper.Watermark="Website"
                          metro:TextboxHelper.ClearTextButton="True"/>
             </DockPanel>

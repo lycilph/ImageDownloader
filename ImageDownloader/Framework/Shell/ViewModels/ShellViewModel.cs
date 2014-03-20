@@ -1,11 +1,13 @@
 using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using Core;
+using ImageDownloader.Contents.Browser.ViewModels;
 using ImageDownloader.Contents.Job.ViewModels;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
 using ImageDownloader.Framework.MainMenu.ViewModels;
 using ImageDownloader.Framework.Shell.Views;
+using ImageDownloader.Model;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -34,18 +36,18 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Content, value); }
         }
 
-        private ReactiveList<IWindowCommand> _WindowCommands;
-        public ReactiveList<IWindowCommand> WindowCommands
+        private ReactiveList<IWindowCommand> _ShellWindowCommands;
+        public ReactiveList<IWindowCommand> ShellWindowCommands
         {
-            get { return _WindowCommands; }
-            set { this.RaiseAndSetIfChanged(ref _WindowCommands, value); }
+            get { return _ShellWindowCommands; }
+            set { this.RaiseAndSetIfChanged(ref _ShellWindowCommands, value); }
         }
 
-        private ReactiveList<IFlyout> _Flyouts;
-        public ReactiveList<IFlyout> Flyouts
+        private ReactiveList<IFlyout> _ShellFlyouts;
+        public ReactiveList<IFlyout> ShellFlyouts
         {
-            get { return _Flyouts; }
-            set { this.RaiseAndSetIfChanged(ref _Flyouts, value); }
+            get { return _ShellFlyouts; }
+            set { this.RaiseAndSetIfChanged(ref _ShellFlyouts, value); }
         }
 
         private IMenu _MainMenu;
@@ -74,9 +76,9 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             this.modules = new List<IModule>(sorted_modules);
 
             var sorted_commands = commands.OrderBy(c => c.Metadata.Order).Select(c => c.Value);
-            WindowCommands = new ReactiveList<IWindowCommand>(sorted_commands);
+            ShellWindowCommands = new ReactiveList<IWindowCommand>(sorted_commands);
 
-            Flyouts = new ReactiveList<IFlyout>(flyouts);
+            ShellFlyouts = new ReactiveList<IFlyout>(flyouts);
 
             this.event_aggregator = event_aggregator;
             event_aggregator.Subscribe(this);
@@ -114,17 +116,25 @@ namespace ImageDownloader.Framework.Shell.ViewModels
 
         private void ToggleFlyout(Type flyout_type)
         {
-            var flyout = Flyouts.FirstOrDefault(t => flyout_type.IsAssignableFrom(t.GetType()));
+            var flyout = ShellFlyouts.FirstOrDefault(t => flyout_type.IsAssignableFrom(t.GetType()));
             if (flyout != null)
                 flyout.Toggle();
         }
 
         private void NewJob()
         {
-            var job = IoC.Get<IJob>() as IContent;
-            Content.Add(job);
+            var job = IoC.Get<IJob>();
+            job.Model = new JobModel { Website = @"file:///C:/Private/GitHub/ImageDownloader/TestSite/index.html" };
 
+            Content.Add(job);
             ActivateItem(job);
+        }
+
+        private void NewBrowser()
+        {
+            var browser = IoC.Get<IBrowser>();
+            Content.Add(browser);
+            ActivateItem(browser);
         }
 
         private void Close(IContent content)
@@ -170,6 +180,9 @@ namespace ImageDownloader.Framework.Shell.ViewModels
                     break;
                 case ShellMessage.MessageTypes.NewJob:
                     NewJob();
+                    break;
+                case ShellMessage.MessageTypes.NewBrowser:
+                    NewBrowser();
                     break;
                 case ShellMessage.MessageTypes.CloseContent:
                     Close(message.Content);
