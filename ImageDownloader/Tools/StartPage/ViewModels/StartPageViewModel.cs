@@ -1,12 +1,14 @@
 ﻿using Caliburn.Micro;
+using HtmlAgilityPack;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
-using System;
-using System.Linq;
-using System.ComponentModel.Composition;
-using System.ServiceModel.Syndication;
-using System.Xml;
 using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Net;
+using System.Reactive.Linq;
 
 namespace ImageDownloader.Tools.StartPage.ViewModels
 {
@@ -31,11 +33,18 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
             get { return false; }
         }
 
-        private ReactiveList<RssItemViewModel> _RssItems;
-        public ReactiveList<RssItemViewModel> RssItems
+        private ReactiveList<FeedViewModel> _Feeds;
+        public ReactiveList<FeedViewModel> Feeds
         {
-            get { return _RssItems; }
-            set { this.RaiseAndSetIfChanged(ref _RssItems, value); }
+            get { return _Feeds; }
+            set { this.RaiseAndSetIfChanged(ref _Feeds, value); }
+        }
+
+        private FeedViewModel _CurrentFeed;
+        public FeedViewModel CurrentFeed
+        {
+            get { return _CurrentFeed; }
+            set { this.RaiseAndSetIfChanged(ref _CurrentFeed, value); }
         }
 
         [ImportingConstructor]
@@ -51,13 +60,30 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
         {
             base.OnInitialize();
 
-            SyndicationFeed feed = null;
-            using (var reader = XmlReader.Create("http://rss.cnn.com/rss/edition.rss"))
+            this.WhenAnyValue(x => x.CurrentFeed)
+                .Where(x => x != null)
+                .Subscribe(x => x.Load());
+
+            Feeds = new ReactiveList<FeedViewModel>(GetRssFeeds());
+            CurrentFeed = Feeds.First();
+        }
+
+        private IEnumerable<FeedViewModel> GetRssFeeds()
+        {
+            var page = string.Empty;
+            using (var client = new WebClient())
             {
-                feed = SyndicationFeed.Load(reader);
+                page = client.DownloadString(@"http://edition.cnn.com/services/rss/");
             }
 
-            RssItems = new ReactiveList<RssItemViewModel>(feed.Items.Take(10).Select(i => new RssItemViewModel(i.Title.Text, i.Summary.Text)));
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(page);
+
+            var nodes = doc.DocumentNode.SelectNodes(@"//link[@href and @type='application/rss+xml']");
+            if (nodes == null)
+                return new List<FeedViewModel>();
+
+            return new List<FeedViewModel>(nodes.Select(n => new FeedViewModel(n.Attributes["title"].Value, n.Attributes["href"].Value)));
         }
 
         public void NewJob()
@@ -68,6 +94,11 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
 
         public void OpenJob()
         {
+        }
+
+        public void SelectFeed(FeedViewModel feed)
+        {
+            CurrentFeed = feed;
         }
     }
 }

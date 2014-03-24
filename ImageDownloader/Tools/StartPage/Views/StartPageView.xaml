@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:avalondock="http://schemas.xceed.com/wpf/xaml/avalondock"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -26,9 +29,36 @@
                 <TextBlock Text="Recent" Margin="0,20"/>
             </StackPanel>
         </Border>
-        
-        <ScrollViewer Grid.Column="1" Margin="50,20">
-            <ItemsControl x:Name="RssItems" Margin="0,0,10,0"/>
-        </ScrollViewer>
+
+        <DockPanel Grid.Column="1" Margin="50,20">
+            <DockPanel DockPanel.Dock="Top">
+                <avalondock:DropDownButton DockPanel.Dock="Right"
+                                           Focusable="False"
+                                           Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}"
+                                           DropDownContextMenuDataContext="{Binding}"
+                                           Tag="{Binding}">
+                    <avalondock:DropDownButton.DropDownContextMenu>
+                        <ContextMenu ItemsSource="{Binding Feeds}" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <ContextMenu.ItemContainerStyle>
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                    <Setter Property="Header" Value="{Binding Title}"/>
+                                    <Setter Property="cal:Message.Attach" Value="SelectFeed($dataContext)"/>
+                                </Style>
+                            </ContextMenu.ItemContainerStyle>
+                        </ContextMenu>
+                    </avalondock:DropDownButton.DropDownContextMenu>
+                    <Image Source="..\..\..\Images\Menu.png" Stretch="None"/>
+                </avalondock:DropDownButton>
+                
+                <TextBlock x:Name="CurrentFeed_Title"
+                           ToolTip="{Binding CurrentFeed.Description}"
+                           FontSize="{StaticResource HeaderFontSize}"/>
+            </DockPanel>
+            <Separator DockPanel.Dock="Top"/>
+            
+            <ScrollViewer Margin="0,10,0,0">
+                <ItemsControl x:Name="CurrentFeed_Items" Margin="0,0,10,0"/>
+            </ScrollViewer>
+        </DockPanel>
     </Grid>
 </UserControl>
