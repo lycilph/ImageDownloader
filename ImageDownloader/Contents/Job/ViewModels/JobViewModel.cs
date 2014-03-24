@@ -61,6 +61,13 @@ namespace ImageDownloader.Contents.Job.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Model, value); }
         }
 
+        private bool _IsHosted = false;
+        public bool IsHosted
+        {
+            get { return _IsHosted; }
+            set { this.RaiseAndSetIfChanged(ref _IsHosted, value); }
+        }
+
         private ObservableAsPropertyHelper<bool> _CanGoBack;
         public bool CanGoBack
         {
@@ -82,6 +89,9 @@ namespace ImageDownloader.Contents.Job.ViewModels
 
             this.WhenAnyValue(x => x.Model)
                 .Subscribe(x => Steps.Apply(s => s.Model = x));
+
+            this.WhenAnyValue(x => x.IsHosted)
+                .Subscribe(x => Steps.Apply(s => s.IsHosted = x));
 
             var previous_step = this.WhenAny(x => x.PreviousStep, x => x.Value != null);
             var previous_step_enabled = this.WhenAnyDynamic(new string[] { "PreviousStep", "IsEnabled" }, x => x.Value != null && (bool)x.Value);

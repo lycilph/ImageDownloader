@@ -20,6 +20,13 @@ namespace ImageDownloader.Contents.Job.ViewModels
             set { this.RaiseAndSetIfChanged(ref _IsEnabled, value); }
         }
 
+        private bool _IsHosted = false;
+        public bool IsHosted
+        {
+            get { return _IsHosted; }
+            set { this.RaiseAndSetIfChanged(ref _IsHosted, value); }
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();

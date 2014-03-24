@@ -3,7 +3,7 @@ namespace ImageDownloader.Core.Messages
 {
     public class ShellMessage
     {
-        public enum MessageTypes { SaveLayout, Exit, ToggleTool, ToggleFlyout, NewJob, NewBrowser, CloseContent, CloseCurrent };
+        public enum MessageTypes { SaveLayout, Exit, ToggleTool, ToggleFlyout, NewJob, NewBrowser, CloseContent, CloseCurrent, CloseAll };
 
         public MessageTypes MessageType  { get; set; }
         public Type PayloadType { get; set; }
@@ -37,6 +37,11 @@ namespace ImageDownloader.Core.Messages
         public static ShellMessage CloseCurrent
         {
             get { return new ShellMessage(MessageTypes.CloseCurrent); }
+        }
+
+        public static ShellMessage CloseAll
+        {
+            get { return new ShellMessage(MessageTypes.CloseAll); }
         }
 
         public static ShellMessage Exit

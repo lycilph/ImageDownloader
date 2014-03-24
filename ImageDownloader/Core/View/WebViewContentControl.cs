@@ -112,6 +112,9 @@ namespace ImageDownloader.Core.View
         {
             switch (e.PropertyName)
             {
+                case "IsBrowserInitialized":
+                    Dispatcher.Invoke(() => internal_web_view.Load(Address));
+                    break;
                 case "IsLoading":
                     Dispatcher.Invoke(() =>
                     { 

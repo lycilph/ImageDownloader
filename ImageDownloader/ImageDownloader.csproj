@@ -97,6 +97,8 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -152,6 +154,11 @@
     </ApplicationDefinition>
     <Compile Include="Contents\Browser\BrowserModule.cs" />
     <Compile Include="Contents\Browser\ViewModels\IBrowser.cs" />
+    <Compile Include="Contents\Host\ViewModels\HostViewModel.cs" />
+    <Compile Include="Contents\Host\ViewModels\IHost.cs" />
+    <Compile Include="Contents\Host\Views\HostView.xaml.cs">
+      <DependentUpon>HostView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Core\Content.cs" />
     <Compile Include="Core\IContent.cs" />
     <Compile Include="Core\ILayoutItem.cs" />
@@ -165,6 +172,8 @@
     <Compile Include="Core\PaneLocation.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="Core\Tool.cs" />
+    <Compile Include="Core\Utils\StringExtensions.cs" />
+    <Compile Include="Core\View\TextBoxExtension.cs" />
     <Compile Include="Flyouts\Settings\SettingsModule.cs" />
     <Compile Include="Flyouts\Settings\SettingsWindowCommand.cs" />
     <Compile Include="Flyouts\Settings\ViewModels\ISettings.cs" />
@@ -266,6 +275,10 @@
     <Compile Include="Tools\StartPage\Views\StartPageView.xaml.cs">
       <DependentUpon>StartPageView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Contents\Host\Views\HostView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Core\Resources\ButtonStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -386,8 +399,8 @@
     <EmbeddedResource Include="Core\Resources\theme.css" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Contents\Host\ViewModels\" />
-    <Folder Include="Contents\Host\Views\" />
+    <Resource Include="Images\appbar.check.png" />
+    <Resource Include="Images\appbar.close.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\appbar.refresh.png" />

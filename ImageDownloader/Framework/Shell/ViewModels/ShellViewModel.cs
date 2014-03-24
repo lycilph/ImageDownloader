@@ -2,6 +2,7 @@ using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using Core;
 using ImageDownloader.Contents.Browser.ViewModels;
+using ImageDownloader.Contents.Host.ViewModels;
 using ImageDownloader.Contents.Job.ViewModels;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
@@ -123,11 +124,10 @@ namespace ImageDownloader.Framework.Shell.ViewModels
 
         private void NewJob()
         {
-            var job = IoC.Get<IJob>();
-            job.Model = new JobModel { Website = @"file:///C:/Private/GitHub/ImageDownloader/TestSite/index.html" };
+            var host = IoC.Get<IHost>();
 
-            Content.Add(job);
-            ActivateItem(job);
+            Content.Add(host);
+            ActivateItem(host);
         }
 
         private void NewBrowser()
@@ -143,18 +143,27 @@ namespace ImageDownloader.Framework.Shell.ViewModels
             DeactivateItem(content, true);
         }
 
+        private void Close(ITool tool)
+        {
+            tool.IsVisible = false;
+            DeactivateItem(tool, false);
+        }
+
         private void CloseCurrent()
         {
             if (ActiveItem is ITool)
-            {
-                var tool = ActiveItem as ITool;
-                tool.IsVisible = false;
-                DeactivateItem(tool, false);
-            }
+                Close(ActiveItem as ITool);
             else
-            {
                 Close(ActiveItem as IContent);
-            }
+        }
+
+        private void CloseAll()
+        {
+            var content_to_close = new List<IContent>(Content);
+            content_to_close.Apply(c => Close(c));
+
+            var tools_to_close = new List<ITool>(Tools);
+            tools_to_close.Apply(t => Close(t));
         }
 
         private void Exit()
@@ -189,6 +198,9 @@ namespace ImageDownloader.Framework.Shell.ViewModels
                     break;
                 case ShellMessage.MessageTypes.CloseCurrent:
                     CloseCurrent();
+                    break;
+                case ShellMessage.MessageTypes.CloseAll:
+                    CloseAll();
                     break;
                 case ShellMessage.MessageTypes.ToggleTool:
                     ToggleTool(message.PayloadType);

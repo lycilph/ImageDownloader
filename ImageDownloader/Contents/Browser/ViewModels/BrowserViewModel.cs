@@ -19,6 +19,13 @@ namespace ImageDownloader.Contents.Browser.ViewModels
             set { this.RaiseAndSetIfChanged(ref _Address, value); }
         }
 
+        private bool _IsHosted = false;
+        public bool IsHosted
+        {
+            get { return _IsHosted; }
+            set { this.RaiseAndSetIfChanged(ref _IsHosted, value); }
+        }
+
         [ImportingConstructor]
         public BrowserViewModel(IEventAggregator event_aggregator) : base(event_aggregator)
         {

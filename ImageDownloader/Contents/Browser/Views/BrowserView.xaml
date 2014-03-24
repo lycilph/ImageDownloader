@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:view="clr-namespace:ImageDownloader.Core.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <view:BooleanToVisibilityConverter x:Key="visibility_converter" Collapse="false"/>
+        <view:BooleanToVisibilityConverter x:Key="visibility_collapse_converter"/>
     </UserControl.Resources>
     
     <DockPanel>
@@ -46,7 +48,23 @@
                     Style="{StaticResource ChromelessButtonStyle}">
                 <Image Source="..\..\..\Images\appbar.question.png"/>
             </Button>
-            <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, Delay=1000}"/>
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Right"
+                        Visibility="{Binding IsHosted, Converter={StaticResource visibility_collapse_converter}}">
+                <Button cal:Message.Attach="CloseBrowser('true')"
+                        ToolTip="Select current address and return to job page"
+                        Height="30"
+                        Style="{StaticResource ChromelessButtonStyle}">
+                    <Image Source="..\..\..\Images\appbar.check.png"/>
+                </Button>
+                <Button cal:Message.Attach="CloseBrowser('false')"
+                        ToolTip="Discard address and return to job page"
+                        Height="30"
+                        Style="{StaticResource ChromelessButtonStyle}">
+                    <Image Source="..\..\..\Images\appbar.close.png"/>
+                </Button>
+            </StackPanel>
+            <TextBox Text="{Binding Address, UpdateSourceTrigger=Explicit}" view:TextBoxExtension.UpdateOnEnter="TextBox.Text"/>
         </DockPanel>
         <metro:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True" Visibility="{Binding ElementName=web_view, Path=IsLoading, Converter={StaticResource visibility_converter}}"/>
 

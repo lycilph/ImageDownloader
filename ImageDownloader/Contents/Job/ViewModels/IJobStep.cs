@@ -7,5 +7,6 @@ namespace ImageDownloader.Contents.Job.ViewModels
     {
         JobModel Model { get; set; }
         bool IsEnabled { get; set; }
+        bool IsHosted { get; set; }
     }
 }

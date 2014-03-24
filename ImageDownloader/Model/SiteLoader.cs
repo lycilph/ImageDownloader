@@ -20,34 +20,24 @@ namespace ImageDownloader.Model
 
             foreach (var url in urls)
             {
-                using (var client = new WebClient())
+                BitmapImage image;
+                var state = cache.TryGetImage(url, out image);
+
+                if (state)
                 {
-                    var data = client.DownloadData(url);
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.StreamSource = new MemoryStream(data);
-                    image.EndInit();
-
-                    var fullpath = Path.Combine(dir, GetFilename(url));
-                    Directory.CreateDirectory(Path.GetDirectoryName(fullpath));
-
-                    using (var stream = new FileStream(fullpath, FileMode.Create))
-                    {
-                        stream.Write(data, 0, data.Length);
-                    }
-
-                    progress.Report(string.Format("{0} ({1}, {2}) - {3}", url, image.PixelWidth, image.PixelHeight, fullpath));
+                    if (image != null)
+                        progress.Report(url);
                 }
-            }
-        }
+                else
+                {
+                    if (image.PixelWidth >= 50 && image.PixelHeight >= 50)
+                        cache.SaveImage(url);
+                    else
+                        cache.DiscardImage(url);
+                }
 
-        private string GetFilename(string url)
-        {
-            var uri = new Uri(url);
-            var segments = uri.Segments.Select(s => s.Trim(Path.GetInvalidFileNameChars()))
-                                       .Where(s => !string.IsNullOrWhiteSpace(s))
-                                       .ToArray();
-            return Path.Combine(segments);
+                System.Threading.Thread.Sleep(1500);
+            }
         }
     }
 }

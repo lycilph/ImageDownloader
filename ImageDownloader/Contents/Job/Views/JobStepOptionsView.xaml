@@ -4,17 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:core="clr-namespace:ImageDownloader.Core.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <core:BooleanToVisibilityConverter x:Key="visibility_converter"/>
+    </UserControl.Resources>
+    
     <ScrollViewer>
         <StackPanel Margin="0,0,10,0">
             <TextBlock Text="Website" FontSize="{StaticResource HeaderFontSize}"/>
             <DockPanel Margin="0,10">
                 <Button DockPanel.Dock="Right"
-                        x:Name="OpenBrowser"
-                        ToolTip="Opens the webbrowser"
+                        cal:Message.Attach="OpenBrowser"
+                        ToolTip="Opens a webbrowser"
                         Height="{StaticResource SmallImageButtonSize}"
                         Margin="10,0,0,0"
+                        Visibility="{Binding IsHosted, Converter={StaticResource visibility_converter}}"
                         Style="{StaticResource ImageButtonStyle}">
                     <Image Source="..\..\..\Images\appbar.browser.png"/>
                 </Button>

@@ -29,8 +29,10 @@ namespace ImageDownloader.Model
 
                 // Check for cancellation
 
-                System.Threading.Thread.Sleep(750);
+                System.Threading.Thread.Sleep(1000);
             }
+
+            output.CompleteAdding();
         }
 
         private void FindImages(string url)

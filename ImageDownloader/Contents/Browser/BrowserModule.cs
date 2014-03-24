@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using System.Windows.Input;
 
 namespace ImageDownloader.Contents.Browser
 {
@@ -18,7 +19,7 @@ namespace ImageDownloader.Contents.Browser
         public override void Initialize()
         {
             main_menu.All.First(m => m.Name.ToLower() == "window")
-                         .Add(new MenuItem("Browser", ShowBrowser));
+                         .Add(new MenuItem("Browser", ShowBrowser).WithGlobalShortcut(ModifierKeys.Control, Key.B));
         }
 
         private void ShowBrowser()
