@@ -2,13 +2,11 @@ using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using Core;
 using ImageDownloader.Contents.Browser.ViewModels;
-using ImageDownloader.Contents.Host.ViewModels;
-using ImageDownloader.Contents.Job.ViewModels;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
 using ImageDownloader.Framework.MainMenu.ViewModels;
+using ImageDownloader.Framework.Shell.Utils;
 using ImageDownloader.Framework.Shell.Views;
-using ImageDownloader.Model;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -21,7 +19,8 @@ namespace ImageDownloader.Framework.Shell.ViewModels
     public class ShellViewModel : ReactiveConductor<ILayoutItem>.Collection.OneActive, IShell, IHandle<ShellMessage>
     {
         private readonly IEventAggregator event_aggregator;
-        private readonly List<IModule> modules;
+        private readonly IEnumerable<IModule> modules;
+        private readonly Dictionary<IContent, ContentWrapper> content_wrappers = new Dictionary<IContent, ContentWrapper>();
 
         private ReactiveList<ITool> _Tools;
         public ReactiveList<ITool> Tools
@@ -73,8 +72,7 @@ namespace ImageDownloader.Framework.Shell.ViewModels
 
             MainMenu = main_menu;
 
-            var sorted_modules = modules.OrderBy(m => m.Metadata.Order).Select(m => m.Value);
-            this.modules = new List<IModule>(sorted_modules);
+            this.modules = modules.OrderBy(m => m.Metadata.Order).Select(m => m.Value);
 
             var sorted_commands = commands.OrderBy(c => c.Metadata.Order).Select(c => c.Value);
             ShellWindowCommands = new ReactiveList<IWindowCommand>(sorted_commands);
@@ -88,18 +86,13 @@ namespace ImageDownloader.Framework.Shell.ViewModels
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            InitializeModules();
+            modules.Apply(m => m.Initialize());
         }
 
         public override void ActivateItem(ILayoutItem item)
         {
             base.ActivateItem(item);
             item.IsSelected = true;
-        }
-
-        private void InitializeModules()
-        {
-            modules.Apply(m => m.Initialize());
         }
 
         private void ToggleTool(Type tool_type)
@@ -122,25 +115,35 @@ namespace ImageDownloader.Framework.Shell.ViewModels
                 flyout.Toggle();
         }
 
-        private void NewJob()
+        private void AddContent(IContent content)
         {
-            var host = IoC.Get<IHost>();
+            Content.Add(content);
+            ActivateItem(content);
 
-            Content.Add(host);
-            ActivateItem(host);
+            // Add to "opened windows" menu
+            var menu_item = new MenuItem(string.Empty, () => ShowContent(content));
+            MainMenu.All.First(m => m.Name.ToLower() == "window").Add(menu_item);
+
+            // Add wrapper
+            var wrapper = new ContentWrapper(menu_item, content);
+            content_wrappers.Add(content, wrapper);
         }
 
-        private void NewBrowser()
+        private void ShowContent(IContent content)
         {
-            var browser = IoC.Get<IBrowser>();
-            Content.Add(browser);
-            ActivateItem(browser);
+            ActivateItem(content);
         }
-
+        
         private void Close(IContent content)
         {
             Content.Remove(content);
             DeactivateItem(content, true);
+
+            // Remove menu and wrapper
+            var wrapper = content_wrappers[content];
+            MainMenu.All.First(m => m.Name.ToLower() == "window").Remove(wrapper.MenuItem);
+            content_wrappers.Remove(content);
+            wrapper.Dispose();
         }
 
         private void Close(ITool tool)
@@ -159,11 +162,8 @@ namespace ImageDownloader.Framework.Shell.ViewModels
 
         private void CloseAll()
         {
-            var content_to_close = new List<IContent>(Content);
-            content_to_close.Apply(c => Close(c));
-
-            var tools_to_close = new List<ITool>(Tools);
-            tools_to_close.Apply(t => Close(t));
+            Content.ToList().Apply(c => Close(c));
+            Tools.ToList().Apply(t => Close(t));
         }
 
         private void Exit()
@@ -187,11 +187,11 @@ namespace ImageDownloader.Framework.Shell.ViewModels
                 case ShellMessage.MessageTypes.Exit:
                     Exit();
                     break;
-                case ShellMessage.MessageTypes.NewJob:
-                    NewJob();
+                case ShellMessage.MessageTypes.AddContent:
+                    AddContent(message.Content);
                     break;
-                case ShellMessage.MessageTypes.NewBrowser:
-                    NewBrowser();
+                case ShellMessage.MessageTypes.ShowContent:
+                    ShowContent(message.Content);
                     break;
                 case ShellMessage.MessageTypes.CloseContent:
                     Close(message.Content);

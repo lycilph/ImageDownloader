@@ -16,9 +16,19 @@ namespace ImageDownloader.Contents.Host.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class HostViewModel : Content, IHost, IConductor
     {
-        private JobModel model;
         private IJob job;
-        private IBrowser browser;
+
+        private Lazy<IBrowser> _Browser;
+        private IBrowser Browser
+        {
+            get { return _Browser.Value; }
+        }
+
+        public JobModel Model
+        {
+            get { return job.Model; }
+            set { job.Model = value; }
+        }
 
         private IContent _CurrentContent;
         public IContent CurrentContent
@@ -40,16 +50,18 @@ namespace ImageDownloader.Contents.Host.ViewModels
         [ImportingConstructor]
         public HostViewModel(IEventAggregator event_aggregator) : base(event_aggregator)
         {
-            DisplayName = "Host";
-
-            model = new JobModel { Website = @"file:///C:/Private/GitHub/ImageDownloader/TestSite/index.html" };
-
             job = IoC.Get<IJob>();
-            job.Model = model;
             job.IsHosted = true;
 
-            browser = IoC.Get<IBrowser>();
-            browser.IsHosted = true;
+            job.WhenAnyValue(x => x.DisplayName)
+               .Subscribe(x => DisplayName = x);
+
+            _Browser = new Lazy<IBrowser>(() =>
+            {
+                var browser = IoC.Get<IBrowser>();
+                browser.IsHosted = true;
+                return browser;
+            });
         }
 
         protected override void OnInitialize()
@@ -72,14 +84,14 @@ namespace ImageDownloader.Contents.Host.ViewModels
 
         public void OpenBrowser()
         {
-            browser.Address = model.Website;
-            CurrentContent = browser;
+            Browser.Address = Model.Website;
+            CurrentContent = Browser;
         }
 
         public void CloseBrowser(bool accept_address)
         {
             if (accept_address)
-                model.Website = browser.Address;
+                Model.Website = Browser.Address;
             CurrentContent = job;
         }
 

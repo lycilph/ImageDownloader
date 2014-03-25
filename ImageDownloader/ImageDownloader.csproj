@@ -159,6 +159,9 @@
     <Compile Include="Contents\Host\Views\HostView.xaml.cs">
       <DependentUpon>HostView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Shell\Utils\ContentWrapper.cs" />
+    <Compile Include="Model\IJobFactory.cs" />
+    <Compile Include="Model\JobFactory.cs" />
     <Compile Include="Core\Content.cs" />
     <Compile Include="Core\IContent.cs" />
     <Compile Include="Core\ILayoutItem.cs" />

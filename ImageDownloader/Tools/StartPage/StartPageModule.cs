@@ -14,7 +14,7 @@ namespace ImageDownloader.Tools.StartPage
     {
         public override void Initialize()
         {
-            main_menu.All.First(m => m.Name.ToLower() == "window")
+            main_menu.All.First(m => m.Name.ToLower() == "view")
                          .Add(new MenuItem("_Start Page", ShowStartPage));
         }
 

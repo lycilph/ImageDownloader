@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
+using ImageDownloader.Model;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
     public class StartPageViewModel : Tool, IStartPage
     {
         private IEventAggregator event_aggregator;
+        private IJobFactory job_factory;
 
         public override PaneLocation DefaultLocation
         {
@@ -48,12 +50,13 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
         }
 
         [ImportingConstructor]
-        public StartPageViewModel(IEventAggregator event_aggregator)
+        public StartPageViewModel(IEventAggregator event_aggregator, IJobFactory job_factory)
         {
             DisplayName = "Start Page";
             IsVisible = true;
 
             this.event_aggregator = event_aggregator;
+            this.job_factory = job_factory;
         }
 
         protected override void OnInitialize()
@@ -89,7 +92,8 @@ namespace ImageDownloader.Tools.StartPage.ViewModels
         public void NewJob()
         {
             IsVisible = false;
-            event_aggregator.PublishOnCurrentThread(ShellMessage.NewJob);
+            var job = job_factory.Create();
+            event_aggregator.PublishOnCurrentThread(ShellMessage.AddContent(job));
         }
 
         public void OpenJob()

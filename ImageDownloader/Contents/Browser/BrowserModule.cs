@@ -1,13 +1,10 @@
-﻿using ImageDownloader.Core;
+﻿using Caliburn.Micro;
+using ImageDownloader.Contents.Browser.ViewModels;
+using ImageDownloader.Core;
 using ImageDownloader.Core.Messages;
 using ImageDownloader.Framework.MainMenu.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro;
 using System.Windows.Input;
 
 namespace ImageDownloader.Contents.Browser
@@ -18,13 +15,14 @@ namespace ImageDownloader.Contents.Browser
     {
         public override void Initialize()
         {
-            main_menu.All.First(m => m.Name.ToLower() == "window")
-                         .Add(new MenuItem("Browser", ShowBrowser).WithGlobalShortcut(ModifierKeys.Control, Key.B));
+            main_menu.All.First(m => m.Name.ToLower() == "view")
+                         .Add(new MenuItem("Browser", Add).WithGlobalShortcut(ModifierKeys.Control, Key.B));
         }
 
-        private void ShowBrowser()
+        private void Add()
         {
-            event_aggregator.PublishOnCurrentThread(ShellMessage.NewBrowser);
+            var browser = IoC.Get<IBrowser>();
+            event_aggregator.PublishOnCurrentThread(ShellMessage.AddContent(browser));
         }
     }
 }

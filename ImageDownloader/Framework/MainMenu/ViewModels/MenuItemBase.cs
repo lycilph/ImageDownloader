@@ -24,9 +24,14 @@ namespace ImageDownloader.Framework.MainMenu.ViewModels
             Children = new ReactiveList<MenuItemBase>();
         }
 
-        public void Add(params MenuItemBase[] menuItems)
+        public void Add(params MenuItemBase[] items)
         {
-            menuItems.Apply(Children.Add);
+            items.Apply(Children.Add);
+        }
+
+        public void Remove(MenuItemBase item)
+        {
+            Children.Remove(item);
         }
 
         public IEnumerator<MenuItemBase> GetEnumerator()

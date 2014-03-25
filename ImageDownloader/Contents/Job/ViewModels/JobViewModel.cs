@@ -83,7 +83,7 @@ namespace ImageDownloader.Contents.Job.ViewModels
         [ImportingConstructor]
         public JobViewModel([ImportMany] IEnumerable<Lazy<IJobStep, OrderMetadata>> steps, IEventAggregator event_aggregator) : base(event_aggregator)
         {
-            DisplayName = "Job";
+            DisplayName = "New*";
             Steps = new ReactiveList<IJobStep>(steps.OrderBy(s => s.Metadata.Order).Select(s => s.Value));
             CurrentStep = Steps.First();
 
@@ -118,6 +118,7 @@ namespace ImageDownloader.Contents.Job.ViewModels
         public void GoForward()
         {
             CurrentStep = NextStep;
+            DisplayName = "aldskjfa";
         }
 
         public void ActivateItem(object item)
