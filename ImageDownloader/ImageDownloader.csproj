@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9973F6AC-7AEB-4E5A-AE8E-2453EE9E1CE5}</ProjectGuid>
+    <ProjectGuid>{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImageDownloader</RootNamespace>
@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,92 +33,57 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.0-beta\lib\portable-net45+sl5+win8+wp8\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.Platform">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.ReactiveUI">
-      <HintPath>..\packages\Caliburn.Micro.ReactiveUI.Private.1.0.1-alpha\lib\Caliburn.Micro.ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.ReactiveUI.2.2.1\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp">
-      <HintPath>..\packages\CefSharp.Wpf.1.25.7\lib\net40\CefSharp.dll</HintPath>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.1.0.0-ALPHA006\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="CefSharp.Wpf">
-      <HintPath>..\packages\CefSharp.Wpf.1.25.7\lib\net40\CefSharp.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=0.13.0.82, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.0.13.0.82-ALPHA\lib\net45\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ReactiveUI">
-      <HintPath>..\packages\reactiveui-core.5.99.4-beta\lib\Portable-Net45+WinRT45+WP8\ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\reactiveui-core.6.2.1.1\lib\Net45\ReactiveUI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ReactiveUI.Blend">
-      <HintPath>..\packages\reactiveui-platforms.5.99.4-beta\lib\net45\ReactiveUI.Blend.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Xaml">
-      <HintPath>..\packages\reactiveui-platforms.5.99.4-beta\lib\net45\ReactiveUI.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Splat, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Splat.1.2.1\lib\Net45\Splat.dll</HintPath>
+    <Reference Include="Splat">
+      <HintPath>..\packages\Splat.1.5.1\lib\Net45\Splat.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.2.2\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.2.2\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rx-PlatformServices.2.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\packages\Rx-XAML.2.2.2\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.0.13.0.82-ALPHA\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\packages\MahApps.Metro.1.0.0-ALPHA006\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -131,182 +96,12 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock">
-      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
-      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Expression">
-      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.Expression.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
-      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
-      <HintPath>..\packages\AvalonDock.2.0.2000\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Contents\Browser\BrowserModule.cs" />
-    <Compile Include="Contents\Browser\ViewModels\IBrowser.cs" />
-    <Compile Include="Contents\Host\ViewModels\HostViewModel.cs" />
-    <Compile Include="Contents\Host\ViewModels\IHost.cs" />
-    <Compile Include="Contents\Host\Views\HostView.xaml.cs">
-      <DependentUpon>HostView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Framework\Shell\Utils\ContentWrapper.cs" />
-    <Compile Include="Model\IJobFactory.cs" />
-    <Compile Include="Model\JobFactory.cs" />
-    <Compile Include="Core\Content.cs" />
-    <Compile Include="Core\IContent.cs" />
-    <Compile Include="Core\ILayoutItem.cs" />
-    <Compile Include="Core\IModule.cs" />
-    <Compile Include="Core\ITool.cs" />
-    <Compile Include="Core\LayoutItem.cs" />
-    <Compile Include="Core\Messages\OutputMessage.cs" />
-    <Compile Include="Core\Messages\ShellMessage.cs" />
-    <Compile Include="Core\ModuleBase.cs" />
-    <Compile Include="Core\OrderMetadata.cs" />
-    <Compile Include="Core\PaneLocation.cs" />
-    <Compile Include="Core\RelayCommand.cs" />
-    <Compile Include="Core\Tool.cs" />
-    <Compile Include="Core\Utils\StringExtensions.cs" />
-    <Compile Include="Core\View\TextBoxExtension.cs" />
-    <Compile Include="Flyouts\Settings\SettingsModule.cs" />
-    <Compile Include="Flyouts\Settings\SettingsWindowCommand.cs" />
-    <Compile Include="Flyouts\Settings\ViewModels\ISettings.cs" />
-    <Compile Include="Flyouts\Settings\Views\SettingsFlyoutView.xaml.cs">
-      <DependentUpon>SettingsFlyoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Framework\Dialogs\About\AboutModule.cs" />
-    <Compile Include="Framework\Dialogs\About\AboutWindowCommand.cs" />
-    <Compile Include="Core\IWindowCommand.cs" />
-    <Compile Include="Core\WindowCommandBase.cs" />
-    <Compile Include="Framework\Dialogs\About\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Core\FlyoutBase.cs" />
-    <Compile Include="Core\IFlyout.cs" />
-    <Compile Include="Flyouts\Settings\ViewModels\SettingsFlyoutViewModel.cs" />
-    <Compile Include="Framework\Dialogs\About\Package.cs" />
-    <Compile Include="Framework\Dialogs\DialogBase.cs" />
-    <Compile Include="Framework\Services\WindowManagerExtensions.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Contents\Job\ViewModels\IJob.cs" />
-    <Compile Include="Contents\Job\ViewModels\IJobStep.cs" />
-    <Compile Include="Contents\Job\ViewModels\JobStepBase.cs" />
-    <Compile Include="Contents\Job\ViewModels\JobStepExecuteViewModel.cs" />
-    <Compile Include="Contents\Job\ViewModels\JobStepOptionsViewModel.cs" />
-    <Compile Include="Contents\Job\ViewModels\JobStepResultsViewModel.cs" />
-    <Compile Include="Contents\Job\ViewModels\JobViewModel.cs" />
-    <Compile Include="Contents\Job\Views\JobStepExecuteView.xaml.cs">
-      <DependentUpon>JobStepExecuteView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Contents\Job\Views\JobStepOptionsView.xaml.cs">
-      <DependentUpon>JobStepOptionsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Contents\Job\Views\JobStepResultsView.xaml.cs">
-      <DependentUpon>JobStepResultsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Contents\Job\Views\JobView.xaml.cs">
-      <DependentUpon>JobView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Cache.cs" />
-    <Compile Include="Model\ICache.cs" />
-    <Compile Include="Model\JobModel.cs" />
-    <Compile Include="Model\SiteAnalyzer.cs" />
-    <Compile Include="Model\SiteBase.cs" />
-    <Compile Include="Model\SiteCrawler.cs" />
-    <Compile Include="Model\SiteLoader.cs" />
-    <Compile Include="Tools\Help\HelpModule.cs" />
-    <Compile Include="Tools\Help\Utils\SchemeHandler.cs" />
-    <Compile Include="Tools\Help\Utils\SchemeHandlerFactory.cs" />
-    <Compile Include="Framework\Shell\Views\IShellView.cs" />
-    <Compile Include="Contents\Browser\ViewModels\BrowserViewModel.cs" />
-    <Compile Include="Core\View\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Contents\Browser\Views\BrowserView.xaml.cs">
-      <DependentUpon>BrowserView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Framework\Shell\ApplicationBootstrapper.cs" />
-    <Compile Include="Framework\MainMenu\Controls\MenuEx.cs" />
-    <Compile Include="Framework\MainMenu\Controls\MenuItemEx.cs" />
-    <Compile Include="Framework\Services\IInputManager.cs" />
-    <Compile Include="Framework\Services\InputManager.cs" />
-    <Compile Include="Framework\Shell\StartupTasks.cs" />
-    <Compile Include="Framework\Shell\Utils\InputBindingParser.cs" />
-    <Compile Include="Framework\Shell\Utils\InputBindingTrigger.cs" />
-    <Compile Include="Framework\Shell\Utils\LayoutStrategy.cs" />
-    <Compile Include="Framework\Shell\Utils\PanesStyleSelector.cs" />
-    <Compile Include="Framework\MainMenu\ViewModels\IMenu.cs" />
-    <Compile Include="Framework\Shell\ViewModels\IShell.cs" />
-    <Compile Include="Framework\MainMenu\ViewModels\MainMenuViewModel.cs" />
-    <Compile Include="Framework\MainMenu\ViewModels\MenuItem.cs" />
-    <Compile Include="Framework\MainMenu\ViewModels\MenuItemBase.cs" />
-    <Compile Include="Framework\MainMenu\ViewModels\MenuItemSeparator.cs" />
-    <Compile Include="Framework\Shell\ViewModels\ShellViewModel.cs" />
-    <Compile Include="Framework\MainMenu\Views\MainMenuView.xaml.cs">
-      <DependentUpon>MainMenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Framework\Shell\Views\ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Core\View\WebViewContentControl.cs" />
-    <Compile Include="Tools\Help\ViewModels\HelpToolViewModel.cs" />
-    <Compile Include="Tools\Help\ViewModels\IHelp.cs" />
-    <Compile Include="Tools\Help\Views\HelpView.xaml.cs">
-      <DependentUpon>HelpView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Output\OutputModule.cs" />
-    <Compile Include="Tools\Output\Utils\BringIntoViewBehavior.cs" />
-    <Compile Include="Tools\Output\ViewModels\IOutput.cs" />
-    <Compile Include="Tools\Output\ViewModels\OutputToolViewModel.cs" />
-    <Compile Include="Tools\Output\Views\OutputToolView.xaml.cs">
-      <DependentUpon>OutputToolView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\StartPage\StartPageModule.cs" />
-    <Compile Include="Tools\StartPage\ViewModels\FeedViewModel.cs" />
-    <Compile Include="Tools\StartPage\ViewModels\IStartPage.cs" />
-    <Compile Include="Tools\StartPage\ViewModels\RssItemViewModel.cs" />
-    <Compile Include="Tools\StartPage\ViewModels\StartPageViewModel.cs" />
-    <Compile Include="Tools\StartPage\Views\RssItemView.xaml.cs">
-      <DependentUpon>RssItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\StartPage\Views\StartPageView.xaml.cs">
-      <DependentUpon>StartPageView.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Contents\Host\Views\HostView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Core\Resources\ButtonStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Core\Resources\FontSizes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Core\Resources\ControlResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Core\Resources\ImageStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Flyouts\Settings\Views\SettingsFlyoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Framework\Dialogs\About\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -319,54 +114,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Contents\Job\Views\JobStepExecuteView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Contents\Job\Views\JobStepOptionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Contents\Job\Views\JobStepResultsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Contents\Job\Views\JobView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Contents\Browser\Views\BrowserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Framework\MainMenu\Views\MainMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Framework\Shell\Views\ShellView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Contents\Job\Views\WizardListBoxItemStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tools\Help\Views\HelpView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tools\Output\Views\OutputToolView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Tools\StartPage\Views\RssItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tools\StartPage\Views\StartPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -386,7 +133,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="packages.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -396,44 +143,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Core\Resources\theme.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.check.png" />
-    <Resource Include="Images\appbar.close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.arrow.left.png" />
-    <Resource Include="Images\appbar.arrow.right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.home.empty.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.question.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Tools\Help\Resources\Help.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\appbar.browser.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Menu.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>pushd $(SolutionDir)packages\Cefsharp*\cef
-xcopy /Y /S *.* $(TargetDir)
-popd</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
