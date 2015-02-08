@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Core;
+using ReactiveUI;
 
-namespace ImageDownloaderPrototype
+namespace ImageDownloader
 {
-    public class NodeViewModel : INotifyPropertyChanged
+    public class NodeViewModel : ReactiveObject
     {
         private readonly Node node;
         private readonly NodeViewModel parent;
@@ -22,9 +21,9 @@ namespace ImageDownloaderPrototype
             set { SetIsChecked(value, true, true); }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler SelectionChanged;
 
+        public NodeViewModel(Node node) : this(node, null) {}
         public NodeViewModel(Node node, NodeViewModel parent)
         {
             this.parent = parent;
@@ -33,12 +32,17 @@ namespace ImageDownloaderPrototype
             Files = node.Files.Concat(Children.SelectMany(n => n.Files)).Distinct().ToList();
             Text = string.Format("{0} [{1} images]", node.Name, Files.Count);
 
-            Children.Apply(c => c.SelectionChanged += (o, a) => RaiseSelectionChanged());
+            Children.Apply(c => c.SelectionChanged += OnSelectionChanged);
         }
 
         public int GetSelectedFilesCount()
         {
             return (IsChecked == true ? Files.Count : Children.Sum(c => c.GetSelectedFilesCount()));
+        }
+
+        private void OnSelectionChanged(object sender, EventArgs args)
+        {
+            RaiseSelectionChanged();
         }
 
         private void RaiseSelectionChanged()
@@ -48,18 +52,12 @@ namespace ImageDownloaderPrototype
                 handler(this, new EventArgs());
         }
 
-        private void RaisePropertyChanged([CallerMemberName] string property_name = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(property_name));
-        }
-
         private void SetIsChecked(bool? value, bool update_children, bool update_parent)
         {
             if (value == _IsChecked)
                 return;
-            _IsChecked = value;
+            
+            this.RaiseAndSetIfChanged(ref _IsChecked, value, "IsChecked");
 
             if (update_children && IsChecked.HasValue)
                 Children.Apply(n => n.SetIsChecked(IsChecked, true, false));
@@ -67,7 +65,6 @@ namespace ImageDownloaderPrototype
             if (update_parent && parent != null)
                 parent.VerifyCheckState();
 
-            RaisePropertyChanged("IsChecked");
             RaiseSelectionChanged();
         }
 

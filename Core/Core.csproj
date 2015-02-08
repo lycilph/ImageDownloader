@@ -61,6 +61,7 @@
     <Compile Include="Site.cs" />
     <Compile Include="SiteAnalyzer.cs" />
     <Compile Include="SiteCrawler.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="UrlHelper.cs" />
     <Compile Include="WebPageProvider.cs" />
   </ItemGroup>

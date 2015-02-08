@@ -3,7 +3,7 @@ using NLog;
 using NLog.Common;
 using NLog.Targets;
 
-namespace ImageDownloaderPrototype
+namespace ImageDownloader
 {
     public class WpfLogTarget : Target
     {
@@ -18,12 +18,7 @@ namespace ImageDownloaderPrototype
         {
             switch (log_event.Level.Name)
             {
-                case "Trace":
-                case "Debug":
                 case "Info":
-                case "Warn":
-                case "Error":
-                case "Fatal":
                     Progress.Report(log_event.FormattedMessage);
                     break;
             }

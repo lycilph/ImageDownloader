@@ -12,43 +12,43 @@ namespace Core
 
         public static void WriteToFile<T>(string filename, T obj)
         {
-            log.Trace("Serializing object [{0}]", obj.GetType());
+            log.Info("Serializing object [{0}]", obj.GetType());
             var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
 
-            log.Trace("Writing to file {0}", filename);
+            log.Info("Writing to file {0}", filename);
             File.WriteAllText(filename, json);
         }
 
         public static T ReadFromFile<T>(string filename)
         {
-            log.Trace("Reading from file {0}", filename);
+            log.Info("Reading from file {0}", filename);
             var json = File.ReadAllText(filename);
 
-            log.Trace("Deserializing object [{0}]", typeof(T));
+            log.Info("Deserializing object [{0}]", typeof(T));
             return JsonConvert.DeserializeObject<T>(json);
         }
 
         public static void ZipAndWriteToFile<T>(string filename, T obj)
         {
-            log.Trace("Serializing object [{0}]", obj.GetType());
+            log.Info("Serializing object [{0}]", obj.GetType());
             var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
 
-            log.Trace("Zipping json");
+            log.Info("Zipping json");
             var bytes = Zip(json);
 
-            log.Trace("Writing to file {0}", filename);
+            log.Info("Writing to file {0}", filename);
             File.WriteAllBytes(filename, bytes);
         }
 
         public static T ReadFromFileAndUnzip<T>(string filename)
         {
-            log.Trace("Reading from file {0}", filename);
+            log.Info("Reading from file {0}", filename);
             var bytes = File.ReadAllBytes(filename);
 
-            log.Trace("Unzipping json");
+            log.Info("Unzipping json");
             var json = Unzip(bytes);
 
-            log.Trace("Deserializing object [{0}]", typeof(T));
+            log.Info("Deserializing object [{0}]", typeof(T));
             return JsonConvert.DeserializeObject<T>(json);
         }
 

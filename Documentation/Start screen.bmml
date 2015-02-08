@@ -1,0 +1,42 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="905" measuredH="498" mockupW="641" mockupH="400">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="264" y="98" w="641" h="400" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bottomheight>27</bottomheight>
+        <dragger>true</dragger>
+        <text>Image%20downloader%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Settings</text>
+        <topheight>26</topheight>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::List" x="276" y="131" w="100" h="334" measuredW="100" measuredH="126" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Start%0ASite%0ADownload</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Button" x="480" y="233" w="-1" h="-1" measuredW="81" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Crawl%20site</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::ComboBox" x="599" y="233" w="154" h="-1" measuredW="84" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Favorites</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="480" y="275" w="81" h="27" measuredW="78" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Load%20site</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="601" y="276" w="130" h="-1" measuredW="61" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Some%20text</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Button" x="723" y="275" w="-1" h="-1" measuredW="30" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>...</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

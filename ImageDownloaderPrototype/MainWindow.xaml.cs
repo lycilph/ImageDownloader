@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Core;
-using ImageDownloader;
 using NLog;
 using NLog.Config;
 
@@ -99,7 +98,7 @@ namespace ImageDownloaderPrototype
 
         private async void OnLoadClick(object sender, RoutedEventArgs e)
         {
-            const string filename = @"C:\Private\Projects\ImageDownloader\Data\site.data";
+            const string filename = @"C:\Private\Projects\ImageDownloader\Data\wwwskovboernehavedk.data";
 
             var site = await Task.Factory.StartNew(() => JsonExtensions.ReadFromFileAndUnzip<Site>(filename));
             Nodes = new ObservableCollection<NodeViewModel>

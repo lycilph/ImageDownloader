@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace ImageDownloaderPrototype
+namespace ImageDownloader
 {
     public static class VirtualToggleButton
     {
@@ -53,7 +53,7 @@ namespace ImageDownloaderPrototype
         }
 
         private static void OnKeyDown(object sender, KeyEventArgs e)
-         {
+        {
             if (e.OriginalSource != sender) 
                 return;
 

@@ -26,7 +26,7 @@ namespace Core
             var site = new Site(url);
             unvisited.Push(url);
 
-            log.Trace("Starting crawl of: " + url);
+            log.Info("Starting crawl of: " + url);
 
             while (unvisited.Count > 0)
             {
@@ -34,7 +34,7 @@ namespace Core
                 if (visited.Contains(current_url)) 
                     continue;
 
-                log.Trace("Url: " + UrlHelper.Filename(current_url) + " (Pages left: " + unvisited.Count + ")");
+                log.Info("Url: " + UrlHelper.Filename(current_url) + " (Pages left: " + unvisited.Count + ")");
 
                 try
                 {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Text;
-using Newtonsoft.Json;
 using NLog;
 
 namespace Core
@@ -16,13 +13,18 @@ namespace Core
         private bool disposed;
         private bool cache_has_changed;
         private Dictionary<string, CacheItem> cache = new Dictionary<string, CacheItem>();
+        private readonly bool dispose_page_provider;
         private readonly IPageProvider page_provider;
         private readonly string filename;
 
         public int CacheHit { get; private set; }
         public int CacheMiss { get; private set; }
 
-        public CachedPageProvider(string filename) : this(filename, new WebPageProvider()) { }
+        public CachedPageProvider(string filename) : this(filename, new WebPageProvider())
+        {
+            dispose_page_provider = true;
+        }
+
         public CachedPageProvider(string filename, IPageProvider page_provider)
         {
             this.page_provider = page_provider;
@@ -72,9 +74,10 @@ namespace Core
                 Add(url, page_data);
                 return page_data;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Add(url, string.Empty);
+                log.Error("Error when getting " + url, e);
                 throw;
             }
             finally
@@ -82,6 +85,12 @@ namespace Core
                 CacheMiss++;
             }
         }
+
+        public string Status()
+        {
+            return string.Format("Cache: hits {0}, misses {1}, {2}", CacheHit, CacheMiss, page_provider.Status());
+        }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -93,7 +102,8 @@ namespace Core
                 if (disposing)
                 {
                     // Free any other managed objects here.
-                    page_provider.Dispose();
+                    if (dispose_page_provider)
+                        page_provider.Dispose();
                     Save();
                 }
 
