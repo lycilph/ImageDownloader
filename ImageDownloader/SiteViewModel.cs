@@ -73,10 +73,18 @@ namespace ImageDownloader
             shell.IsBusy = true;
             SelectedNodes.Clear();
 
-            if (shell.Selection.Kind == Selection.SelectionKind.Web)
-                await CrawlSite(shell.Selection.Name);
-            else
-                await LoadSite(shell.Selection.Name);
+            switch (shell.Selection.Kind)
+            {
+                case Selection.SelectionKind.Web:
+                case Selection.SelectionKind.WebCapture:
+                    await CrawlSite(shell.Selection.Name);
+                    break;
+                case Selection.SelectionKind.File:
+                    await LoadSite(shell.Selection.Name);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             shell.IsBusy = false;
         }

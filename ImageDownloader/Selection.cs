@@ -4,7 +4,7 @@ namespace ImageDownloader
 {
     public class Selection
     {
-        public enum SelectionKind { Web, File }
+        public enum SelectionKind { Web, WebCapture, File }
 
         public string Name { get; set; }
         public SelectionKind Kind { get; set; }

@@ -17,6 +17,7 @@ namespace ImageDownloader
 
         private readonly Settings settings;
         private readonly Stack<IScreen> screens = new Stack<IScreen>();
+        private readonly BrowserViewModel browser_view_model;
 
         public Selection Selection { get; set; }
 
@@ -55,6 +56,7 @@ namespace ImageDownloader
             SetupStatusbarLogging();
 
             Main = new MainViewModel(settings, this);
+            browser_view_model = new BrowserViewModel(this);
         }
 
         protected override void OnInitialize()
@@ -95,6 +97,11 @@ namespace ImageDownloader
 
             screens.Push(view_model);
             ActivateItem(view_model);
+        }
+
+        public void ShowBrowser()
+        {
+            Show(browser_view_model);
         }
     }
 }

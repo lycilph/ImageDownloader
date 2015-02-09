@@ -50,9 +50,19 @@ namespace ImageDownloader
         {
             base.OnActivate();
 
+            if (shell.Selection != null && shell.Selection.Kind == Selection.SelectionKind.WebCapture)
+                CrawlCapturedSite();
+
             Url = FavoriteUrls.FirstOrDefault();
             Filename = FavoriteFiles.FirstOrDefault();
             shell.MainStatusText = "Select which site to crawl or load";
+        }
+
+        private void CrawlCapturedSite()
+        {
+            if (!FavoriteUrls.Contains(shell.Selection.Name))
+                settings.FavoriteSiteUrls.Add(shell.Selection.Name);
+            shell.Main.Next();
         }
 
         public void CrawlSite()
@@ -78,7 +88,10 @@ namespace ImageDownloader
         }
 
         public void Capture()
-        { }
+        {
+            shell.Selection = new Selection(Url, Selection.SelectionKind.Web);
+            shell.ShowBrowser();
+        }
 
         public void Browse()
         {
