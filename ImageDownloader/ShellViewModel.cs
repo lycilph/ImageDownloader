@@ -26,11 +26,18 @@ namespace ImageDownloader
             set { this.RaiseAndSetIfChanged(ref _Screens, value); }
         }
 
-        private string _Text;
-        public string Text
+        private string _MainStatusText;
+        public string MainStatusText
         {
-            get { return _Text; }
-            set { this.RaiseAndSetIfChanged(ref _Text, value); }
+            get { return _MainStatusText; }
+            set { this.RaiseAndSetIfChanged(ref _MainStatusText, value); }
+        }
+
+        private string _AuxiliaryStatusText;
+        public string AuxiliaryStatusText
+        {
+            get { return _AuxiliaryStatusText; }
+            set { this.RaiseAndSetIfChanged(ref _AuxiliaryStatusText, value); }
         }
 
         private bool _IsBusy;
@@ -56,13 +63,18 @@ namespace ImageDownloader
             {
                 new StartViewModel(settings, this),
                 new SiteViewModel(settings, this),
-                new DownloadViewModel()
+                new DownloadViewModel(settings, this)
             };
 
-            _CanNext = this.WhenAny(x => x.ActiveItem, x => x.IsBusy, (item, busy) => item.Value != Screens.Last() && item.Value != Screens.First() && !busy.Value)
+            _CanNext = this.WhenAny(x => x.ActiveItem, 
+                                    x => x.ActiveItem.CanNext,
+                                    x => x.IsBusy, 
+                                    (item, item_next, busy) => item.Value != Screens.Last() && item.Value != Screens.First() && item_next.Value && !busy.Value)
                            .ToProperty(this, x => x.CanNext);
 
-            _CanPrevious = this.WhenAny(x => x.ActiveItem, x => x.IsBusy, (item, busy) => item.Value != Screens.First() && !busy.Value)
+            _CanPrevious = this.WhenAny(x => x.ActiveItem, 
+                                        x => x.IsBusy,
+                                        (item, busy) => item.Value != Screens.First() && !busy.Value)
                                .ToProperty(this, x => x.CanPrevious);
         }
 
@@ -82,7 +94,7 @@ namespace ImageDownloader
 
         private void SetupStatusbarLogging()
         {
-            var log_target = new WpfLogTarget { Progress = new Progress<string>(s => Text = s) };
+            var log_target = new WpfLogTarget { Progress = new Progress<string>(s => MainStatusText = s) };
             var config = LogManager.Configuration;
             config.AddTarget("s", log_target);
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, log_target));
@@ -92,6 +104,8 @@ namespace ImageDownloader
         private void Show(StepViewModel screen)
         {
             logger.Trace("Showing screen " + screen.DisplayName);
+            MainStatusText = string.Empty;
+            AuxiliaryStatusText = string.Empty;
             ActivateItem(screen);
         }
 

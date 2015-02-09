@@ -11,9 +11,6 @@ namespace ImageDownloader
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Settings settings;
-        private readonly ShellViewModel shell;
-
         private string _Url;
         public string Url
         {
@@ -38,10 +35,8 @@ namespace ImageDownloader
         private readonly ObservableAsPropertyHelper<bool> _CanLoadSite;
         public bool CanLoadSite { get { return _CanLoadSite.Value; } }
 
-        public StartViewModel(Settings settings, ShellViewModel shell)
+        public StartViewModel(Settings settings, ShellViewModel shell) : base(settings, shell)
         {
-            this.settings = settings;
-            this.shell = shell;
             DisplayName = "Start";
 
             _CanCrawlSite = this.WhenAny(x => x.Url, x => !string.IsNullOrWhiteSpace(x.Value))
@@ -57,7 +52,7 @@ namespace ImageDownloader
 
             Url = FavoriteUrls.FirstOrDefault();
             Filename = FavoriteFiles.FirstOrDefault();
-            shell.Text = "Select which site to crawl or load";
+            shell.MainStatusText = "Select which site to crawl or load";
         }
 
         public void CrawlSite()
@@ -72,7 +67,7 @@ namespace ImageDownloader
         {
             if (!File.Exists(Filename))
             {
-                shell.Text = Filename + " does not exist!";
+                shell.MainStatusText = Filename + " does not exist!";
                 return;
             }
 

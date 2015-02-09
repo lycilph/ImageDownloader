@@ -1,11 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace ImageDownloader
+﻿namespace ImageDownloader
 {
-    /// <summary>
-    /// Interaction logic for SiteView.xaml
-    /// </summary>
-    public partial class SiteView : UserControl
+    public partial class SiteView
     {
         public SiteView()
         {

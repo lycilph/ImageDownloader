@@ -6,12 +6,15 @@
              xmlns:local="clr-namespace:ImageDownloader"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300"
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:SiteViewModel}">
     <UserControl.Resources>
         <BitmapImage x:Key="PlaceHolderImage" UriSource="Images/noimage.gif"/>
+        
+        <local:MultiSourceConverter x:Key="MultiSourceConverter"/>
         
         <HierarchicalDataTemplate DataType="{x:Type local:Node}" ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
@@ -39,6 +42,9 @@
                 <i:EventTrigger EventName="SelectedItemChanged">
                     <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="CurrentNode" Value="{Binding ElementName=Nodes, Path=SelectedItem}"/>
                 </i:EventTrigger>
+                <i:EventTrigger EventName="GotFocus">
+                    <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="CurrentFocus" Value="0"/>
+                </i:EventTrigger>
             </i:Interaction.Triggers>
         </TreeView>
         <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
@@ -50,12 +56,26 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <!--<ListBox x:Name="CurrentNode_Files"
+            <ListBox x:Name="SelectedNodes"
                      Grid.Row="0"
-                     SelectedItem="{Binding CurrentFile}"
-                     DisplayMemberPath="Text"/>-->
+                     DisplayMemberPath="Text"
+                     cal:Message.Attach="[Shortcut Delete] = [Delete]">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="GotFocus">
+                        <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="CurrentFocus" Value="1"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
             <GridSplitter Grid.Row="1" Height="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <Image Grid.Row="2" Source="{Binding CurrentNode.Image, TargetNullValue={StaticResource PlaceHolderImage}}"/>
+            <Image Grid.Row="2">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource MultiSourceConverter}" TargetNullValue="{StaticResource PlaceHolderImage}">
+                        <Binding Path="CurrentNode"/>
+                        <Binding Path="CurrentSelectedNode"/>
+                        <Binding Path="CurrentFocus"/>
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
         </Grid>
     </Grid>
 </UserControl>

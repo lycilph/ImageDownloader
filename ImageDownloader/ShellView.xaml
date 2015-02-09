@@ -101,7 +101,7 @@
                                 <TextBlock x:Name="StepTextBlock" Text="{Binding DisplayName}" FontSize="{StaticResource StepItemFontSize}" TextDecorations=""/>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsActive}" Value="true">
-                                        <Setter Property="TextDecorations" Value="Underline" TargetName="StepTextBlock"/>
+                                        <Setter Property="FontWeight" Value="Bold" TargetName="StepTextBlock"/>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
@@ -123,11 +123,26 @@
         </Grid>
 
         <StatusBar Grid.Row="1">
-            <StatusBarItem DockPanel.Dock="Right">
-                <ProgressBar Width="200" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource HiddenVisibilityConverter}}"/>
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+
+            <StatusBarItem Grid.Column="0">
+                <TextBlock x:Name="MainStatusText"/>
             </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock x:Name="Text"/>
+            <StatusBarItem Grid.Column="1">
+                <TextBlock x:Name="AuxiliaryStatusText"/>
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="2">
+                <ProgressBar Width="200" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource HiddenVisibilityConverter}}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

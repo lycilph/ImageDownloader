@@ -6,7 +6,6 @@ namespace Core
 {
     public static class StringExtensions
     {
-
         public static string MakeFilenameSafe(this string str)
         {
             Array.ForEach(Path.GetInvalidFileNameChars(), c => str = str.Replace(c.ToString(CultureInfo.InvariantCulture), String.Empty));

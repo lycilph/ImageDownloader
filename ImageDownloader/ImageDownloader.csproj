@@ -117,10 +117,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BooleanConverters.cs" />
+    <Compile Include="DownloadItemViewModel.cs" />
+    <Compile Include="DownloadItemView.xaml.cs">
+      <DependentUpon>DownloadItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DownloadView.xaml.cs">
       <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DownloadViewModel.cs" />
+    <Compile Include="MultiSourceConverter.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Settings.cs" />
@@ -166,6 +172,9 @@
     <Resource Include="Images\appbar.cloud.download.png" />
     <Resource Include="Images\appbar.cloud.download.ico" />
     <Resource Include="Images\noimage.gif" />
+    <Resource Include="Images\appbar.control.play.png" />
+    <Resource Include="Images\appbar.control.pause.png" />
+    <Resource Include="Images\appbar.home.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -183,6 +192,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DownloadItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DownloadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
