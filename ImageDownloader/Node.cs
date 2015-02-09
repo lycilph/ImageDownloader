@@ -6,13 +6,20 @@ using ReactiveUI;
 
 namespace ImageDownloader
 {
-    public class NodeViewModel : ReactiveObject
+    public class Node : ReactiveObject
     {
-        private readonly Node node;
-        private readonly NodeViewModel parent;
-        public List<NodeViewModel> Children { get; private set; }
+        private enum NodeKind { File, Page }
+
+        private readonly Node parent;
+        private readonly NodeKind kind;
+
         public string Text { get; private set; }
-        public List<string> Files { get; private set; }
+        public List<Node> Children { get; private set; }
+
+        public string Image
+        {
+            get { return (kind == NodeKind.File ? Text : null); }
+        }
 
         private bool? _IsChecked = false;
         public bool? IsChecked
@@ -23,21 +30,35 @@ namespace ImageDownloader
 
         public event EventHandler SelectionChanged;
 
-        public NodeViewModel(Node node) : this(node, null) {}
-        public NodeViewModel(Node node, NodeViewModel parent)
+        public Node(SiteMapNode site_map_node, Node parent)
         {
             this.parent = parent;
-            this.node = node;
-            Children = node.Nodes.Values.Select(n => new NodeViewModel(n, this)).ToList();
-            Files = node.Files.Concat(Children.SelectMany(n => n.Files)).Distinct().ToList();
-            Text = string.Format("{0} [{1} images]", node.Name, Files.Count);
+            kind = NodeKind.Page;
 
-            Children.Apply(c => c.SelectionChanged += OnSelectionChanged);
+            var page_nodes = site_map_node.Nodes.Values.Select(n => new Node(n, this));
+            var file_nodes = site_map_node.Files.Select(f => new Node(f, this));
+            Children = page_nodes.Concat(file_nodes).ToList();
+
+            Text = string.Format("{0} [{1} images]", site_map_node.Name, GetFilesCount());
+        }
+
+        public Node(string file, Node parent)
+        {
+            this.parent = parent;
+            kind = NodeKind.File;
+
+            Text = file;
+            Children = new List<Node>();
+        }
+
+        private int GetFilesCount()
+        {
+            return (kind == NodeKind.File ? 1 : Children.Sum(n => n.GetFilesCount()));
         }
 
         public int GetSelectedFilesCount()
         {
-            return (IsChecked == true ? Files.Count : Children.Sum(c => c.GetSelectedFilesCount()));
+            return (kind == NodeKind.File && IsChecked == true ? 1 : Children.Sum(n => n.GetSelectedFilesCount()));
         }
 
         private void OnSelectionChanged(object sender, EventArgs args)

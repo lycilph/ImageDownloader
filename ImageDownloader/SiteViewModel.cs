@@ -15,22 +15,15 @@ namespace ImageDownloader
 
         private Site site;
 
-        private string _CurrentFile;
-        public string CurrentFile
-        {
-            get { return _CurrentFile; }
-            set { this.RaiseAndSetIfChanged(ref _CurrentFile, value); }
-        }
-
-        private NodeViewModel _CurrentNode;
-        public NodeViewModel CurrentNode
+        private Node _CurrentNode;
+        public Node CurrentNode
         {
             get { return _CurrentNode; }
             set { this.RaiseAndSetIfChanged(ref _CurrentNode, value); }
         }
 
-        private ReactiveList<NodeViewModel> _Nodes;
-        public ReactiveList<NodeViewModel> Nodes
+        private ReactiveList<Node> _Nodes;
+        public ReactiveList<Node> Nodes
         {
             get { return _Nodes; }
             set { this.RaiseAndSetIfChanged(ref _Nodes, value); }
@@ -42,7 +35,7 @@ namespace ImageDownloader
             this.shell = shell;
 
             DisplayName = "Site";
-            Misc = new SiteMiscViewModel(this, shell);
+            Option = new SiteOptionViewModel(this, shell);
         }
 
         protected override async void OnActivate()
@@ -50,15 +43,10 @@ namespace ImageDownloader
             base.OnActivate();
             shell.IsBusy = true;
 
-            Nodes = new ReactiveList<NodeViewModel>
-            {
-                new NodeViewModel(new Node("ABC"))
-            };
-
-            //if (shell.Selection.Kind == Selection.SelectionKind.Web)
-            //    await CrawlSite(shell.Selection.Name);
-            //else
-            //    await LoadSite(shell.Selection.Name);
+            if (shell.Selection.Kind == Selection.SelectionKind.Web)
+                await CrawlSite(shell.Selection.Name);
+            else
+                await LoadSite(shell.Selection.Name);
 
             shell.IsBusy = false;
         }
@@ -88,9 +76,9 @@ namespace ImageDownloader
 
         private void CreateSiteMap()
         {
-            Nodes = new ReactiveList<NodeViewModel>
+            Nodes = new ReactiveList<Node>
             {
-                new NodeViewModel(SiteAnalyzer.CreateSiteMap(site), null)
+                new Node(SiteAnalyzer.CreateSiteMap(site), null)
             };
             Nodes.Apply(n => n.SelectionChanged += UpdateSelectionCount);
         }

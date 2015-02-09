@@ -121,13 +121,13 @@
       <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DownloadViewModel.cs" />
-    <Compile Include="NodeViewModel.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SiteMiscView.xaml.cs">
-      <DependentUpon>SiteMiscView.xaml</DependentUpon>
+    <Compile Include="SiteOptionView.xaml.cs">
+      <DependentUpon>SiteOptionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SiteMiscViewModel.cs" />
+    <Compile Include="SiteOptionViewModel.cs" />
     <Compile Include="SiteView.xaml.cs">
       <DependentUpon>SiteView.xaml</DependentUpon>
     </Compile>
@@ -191,7 +191,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SiteMiscView.xaml">
+    <Page Include="SiteOptionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

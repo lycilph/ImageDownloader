@@ -109,7 +109,7 @@
                     </ItemsControl>
                 </StackPanel>
                 
-                <ContentControl Grid.Row="1" x:Name="ActiveItem_Misc" VerticalAlignment="Bottom"/>
+                <ContentControl Grid.Row="1" x:Name="ActiveItem_Option" VerticalAlignment="Bottom"/>
                 
                 <StackPanel Grid.Row="2" Margin="0,10,0,0">
                     <TextBlock Text="Navigate" FontSize="{StaticResource HeaderFontSize}" HorizontalAlignment="Center"/>

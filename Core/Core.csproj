@@ -56,7 +56,7 @@
     <Compile Include="IPageProvider.cs" />
     <Compile Include="JsonExtensions.cs" />
     <Compile Include="Page.cs" />
-    <Compile Include="Node.cs" />
+    <Compile Include="SiteMapNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.cs" />
     <Compile Include="SiteAnalyzer.cs" />

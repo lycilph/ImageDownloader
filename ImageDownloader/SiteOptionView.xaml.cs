@@ -1,8 +1,8 @@
 ﻿namespace ImageDownloader
 {
-    public partial class SiteMiscView
+    public partial class SiteOptionView
     {
-        public SiteMiscView()
+        public SiteOptionView()
         {
             InitializeComponent();
         }

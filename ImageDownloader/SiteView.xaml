@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <BitmapImage x:Key="PlaceHolderImage" UriSource="Images/noimage.gif"/>
         
-        <HierarchicalDataTemplate DataType="{x:Type local:NodeViewModel}" ItemsSource="{Binding Children}">
+        <HierarchicalDataTemplate DataType="{x:Type local:Node}" ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
                 <CheckBox Focusable="False" VerticalAlignment="Center" IsChecked="{Binding IsChecked}"/>
                 <TextBlock Text="{Binding Text}"/>
@@ -50,11 +50,12 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ListBox x:Name="CurrentNode_Files"
+            <!--<ListBox x:Name="CurrentNode_Files"
                      Grid.Row="0"
-                     SelectedItem="{Binding CurrentFile}"/>
+                     SelectedItem="{Binding CurrentFile}"
+                     DisplayMemberPath="Text"/>-->
             <GridSplitter Grid.Row="1" Height="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <Image Grid.Row="2" Source="{Binding CurrentFile, TargetNullValue={StaticResource PlaceHolderImage}}"/>
+            <Image Grid.Row="2" Source="{Binding CurrentNode.Image, TargetNullValue={StaticResource PlaceHolderImage}}"/>
         </Grid>
     </Grid>
 </UserControl>

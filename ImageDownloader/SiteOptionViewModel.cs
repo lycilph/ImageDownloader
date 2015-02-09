@@ -3,14 +3,14 @@ using ReactiveUI;
 
 namespace ImageDownloader
 {
-    public class SiteMiscViewModel : ReactiveScreen
+    public class SiteOptionViewModel : ReactiveScreen
     {
         private readonly SiteViewModel site_view_model;
 
         private readonly ObservableAsPropertyHelper<bool> _CanSave;
         public bool CanSave { get { return _CanSave.Value; } }
 
-        public SiteMiscViewModel(SiteViewModel site_view_model, ShellViewModel shell)
+        public SiteOptionViewModel(SiteViewModel site_view_model, ShellViewModel shell)
         {
             this.site_view_model = site_view_model;
             _CanSave = shell.WhenAny(x => x.IsBusy, x => !x.Value)

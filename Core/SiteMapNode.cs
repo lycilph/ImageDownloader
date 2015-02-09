@@ -6,16 +6,16 @@ using System.Linq;
 namespace Core
 {
     [DebuggerDisplay("Name = {Name}, Nodes = {Nodes.Count}, Images = {Images.Count}")]
-    public class Node
+    public class SiteMapNode
     {
         public string Name { get; set; }
-        public Dictionary<string, Node> Nodes { get; set; }
+        public Dictionary<string, SiteMapNode> Nodes { get; set; }
         public List<string> Files { get; set; }
 
-        public Node(string name)
+        public SiteMapNode(string name)
         {
             Name = name;
-            Nodes = new Dictionary<string, Node>();
+            Nodes = new Dictionary<string, SiteMapNode>();
             Files = new List<string>();
         }
 
@@ -35,12 +35,12 @@ namespace Core
             node.Add(node_path, item);
         }
 
-        private Node GetOrCreate(string element)
+        private SiteMapNode GetOrCreate(string element)
         {
             if (Nodes.ContainsKey(element))
                 return Nodes[element];
 
-            var node = new Node(element);
+            var node = new SiteMapNode(element);
             Nodes.Add(element, node);
             return node;
         }

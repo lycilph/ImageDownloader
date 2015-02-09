@@ -9,7 +9,7 @@ namespace ImageDownloaderPrototype
 {
     public class NodeViewModel : INotifyPropertyChanged
     {
-        private readonly Node node;
+        private readonly SiteMapNode site_map_node;
         private readonly NodeViewModel parent;
         public List<NodeViewModel> Children { get; private set; }
         public string Text { get; private set; }
@@ -25,13 +25,13 @@ namespace ImageDownloaderPrototype
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler SelectionChanged;
 
-        public NodeViewModel(Node node, NodeViewModel parent)
+        public NodeViewModel(SiteMapNode site_map_node, NodeViewModel parent)
         {
             this.parent = parent;
-            this.node = node;
-            Children = node.Nodes.Values.Select(n => new NodeViewModel(n, this)).ToList();
-            Files = node.Files.Concat(Children.SelectMany(n => n.Files)).Distinct().ToList();
-            Text = string.Format("{0} [{1} images]", node.Name, Files.Count);
+            this.site_map_node = site_map_node;
+            Children = site_map_node.Nodes.Values.Select(n => new NodeViewModel(n, this)).ToList();
+            Files = site_map_node.Files.Concat(Children.SelectMany(n => n.Files)).Distinct().ToList();
+            Text = string.Format("{0} [{1} images]", site_map_node.Name, Files.Count);
 
             Children.Apply(c => c.SelectionChanged += (o, a) => RaiseSelectionChanged());
         }
