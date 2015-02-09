@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace ImageDownloader
 {
-    public sealed class StartViewModel : StepViewModel
+    public sealed class StartViewModel : BaseViewModel
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -60,7 +60,7 @@ namespace ImageDownloader
             if(!FavoriteUrls.Contains(Url))
                 settings.FavoriteSiteUrls.Add(Url);
             shell.Selection = new Selection(Url, Selection.SelectionKind.Web);
-            shell.Next();
+            shell.Main.Next();
         }
 
         public void LoadSite()
@@ -74,7 +74,7 @@ namespace ImageDownloader
             if (!FavoriteFiles.Contains(Filename))
                 settings.FavoriteSiteFiles.Add(Filename);
             shell.Selection = new Selection(Filename, Selection.SelectionKind.File);
-            shell.Next();
+            shell.Main.Next();
         }
 
         public void Capture()
@@ -85,8 +85,8 @@ namespace ImageDownloader
             var open_file_dialog = new OpenFileDialog
             {
                 InitialDirectory = settings.DataFolder,
-                DefaultExt = ".data",
-                Filter = "Site file (.data)|*.data"
+                DefaultExt = ".site",
+                Filter = "Site file (.site)|*.site"
             };
 
             if (open_file_dialog.ShowDialog() == true)

@@ -5,12 +5,13 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Core;
 using ReactiveUI;
 
 namespace ImageDownloader
 {
-    public sealed class DownloadViewModel : StepViewModel
+    public sealed class DownloadViewModel : BaseViewModel
     {
         private Task worker_task;
         private CancellationTokenSource cts;
@@ -77,6 +78,12 @@ namespace ImageDownloader
             IsAllItemsDownloaded = false;
             cts = new CancellationTokenSource();
 
+            var start_time = DateTime.Now;
+            var timer = new DispatcherTimer();
+            timer.Tick += (o, a) => shell.AuxiliaryStatusText = Math.Round((DateTime.Now - start_time).TotalSeconds, 1).ToString("N1") + " sec(s)";
+            timer.Interval = TimeSpan.FromMilliseconds(100);
+            timer.Start();
+
             worker_task = Task.Factory.StartNew(() =>
             {
                 using (var client = new WebClient())
@@ -95,17 +102,27 @@ namespace ImageDownloader
                         Debug.Assert(dir != null, "dir != null");
                         Directory.CreateDirectory(dir);
 
-                        client.DownloadFile(item.Text, path);
+                        if (!File.Exists(path))
+                        {
+                            shell.MainStatusText = "Downloading: " + item.Text;
+                            client.DownloadFile(item.Text, path);
+                            Thread.Sleep(Settings.ImageDownloadDelay);
+                        }
+                        else
+                        {
+                            shell.MainStatusText = item.Text + " already exists";
+                        }
+                     
                         item.Done = true;
 
                         if (cts.Token.IsCancellationRequested)
                             break;
-
-                        Thread.Sleep(Settings.ImageDownloadDelay);
                     }
                 }
             }, cts.Token);
             await worker_task;
+
+            timer.Stop();
 
             shell.IsBusy = false;
             IsAllItemsDownloaded = Items.All(i => i.Done);
@@ -113,7 +130,7 @@ namespace ImageDownloader
 
         public void Home()
         {
-            shell.Home();
+            shell.Main.Home();
         }
 
         public async void StartStop()

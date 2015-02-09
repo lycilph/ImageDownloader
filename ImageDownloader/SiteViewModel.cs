@@ -10,7 +10,7 @@ using ReactiveUI;
 
 namespace ImageDownloader
 {
-    public sealed class SiteViewModel : StepViewModel
+    public sealed class SiteViewModel : BaseViewModel
     {
         private Site site;
 
@@ -42,7 +42,7 @@ namespace ImageDownloader
             set { this.RaiseAndSetIfChanged(ref _SelectedNodes, value); }
         }
 
-        private int _CurrentFocus = 0;
+        private int _CurrentFocus;
         public int CurrentFocus
         {
             get { return _CurrentFocus; }

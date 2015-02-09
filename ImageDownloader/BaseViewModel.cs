@@ -4,11 +4,10 @@ using IScreen = Caliburn.Micro.IScreen;
 
 namespace ImageDownloader
 {
-    public class StepViewModel : ReactiveScreen
+    public class BaseViewModel : ReactiveScreen
     {
         protected readonly Settings settings;
         protected readonly ShellViewModel shell;
-
         public virtual bool CanNext { get { return true; } }
 
         private IScreen _Option;
@@ -18,7 +17,7 @@ namespace ImageDownloader
             set { this.RaiseAndSetIfChanged(ref _Option, value); }
         }
 
-        public StepViewModel(Settings settings, ShellViewModel shell)
+        public BaseViewModel(Settings settings, ShellViewModel shell)
         {
             this.settings = settings;
             this.shell = shell;

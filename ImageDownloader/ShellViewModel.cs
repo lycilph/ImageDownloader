@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using Framework.Core.Shell;
 using NLog;
 using NLog.Config;
 using ReactiveUI;
 using LogManager = NLog.LogManager;
+using IScreen = Caliburn.Micro.IScreen;
 
 namespace ImageDownloader
 {
     [Export(typeof(IShell))]
-    public sealed class ShellViewModel : ConductorShell<StepViewModel>
+    public sealed class ShellViewModel : ConductorShell<IScreen>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly Settings settings;
+        private readonly Stack<IScreen> screens = new Stack<IScreen>();
 
         public Selection Selection { get; set; }
 
-        private List<StepViewModel> _Screens;
-        public List<StepViewModel> Screens
+        private MainViewModel _Main;
+        public MainViewModel Main
         {
-            get { return _Screens; }
-            set { this.RaiseAndSetIfChanged(ref _Screens, value); }
+            get { return _Main; }
+            private set { this.RaiseAndSetIfChanged(ref _Main, value); }
         }
 
         private string _MainStatusText;
@@ -47,41 +48,19 @@ namespace ImageDownloader
             set { this.RaiseAndSetIfChanged(ref _IsBusy, value); }
         }
 
-        private readonly ObservableAsPropertyHelper<bool> _CanNext;
-        public bool CanNext { get { return _CanNext.Value; } }
-
-        private readonly ObservableAsPropertyHelper<bool> _CanPrevious;
-        public bool CanPrevious { get { return _CanPrevious.Value; } }
-
         public ShellViewModel()
         {
             DisplayName = "ImageDownloader";
             settings = Settings.Load();
             SetupStatusbarLogging();
 
-            Screens = new List<StepViewModel>
-            {
-                new StartViewModel(settings, this),
-                new SiteViewModel(settings, this),
-                new DownloadViewModel(settings, this)
-            };
-
-            _CanNext = this.WhenAny(x => x.ActiveItem, 
-                                    x => x.ActiveItem.CanNext,
-                                    x => x.IsBusy, 
-                                    (item, item_next, busy) => item.Value != Screens.Last() && item.Value != Screens.First() && item_next.Value && !busy.Value)
-                           .ToProperty(this, x => x.CanNext);
-
-            _CanPrevious = this.WhenAny(x => x.ActiveItem, 
-                                        x => x.IsBusy,
-                                        (item, busy) => item.Value != Screens.First() && !busy.Value)
-                               .ToProperty(this, x => x.CanPrevious);
+            Main = new MainViewModel(settings, this);
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Home();
+            Show(Main);
         }
 
         protected override void OnDeactivate(bool close)
@@ -101,29 +80,21 @@ namespace ImageDownloader
             LogManager.Configuration = config;
         }
 
-        private void Show(StepViewModel screen)
+        public void Back()
         {
-            logger.Trace("Showing screen " + screen.DisplayName);
+            screens.Pop();
+            ActivateItem(screens.Peek());
+        }
+
+        public void Show(IScreen view_model)
+        {
+            logger.Trace("Showing screen " + view_model.DisplayName);
+
             MainStatusText = string.Empty;
             AuxiliaryStatusText = string.Empty;
-            ActivateItem(screen);
-        }
 
-        public void Home()
-        {
-            Show(Screens.First());
-        }
-
-        public void Next()
-        {
-            var index = Screens.IndexOf(ActiveItem);
-            Show(Screens[index+1]);
-        }
-
-        public void Previous()
-        {
-            var index = Screens.IndexOf(ActiveItem);
-            Show(Screens[index-1]);
+            screens.Push(view_model);
+            ActivateItem(view_model);
         }
     }
 }

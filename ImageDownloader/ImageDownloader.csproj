@@ -126,6 +126,10 @@
       <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DownloadViewModel.cs" />
+    <Compile Include="MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainViewModel.cs" />
     <Compile Include="MultiSourceConverter.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Selection.cs" />
@@ -146,7 +150,7 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellViewModel.cs" />
-    <Compile Include="StepViewModel.cs" />
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="VirtualToggleButton.cs" />
     <Compile Include="WpfLogTarget.cs" />
   </ItemGroup>
@@ -197,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DownloadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
