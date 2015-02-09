@@ -81,7 +81,7 @@ namespace ImageDownloader
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Show(Screens.First());
+            Home();
         }
 
         protected override void OnDeactivate(bool close)
@@ -107,6 +107,11 @@ namespace ImageDownloader
             MainStatusText = string.Empty;
             AuxiliaryStatusText = string.Empty;
             ActivateItem(screen);
+        }
+
+        public void Home()
+        {
+            Show(Screens.First());
         }
 
         public void Next()

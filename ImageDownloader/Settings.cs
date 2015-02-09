@@ -10,6 +10,8 @@ namespace ImageDownloader
         private const string Filename = "settings.txt";
         private const string DefaultDataFolder = "Data";
 
+        public const int ImageDownloadDelay = 250;
+
         public static string ApplicationFolder
         {
             get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }

@@ -13,6 +13,14 @@
         <BitmapImage x:Key="StopImage" UriSource="Images/appbar.control.pause.png"/>
         
         <local:BooleanToImageConverter x:Key="BooleanToImageConverter" TrueValue="{StaticResource StopImage}" FalseValue="{StaticResource StartImage}"/>
+
+        <Style TargetType="Image">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     
     <DockPanel>

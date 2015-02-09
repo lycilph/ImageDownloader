@@ -32,4 +32,9 @@ namespace ImageDownloader
     {
         public BooleanToImageConverter() : base(null, null) { }
     }
+
+    public class NegatedBooleanConverter : BooleanConverter<bool>
+    {
+        public NegatedBooleanConverter() : base(false, true) { }
+    }
 }
