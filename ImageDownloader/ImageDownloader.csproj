@@ -1,21 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\CefSharp.Wpf.39.0.0-pre02\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.39.0.0-pre02\build\CefSharp.Wpf.props')" />
-  <Import Project="..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}</ProjectGuid>
+    <ProjectGuid>{D419C86F-1548-41F9-81F9-2925F899993B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImageDownloader</RootNamespace>
     <AssemblyName>ImageDownloader</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <NuGetPackageImportStamp>2e7a17de</NuGetPackageImportStamp>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,26 +37,6 @@
   <PropertyGroup>
     <ApplicationIcon>Images\appbar.cloud.download.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -69,55 +47,57 @@
     <Reference Include="Caliburn.Micro.ReactiveUI">
       <HintPath>..\packages\Caliburn.Micro.ReactiveUI.2.2.1\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="Framework.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Framework.Core.1.0.17-alpha\lib\net45\Framework.Core.dll</HintPath>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Framework.UI">
-      <HintPath>..\packages\Framework.UI.1.0.7-alpha\lib\net45\Framework.UI.dll</HintPath>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA048\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.0.1.47, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA047\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI, Version=6.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-core.6.4.0\lib\Net45\ReactiveUI.dll</HintPath>
+    <Reference Include="Panda.ApplicationCore">
+      <HintPath>..\packages\Panda.ApplicationCore.0.1.0-alpha\lib\net451\Panda.ApplicationCore.dll</HintPath>
     </Reference>
-    <Reference Include="Splat, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Splat.1.6.1\lib\Net45\Splat.dll</HintPath>
+    <Reference Include="Panda.UI">
+      <HintPath>..\packages\Panda.UI.0.1.0-alpha\lib\net451\Panda.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Panda.Utilities">
+      <HintPath>..\packages\Panda.Utilities.0.1.0-alpha\lib\net451\Panda.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Panda.WebCrawler">
+      <HintPath>..\packages\Panda.WebCrawler.0.1.0-alpha\lib\net451\Panda.WebCrawler.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI">
+      <HintPath>..\packages\reactiveui-core.6.4.0.1\lib\Net45\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat">
+      <HintPath>..\packages\Splat.1.6.0\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
       <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Linq">
       <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Rx-Xaml.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA047\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA048\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -140,47 +120,39 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BooleanConverters.cs" />
-    <Compile Include="BrowserView.xaml.cs">
-      <DependentUpon>BrowserView.xaml</DependentUpon>
+    <Compile Include="Model\Selection.cs" />
+    <Compile Include="Model\Settings.cs" />
+    <Compile Include="Screens\BaseViewModel.cs" />
+    <Compile Include="Screens\Crawl\CrawlerView.xaml.cs">
+      <DependentUpon>CrawlerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BrowserViewModel.cs" />
-    <Compile Include="CustomLifeSpanHandler.cs" />
-    <Compile Include="DownloadItemViewModel.cs" />
-    <Compile Include="DownloadItemView.xaml.cs">
-      <DependentUpon>DownloadItemView.xaml</DependentUpon>
+    <Compile Include="Screens\Crawl\CrawlerViewModel.cs" />
+    <Compile Include="Screens\Crawl\CrawlView.xaml.cs">
+      <DependentUpon>CrawlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DownloadView.xaml.cs">
+    <Compile Include="Screens\Crawl\CrawlViewModel.cs" />
+    <Compile Include="Screens\Download\DownloadView.xaml.cs">
       <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DownloadViewModel.cs" />
-    <Compile Include="MainView.xaml.cs">
+    <Compile Include="Screens\Download\DownloadViewModel.cs" />
+    <Compile Include="Screens\Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="MultiSourceConverter.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Selection.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SiteOptionView.xaml.cs">
-      <DependentUpon>SiteOptionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SiteOptionViewModel.cs" />
-    <Compile Include="SiteView.xaml.cs">
+    <Compile Include="Screens\Main\MainViewModel.cs" />
+    <Compile Include="Screens\Site\SiteView.xaml.cs">
       <DependentUpon>SiteView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SiteViewModel.cs" />
-    <Compile Include="StartView.xaml.cs">
+    <Compile Include="Screens\Site\SiteViewModel.cs" />
+    <Compile Include="Screens\Start\StartView.xaml.cs">
       <DependentUpon>StartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StartViewModel.cs" />
-    <Compile Include="ShellView.xaml.cs">
+    <Compile Include="Screens\Start\StartViewModel.cs" />
+    <Compile Include="Sitemap\AllInternalLinksExtractor.cs" />
+    <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShellViewModel.cs" />
-    <Compile Include="BaseViewModel.cs" />
-    <Compile Include="VirtualToggleButton.cs" />
-    <Compile Include="WpfLogTarget.cs" />
+    <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="Sitemap\SitemapProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -200,25 +172,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Images\appbar.globe.wire.png" />
-    <Resource Include="Images\appbar.cloud.download.png" />
-    <Resource Include="Images\appbar.cloud.download.ico" />
-    <Resource Include="Images\noimage.gif" />
-    <Resource Include="Images\appbar.control.play.png" />
-    <Resource Include="Images\appbar.control.pause.png" />
-    <Resource Include="Images\appbar.home.png" />
-    <Resource Include="Images\appbar.camera.png" />
-    <Resource Include="Images\appbar.arrow.left.png" />
-    <Resource Include="Images\appbar.arrow.right.png" />
-    <Resource Include="Images\appbar.cancel.png" />
-    <Resource Include="Images\appbar.refresh.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -229,63 +191,55 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BrowserView.xaml">
+    <Page Include="Resources\FontSizes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Crawl\CrawlerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DownloadItemView.xaml">
+    <Page Include="Screens\Crawl\CrawlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DownloadView.xaml">
+    <Page Include="Screens\Download\DownloadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainView.xaml">
+    <Page Include="Screens\Main\MainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Site\SiteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Screens\Start\StartView.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SiteOptionView.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SiteView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StartView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ShellView.xaml">
+    <Page Include="Shell\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{ae0c85a3-feb7-48ad-9bc0-2983ba7617dc}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
+    <Resource Include="Images\appbar.arrow.left.png" />
+    <Resource Include="Images\appbar.arrow.right.png" />
+    <Resource Include="Images\appbar.camera.png" />
+    <Resource Include="Images\appbar.cancel.png" />
+    <Resource Include="Images\appbar.cloud.download.ico" />
+    <Resource Include="Images\appbar.cloud.download.png" />
+    <Resource Include="Images\appbar.control.pause.png" />
+    <Resource Include="Images\appbar.control.play.png" />
+    <Resource Include="Images\appbar.globe.wire.png" />
+    <Resource Include="Images\appbar.home.png" />
+    <Resource Include="Images\appbar.refresh.png" />
+    <Resource Include="Images\noimage.gif" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\cef.redist.x86.3.2171.1972\build\cef.redist.x86.targets" Condition="Exists('..\packages\cef.redist.x86.3.2171.1972\build\cef.redist.x86.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\cef.redist.x86.3.2171.1972\build\cef.redist.x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.3.2171.1972\build\cef.redist.x86.targets'))" />
-    <Error Condition="!Exists('..\packages\cef.redist.x64.3.2171.1972\build\cef.redist.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.3.2171.1972\build\cef.redist.x64.targets'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.targets'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Wpf.39.0.0-pre02\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.39.0.0-pre02\build\CefSharp.Wpf.props'))" />
-  </Target>
-  <Import Project="..\packages\cef.redist.x64.3.2171.1972\build\cef.redist.x64.targets" Condition="Exists('..\packages\cef.redist.x64.3.2171.1972\build\cef.redist.x64.targets')" />
-  <Import Project="..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.39.0.0-pre02\build\CefSharp.Common.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

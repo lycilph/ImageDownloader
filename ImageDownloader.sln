@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{AE0C85A3-FEB7-48AD-9BC0-2983BA7617DC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloaderCLI", "ImageDownloaderCLI\ImageDownloaderCLI.csproj", "{07BCDA1D-D603-4B56-A9B4-4942E446DF91}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloaderPrototype", "ImageDownloaderPrototype\ImageDownloaderPrototype.csproj", "{2BF133A9-633B-4322-AA7F-EB478B515033}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader", "ImageDownloader\ImageDownloader.csproj", "{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloader", "ImageDownloader\ImageDownloader.csproj", "{D419C86F-1548-41F9-81F9-2925F899993B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE0C85A3-FEB7-48AD-9BC0-2983BA7617DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE0C85A3-FEB7-48AD-9BC0-2983BA7617DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE0C85A3-FEB7-48AD-9BC0-2983BA7617DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE0C85A3-FEB7-48AD-9BC0-2983BA7617DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07BCDA1D-D603-4B56-A9B4-4942E446DF91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07BCDA1D-D603-4B56-A9B4-4942E446DF91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07BCDA1D-D603-4B56-A9B4-4942E446DF91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07BCDA1D-D603-4B56-A9B4-4942E446DF91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BF133A9-633B-4322-AA7F-EB478B515033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BF133A9-633B-4322-AA7F-EB478B515033}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BF133A9-633B-4322-AA7F-EB478B515033}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BF133A9-633B-4322-AA7F-EB478B515033}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}.Debug|Any CPU.Build.0 = Debug|x64
-		{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89AEF2A9-AD95-4220-925E-A3D07D7E57DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D419C86F-1548-41F9-81F9-2925F899993B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D419C86F-1548-41F9-81F9-2925F899993B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D419C86F-1548-41F9-81F9-2925F899993B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D419C86F-1548-41F9-81F9-2925F899993B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

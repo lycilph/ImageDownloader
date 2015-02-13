@@ -1,25 +1,17 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using CefSharp;
 
 namespace ImageDownloader
 {
-    public partial class App
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
     {
-        public App()
-        {
-            var settings = new CefSettings
-            {
-                CachePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-            };
-
-            Cef.Initialize(settings);
-        }
-
-        private void OnExit(object sender, ExitEventArgs e)
-        {
-            Cef.Shutdown();
-        }
     }
 }
