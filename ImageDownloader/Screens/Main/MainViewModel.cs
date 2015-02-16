@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Caliburn.Micro.ReactiveUI;
-using ImageDownloader.Model;
+using ImageDownloader.Controllers;
 using ImageDownloader.Screens.Crawl;
 using ImageDownloader.Screens.Download;
 using ImageDownloader.Screens.Site;
 using ImageDownloader.Screens.Start;
-using ImageDownloader.Shell;
 using NLog;
 using ReactiveUI;
 
@@ -17,6 +15,7 @@ namespace ImageDownloader.Screens.Main
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly ApplicationController controller;
         private readonly BaseViewModel start;
         private readonly BaseViewModel crawl;
         private readonly BaseViewModel site;
@@ -41,19 +40,20 @@ namespace ImageDownloader.Screens.Main
         private readonly ObservableAsPropertyHelper<bool> _CanPrevious;
         public bool CanPrevious { get { return _CanPrevious.Value; } }
 
-        public MainViewModel(Settings settings, ShellViewModel shell)
+        public MainViewModel(ApplicationController controller)
         {
-            start = new StartViewModel(settings, shell, this) {Next = null, Previous = null};
-            crawl = new CrawlViewModel(settings, shell, this) {Previous = start};
-            site = new SiteViewModel(settings, shell) {Previous = start};
-            var download = new DownloadViewModel(settings, shell) {Next = null, Previous = site};
+            this.controller = controller;
+            start = new StartViewModel(controller) {Next = null, Previous = null};
+            crawl = new CrawlViewModel(controller) {Previous = start};
+            site = new SiteViewModel(controller) {Previous = start};
+            var download = new DownloadViewModel(controller) {Next = null, Previous = site};
 
             crawl.Next = site;
             site.Next = download;
 
             Screens = new List<BaseViewModel> {start, crawl, site, download};
             
-            shell.WhenAnyValue(x => x.IsBusy).Subscribe(x => IsBusy = x);
+            controller.Shell.WhenAnyValue(x => x.IsBusy).Subscribe(x => IsBusy = x);
 
             _CanNext = this.WhenAny(x => x.ActiveItem,
                                     x => x.IsBusy,
@@ -74,8 +74,10 @@ namespace ImageDownloader.Screens.Main
 
         protected override void ChangeActiveItem(BaseViewModel new_item, bool close_previous)
         {
-            base.ChangeActiveItem(new_item, close_previous);
             logger.Trace("Changing to step: " + new_item.DisplayName);
+            controller.Shell.MainStatusText = string.Empty;
+            controller.Shell.AuxiliaryStatusText = string.Empty;
+            base.ChangeActiveItem(new_item, close_previous);
         }
 
         public void Home()

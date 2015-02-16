@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Model\Selection.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Screens\BaseViewModel.cs" />
@@ -152,7 +153,8 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="Sitemap\SitemapProcessor.cs" />
+    <Compile Include="Sitemap\SitemapGenerator.cs" />
+    <Compile Include="Sitemap\SitemapPageProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -238,7 +240,9 @@
     <Resource Include="Images\appbar.refresh.png" />
     <Resource Include="Images\noimage.gif" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Screens\Browser\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

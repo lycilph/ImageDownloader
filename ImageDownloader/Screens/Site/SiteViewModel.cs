@@ -1,11 +1,10 @@
-﻿using ImageDownloader.Model;
-using ImageDownloader.Shell;
+﻿using ImageDownloader.Controllers;
 
 namespace ImageDownloader.Screens.Site
 {
     public sealed class SiteViewModel : BaseViewModel
     {
-        public SiteViewModel(Settings settings, ShellViewModel shell) : base(settings, shell)
+        public SiteViewModel(ApplicationController controller) : base(controller)
         {
             DisplayName = "Site";
         }

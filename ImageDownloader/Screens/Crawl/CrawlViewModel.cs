@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Threading;
+using ImageDownloader.Controllers;
 using ImageDownloader.Model;
-using ImageDownloader.Screens.Main;
-using ImageDownloader.Shell;
 using ImageDownloader.Sitemap;
 using Panda.ApplicationCore.Extensions;
 using Panda.Utilities.Extensions;
@@ -16,8 +16,6 @@ namespace ImageDownloader.Screens.Crawl
 {
     public sealed class CrawlViewModel : BaseViewModel
     {
-        private readonly MainViewModel main;
-
         private string _Url;
         public string Url
         {
@@ -39,9 +37,8 @@ namespace ImageDownloader.Screens.Crawl
             set { this.RaiseAndSetIfChanged(ref _Crawlers, value); }
         }
 
-        public CrawlViewModel(Settings settings, ShellViewModel shell, MainViewModel main) : base(settings, shell)
+        public CrawlViewModel(ApplicationController controller) : base(controller)
         {
-            this.main = main;
             DisplayName = "Crawl";
 
             Crawlers = Enumerable.Range(1, Settings.MaxThreadCount)
@@ -53,13 +50,19 @@ namespace ImageDownloader.Screens.Crawl
         {
             base.OnActivate();
 
-            Url = shell.Selection.Text;
+            Url = controller.Selection.Text;
             Text = "Initializing crawler";
-            shell.MainStatusText = "Crawling " + Url;
+            controller.Shell.MainStatusText = "Crawling " + Url;
+
+            var start_time = DateTime.Now;
+            var timer = new DispatcherTimer();
+            timer.Tick += (o, a) => controller.Shell.AuxiliaryStatusText = Math.Round((DateTime.Now - start_time).TotalSeconds, 1).ToString("N1") + " sec(s)";
+            timer.Interval = TimeSpan.FromMilliseconds(100);
+            timer.Start();
 
             var options = new CrawlerOptions
             {
-                DataFolder = settings.DataFolder,
+                DataFolder = controller.Settings.DataFolder,
                 MaxThreadCount = Settings.MaxThreadCount,
             };
             var progress = new CrawlerProgress
@@ -68,9 +71,12 @@ namespace ImageDownloader.Screens.Crawl
                 TaskProgress = Crawlers.Select(c => new Progress<string>(str => c.Text = str)).Cast<IProgress<string>>().ToList()
             };
             var link_extractor = new AllInternalLinksExtractor(Url.GetHost());
-            var page_processor = new SitemapProcessor();
+            var page_processor = new SitemapPageProcessor();
             
-            shell.IsBusy = true;
+            controller.Shell.IsBusy = true;
+
+            // Setup SitemapGenerator
+
             await Task.Factory.StartNew(() =>
             {
                 var sw = Stopwatch.StartNew();
@@ -80,13 +86,16 @@ namespace ImageDownloader.Screens.Crawl
                     progress.Report("Finalizing crawler");
                 }
                 var elapsed = sw.StopAndGetElapsedMilliseconds();
-                shell.MainStatusText = string.Format("Crawled {0} in {1} ms", Url, elapsed);
+                controller.Shell.MainStatusText = string.Format("Crawled {0} in {1} ms", Url, elapsed);
             });
-            shell.IsBusy = false;
+
+            controller.Shell.IsBusy = false;
+
+            timer.Stop();
 
             Text = "Crawler done";
-            await Task.Delay(2000);
-            main.Next();
+            await Task.Delay(Settings.ScreenTransitionDelay);
+            controller.Main.Next();
         }
     }
 }

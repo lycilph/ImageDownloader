@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro.ReactiveUI;
-using ImageDownloader.Model;
-using ImageDownloader.Shell;
+using ImageDownloader.Controllers;
 using ReactiveUI;
 using IScreen = Caliburn.Micro.IScreen;
 
@@ -8,8 +7,7 @@ namespace ImageDownloader.Screens
 {
     public class BaseViewModel : ReactiveScreen
     {
-        protected readonly Settings settings;
-        protected readonly ShellViewModel shell;
+        protected readonly ApplicationController controller;
 
         public BaseViewModel Previous { get; set; }
         public BaseViewModel Next { get; set; }
@@ -21,10 +19,9 @@ namespace ImageDownloader.Screens
             set { this.RaiseAndSetIfChanged(ref _Option, value); }
         }
 
-        public BaseViewModel(Settings settings, ShellViewModel shell)
+        public BaseViewModel(ApplicationController controller)
         {
-            this.settings = settings;
-            this.shell = shell;
+            this.controller = controller;
         }
     }
 }

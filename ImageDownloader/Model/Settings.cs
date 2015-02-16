@@ -10,8 +10,9 @@ namespace ImageDownloader.Model
         private const string Filename = "settings.txt";
         private const string DefaultDataFolder = "Data";
 
-        public const int ImageDownloadDelay = 250;
-        public const int MaxThreadCount = 16;
+        //public const int ImageDownloadDelay = 250;
+        public const int MaxThreadCount = 8;
+        public const int ScreenTransitionDelay = 3000;
 
         public static string ApplicationFolder
         {

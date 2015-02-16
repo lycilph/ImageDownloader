@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using ImageDownloader.Model;
-using ImageDownloader.Screens;
-using ImageDownloader.Screens.Main;
+using ImageDownloader.Controllers;
 using NLog;
 using Panda.ApplicationCore.Shell;
 using ReactiveUI;
@@ -16,19 +14,8 @@ namespace ImageDownloader.Shell
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Settings settings;
+        private readonly ApplicationController controller;
         private readonly Stack<IScreen> screens = new Stack<IScreen>();
-        private readonly MainViewModel main_view_model;
-        //private readonly BrowserViewModel browser_view_model;
-
-        public Selection Selection { get; set; }
-
-        //private MainViewModel _Main;
-        //public MainViewModel Main
-        //{
-        //    get { return _Main; }
-        //    private set { this.RaiseAndSetIfChanged(ref _Main, value); }
-        //}
 
         private string _MainStatusText;
         public string MainStatusText
@@ -54,16 +41,13 @@ namespace ImageDownloader.Shell
         public ShellViewModel()
         {
             DisplayName = "ImageDownloader";
-            settings = Settings.Load();
-
-            main_view_model = new MainViewModel(settings, this);
-            //browser_view_model = new BrowserViewModel(this);
+            controller = new ApplicationController(this);
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Show(main_view_model);
+            controller.Activate();
         }
 
         protected override void OnDeactivate(bool close)
@@ -71,7 +55,7 @@ namespace ImageDownloader.Shell
             base.OnDeactivate(close);
 
             if (close)
-                settings.Save();
+                controller.Deactivate();
         }
 
         public void Back()
@@ -89,11 +73,6 @@ namespace ImageDownloader.Shell
 
             screens.Push(view_model);
             ActivateItem(view_model);
-        }
-
-        public void ShowBrowser()
-        {
-            //Show(browser_view_model);
         }
     }
 }
