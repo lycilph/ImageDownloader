@@ -1,28 +1,57 @@
-﻿using ImageDownloader.Model;
+﻿using System;
+using System.Threading;
+using ImageDownloader.Model;
 using ImageDownloader.Screens.Main;
 using ImageDownloader.Shell;
+using ReactiveUI;
 
 namespace ImageDownloader.Controllers
 {
-    public class ApplicationController
+    public class ApplicationController : ReactiveObject
     {
+        private readonly ShellViewModel shell;
+        private readonly MainViewModel main;
         //private readonly BrowserViewModel browser_view_model;
 
-        public Settings Settings { get; set; }
-        public Selection Selection { get; set; }
-        public ShellViewModel Shell { get; set; }
-        public MainViewModel Main { get; set; }
+        public Settings Settings { get; private set; }
+
+        public SiteController SiteController { get; private set; }
+
+        private bool _IsBusy;
+        public bool IsBusy
+        {
+            get { return _IsBusy; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _IsBusy, value);
+                shell.IsBusy = value;
+            }
+        }
+
+        public string MainStatusText { set { shell.MainStatusText = value; } }
+        public string AuxiliaryStatusText { set { shell.AuxiliaryStatusText = value; } }
 
         public ApplicationController(ShellViewModel shell)
         {
-            Shell = shell;
+            this.shell = shell;
             Settings = Settings.Load();
-            Main = new MainViewModel(this);
+            SiteController = new SiteController(this);
+            main = new MainViewModel(this);
+
+            EnsureMinThreadCount();
+        }
+
+        private static void EnsureMinThreadCount()
+        {
+            int min_worker, min_ioc;
+            ThreadPool.GetMinThreads(out min_worker, out min_ioc);
+            if (min_worker < Settings.MaxTotalThreadCount)
+                ThreadPool.SetMinThreads(Settings.MaxTotalThreadCount, min_ioc);
         }
 
         public void Activate()
         {
-            Shell.Show(Main);
+            shell.Show(main);
         }
 
         public void Deactivate()
@@ -30,7 +59,24 @@ namespace ImageDownloader.Controllers
             Settings.Save();
         }
 
-        public void ShowBrowser()
+        public void Next()
+        {
+            main.Next();
+        }
+
+        public void CrawlSite(string url)
+        {
+            SiteController.Url = url;
+            main.ShowCrawl();
+        }
+
+        public void LoadSite(string filename)
+        {
+            SiteController.Load(filename);
+            main.ShowSite();
+        }
+
+        public void ShowBrowser(string url)
         {
             //Show(browser_view_model);
         }

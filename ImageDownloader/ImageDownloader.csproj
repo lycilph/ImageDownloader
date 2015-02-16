@@ -53,6 +53,7 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA048\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -121,17 +122,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\ApplicationController.cs" />
-    <Compile Include="Model\Selection.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="Screens\Site\MultiSourceConverter.cs" />
     <Compile Include="Screens\BaseViewModel.cs" />
-    <Compile Include="Screens\Crawl\CrawlerView.xaml.cs">
+    <Compile Include="Screens\Processing\CrawlerView.xaml.cs">
       <DependentUpon>CrawlerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Crawl\CrawlerViewModel.cs" />
-    <Compile Include="Screens\Crawl\CrawlView.xaml.cs">
-      <DependentUpon>CrawlView.xaml</DependentUpon>
+    <Compile Include="Screens\Processing\CrawlerViewModel.cs" />
+    <Compile Include="Screens\Processing\ProcessingView.xaml.cs">
+      <DependentUpon>ProcessingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Crawl\CrawlViewModel.cs" />
+    <Compile Include="Screens\Processing\ProcessingViewModel.cs" />
     <Compile Include="Screens\Download\DownloadView.xaml.cs">
       <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
@@ -140,10 +142,16 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Main\MainViewModel.cs" />
+    <Compile Include="Screens\Site\Node.cs" />
+    <Compile Include="Screens\Site\SiteOptionView.xaml.cs">
+      <DependentUpon>SiteOptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Site\SiteOptionViewModel.cs" />
     <Compile Include="Screens\Site\SiteView.xaml.cs">
       <DependentUpon>SiteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Site\SiteViewModel.cs" />
+    <Compile Include="Screens\Site\VirtualToggleButton.cs" />
     <Compile Include="Screens\Start\StartView.xaml.cs">
       <DependentUpon>StartView.xaml</DependentUpon>
     </Compile>
@@ -153,8 +161,11 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="Sitemap\SitemapGenerator.cs" />
+    <Compile Include="Sitemap\AllInternalFilesExtractor.cs" />
+    <Compile Include="Sitemap\SitemapNode.cs" />
     <Compile Include="Sitemap\SitemapPageProcessor.cs" />
+    <Compile Include="Utilities\ProcessingProgress.cs" />
+    <Compile Include="Utilities\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -197,11 +208,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\Crawl\CrawlerView.xaml">
+    <Page Include="Screens\Processing\CrawlerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Screens\Crawl\CrawlView.xaml">
+    <Page Include="Screens\Processing\ProcessingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +223,10 @@
     <Page Include="Screens\Main\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Site\SiteOptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Site\SiteView.xaml">
       <SubType>Designer</SubType>

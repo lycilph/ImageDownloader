@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace ImageDownloader.Screens.Crawl
+namespace ImageDownloader.Screens.Processing
 {
     public class CrawlerViewModel : ReactiveObject
     {

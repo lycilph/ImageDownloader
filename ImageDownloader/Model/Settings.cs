@@ -11,7 +11,9 @@ namespace ImageDownloader.Model
         private const string DefaultDataFolder = "Data";
 
         //public const int ImageDownloadDelay = 250;
-        public const int MaxThreadCount = 8;
+        public const int MaxCrawlerThreadCount = 16;
+        public const int MaxSitemapThreadCount = 8;
+        public const int MaxTotalThreadCount = MaxCrawlerThreadCount + MaxSitemapThreadCount + 4;
         public const int ScreenTransitionDelay = 3000;
 
         public static string ApplicationFolder

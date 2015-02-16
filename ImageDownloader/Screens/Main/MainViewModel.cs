@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Controllers;
-using ImageDownloader.Screens.Crawl;
 using ImageDownloader.Screens.Download;
+using ImageDownloader.Screens.Processing;
 using ImageDownloader.Screens.Site;
 using ImageDownloader.Screens.Start;
 using NLog;
@@ -16,16 +15,10 @@ namespace ImageDownloader.Screens.Main
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly ApplicationController controller;
-        private readonly BaseViewModel start;
-        private readonly BaseViewModel crawl;
-        private readonly BaseViewModel site;
-
-        private bool _IsBusy;
-        public bool IsBusy
-        {
-            get { return _IsBusy; }
-            set { this.RaiseAndSetIfChanged(ref _IsBusy, value); }
-        }
+        private BaseViewModel start;
+        private BaseViewModel process;
+        private BaseViewModel site;
+        private BaseViewModel download;
 
         private List<BaseViewModel> _Screens;
         public List<BaseViewModel> Screens
@@ -43,54 +36,53 @@ namespace ImageDownloader.Screens.Main
         public MainViewModel(ApplicationController controller)
         {
             this.controller = controller;
-            start = new StartViewModel(controller) {Next = null, Previous = null};
-            crawl = new CrawlViewModel(controller) {Previous = start};
-            site = new SiteViewModel(controller) {Previous = start};
-            var download = new DownloadViewModel(controller) {Next = null, Previous = site};
-
-            crawl.Next = site;
-            site.Next = download;
-
-            Screens = new List<BaseViewModel> {start, crawl, site, download};
-            
-            controller.Shell.WhenAnyValue(x => x.IsBusy).Subscribe(x => IsBusy = x);
+            CreateScreens();
 
             _CanNext = this.WhenAny(x => x.ActiveItem,
-                                    x => x.IsBusy,
+                                    x => x.controller.IsBusy,
                                     (item, busy) => item.Value.Next != null && !busy.Value)
                                     .ToProperty(this, x => x.CanNext);
 
             _CanPrevious = this.WhenAny(x => x.ActiveItem,
-                                        x => x.IsBusy,
+                                        x => x.controller.IsBusy,
                                         (item, busy) => item.Value.Previous != null && !busy.Value)
                                         .ToProperty(this, x => x.CanPrevious);
+        }
+
+        private void CreateScreens()
+        {
+            start = new StartViewModel(controller, controller.SiteController);
+            process = new ProcessingViewModel(controller, controller.SiteController);
+            site = new SiteViewModel(controller, controller.SiteController);
+            download = new DownloadViewModel(controller, controller.SiteController);
+
+            process.Connect(start, site);
+            site.Connect(start, download);
+            download.Connect(site, null);
+
+            Screens = new List<BaseViewModel> {start, process, site, download};
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Home();
+            ActivateItem(start);
         }
 
         protected override void ChangeActiveItem(BaseViewModel new_item, bool close_previous)
         {
             logger.Trace("Changing to step: " + new_item.DisplayName);
-            controller.Shell.MainStatusText = string.Empty;
-            controller.Shell.AuxiliaryStatusText = string.Empty;
+            controller.MainStatusText = string.Empty;
+            controller.AuxiliaryStatusText = string.Empty;
             base.ChangeActiveItem(new_item, close_previous);
         }
 
-        public void Home()
+        public void ShowCrawl()
         {
-            ActivateItem(start);
+            ActivateItem(process);
         }
 
-        public void Crawl()
-        {
-            ActivateItem(crawl);
-        }
-
-        public void Site()
+        public void ShowSite()
         {
             ActivateItem(site);
         }

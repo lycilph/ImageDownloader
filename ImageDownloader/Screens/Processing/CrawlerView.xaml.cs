@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ImageDownloader.Screens.Crawl
+namespace ImageDownloader.Screens.Processing
 {
     /// <summary>
     /// Interaction logic for CrawlerView.xaml

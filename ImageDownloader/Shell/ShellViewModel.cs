@@ -58,6 +58,14 @@ namespace ImageDownloader.Shell
                 controller.Deactivate();
         }
 
+        protected override void ChangeActiveItem(IScreen new_item, bool close_previous)
+        {
+            logger.Trace("Changing to screen: " + new_item.DisplayName);
+            MainStatusText = string.Empty;
+            AuxiliaryStatusText = string.Empty;
+            base.ChangeActiveItem(new_item, close_previous);
+        }
+
         public void Back()
         {
             screens.Pop();
@@ -66,11 +74,6 @@ namespace ImageDownloader.Shell
 
         public void Show(IScreen view_model)
         {
-            logger.Trace("Showing screen " + view_model.DisplayName);
-
-            MainStatusText = string.Empty;
-            AuxiliaryStatusText = string.Empty;
-
             screens.Push(view_model);
             ActivateItem(view_model);
         }

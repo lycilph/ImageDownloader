@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using ImageDownloader.Controllers;
-using ImageDownloader.Model;
 using Microsoft.Win32;
 using NLog;
 using ReactiveUI;
@@ -37,7 +36,7 @@ namespace ImageDownloader.Screens.Start
         private readonly ObservableAsPropertyHelper<bool> _CanLoadSite;
         public bool CanLoadSite { get { return _CanLoadSite.Value; } }
 
-        public StartViewModel(ApplicationController controller) : base(controller)
+        public StartViewModel(ApplicationController controller, SiteController site_controller) : base(controller, site_controller)
         {
             DisplayName = "Start";
 
@@ -52,50 +51,34 @@ namespace ImageDownloader.Screens.Start
         {
             base.OnActivate();
 
-            if (controller.Selection != null && controller.Selection.Kind == Selection.SelectionKind.CapturedUrl)
-            {
-                logger.Debug("Captured url detected: " + controller.Selection.Text);
-                CrawlCapturedSite();
-            }
-
             Url = FavoriteUrls.FirstOrDefault();
             Filename = FavoriteFiles.FirstOrDefault();
-            controller.Shell.MainStatusText = "Select which site to crawl or load";
-        }
-
-        private void CrawlCapturedSite()
-        {
-            if (!FavoriteUrls.Contains(controller.Selection.Text))
-                controller.Settings.FavoriteSiteUrls.Insert(0, controller.Selection.Text);
-            controller.Main.Crawl();
+            controller.MainStatusText = "Select which site to crawl or load";
         }
 
         public void CrawlSite()
         {
             if(!FavoriteUrls.Contains(Url))
                 controller.Settings.FavoriteSiteUrls.Insert(0, Url);
-            controller.Selection = new Selection(Url, Selection.SelectionKind.Url);
-            controller.Main.Crawl();
+            controller.CrawlSite(Url);
         }
 
         public void LoadSite()
         {
             if (!File.Exists(Filename))
             {
-                controller.Shell.MainStatusText = Filename + " does not exist!";
+                controller.MainStatusText = Filename + " does not exist!";
                 return;
             }
 
             if (!FavoriteFiles.Contains(Filename))
                 controller.Settings.FavoriteSiteFiles.Insert(0, Filename);
-            controller.Selection = new Selection(Filename, Selection.SelectionKind.File);
-            controller.Main.Site();
+            controller.LoadSite(Filename);
         }
 
         public void Capture()
         {
-            controller.Selection = new Selection(Url, Selection.SelectionKind.Url);
-            controller.ShowBrowser();
+            controller.ShowBrowser(Url);
         }
 
         public void Browse()

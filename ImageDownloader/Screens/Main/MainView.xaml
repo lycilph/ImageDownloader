@@ -26,7 +26,7 @@
                 <ItemsControl ItemsSource="{Binding Screens}" Margin="10,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type micro:IScreen}">
-                            <TextBlock x:Name="StepTextBlock" Text="{Binding DisplayName}" FontSize="{StaticResource StepItemFontSize}" TextDecorations=""/>
+                            <TextBlock x:Name="StepTextBlock" Text="{Binding DisplayName}" FontSize="{StaticResource StepItemFontSize}"/>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding IsActive}" Value="true">
                                     <Setter Property="FontWeight" Value="Bold" TargetName="StepTextBlock"/>
