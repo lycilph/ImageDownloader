@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using ImageDownloader.Model;
+using ImageDownloader.Screens.Browser;
 using ImageDownloader.Screens.Main;
 using ImageDownloader.Shell;
 using ReactiveUI;
@@ -11,7 +11,7 @@ namespace ImageDownloader.Controllers
     {
         private readonly ShellViewModel shell;
         private readonly MainViewModel main;
-        //private readonly BrowserViewModel browser_view_model;
+        private readonly BrowserViewModel browser;
 
         public Settings Settings { get; private set; }
 
@@ -37,6 +37,7 @@ namespace ImageDownloader.Controllers
             Settings = Settings.Load();
             SiteController = new SiteController(this);
             main = new MainViewModel(this);
+            browser = new BrowserViewModel(this);
 
             EnsureMinThreadCount();
         }
@@ -59,6 +60,11 @@ namespace ImageDownloader.Controllers
             Settings.Save();
         }
 
+        public void Back()
+        {
+            shell.Back();
+        }
+
         public void Next()
         {
             main.Next();
@@ -78,7 +84,8 @@ namespace ImageDownloader.Controllers
 
         public void ShowBrowser(string url)
         {
-            //Show(browser_view_model);
+            SiteController.Url = url;
+            shell.Show(browser);
         }
     }
 }

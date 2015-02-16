@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="ImageDownloader.Screens.Browser.BrowserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:converters="http://www.lycilph.com/Panda"
+             xmlns:browser="clr-namespace:ImageDownloader.Screens.Browser"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="VisibilityConverter" TrueValue="Visible" FalseValue="Hidden"/>
+
+        <browser:CustomLifeSpanHandler x:Key="CustomLifeSpanHandler"/>
+
+        <Style TargetType="Image">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Left" x:Name="Cancel" Padding="0">
+                <Image Source="../../Images/appbar.cancel.png" Height="25"/>
+            </Button>
+            <Button DockPanel.Dock="Left" x:Name="Capture" Padding="0" Margin="5,0,0,0">
+                <Image Source="../../Images/appbar.camera.png" Height="25"/>
+            </Button>
+            <Button DockPanel.Dock="Left" 
+                    Padding="0" 
+                    Margin="10,0,0,0" 
+                    IsEnabled="{Binding ElementName=WpfBrowser, Path=CanGoBack}"
+                    ToolTip="Go back">
+                <Image Source="../../Images/appbar.arrow.left.png" Height="25"/>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction TargetObject="{Binding ElementName=WpfBrowser, Path=WebBrowser}" MethodName="Back"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button DockPanel.Dock="Left" 
+                    Padding="0" 
+                    Margin="5,0,0,0" 
+                    IsEnabled="{Binding ElementName=WpfBrowser, Path=CanGoForward}"
+                    ToolTip="Go forward">
+                <Image Source="../../Images/appbar.arrow.right.png" Height="25"/>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction TargetObject="{Binding ElementName=WpfBrowser, Path=WebBrowser}" MethodName="Forward"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button DockPanel.Dock="Left" 
+                    Padding="0"
+                    Margin="5,0,0,0" 
+                    IsEnabled="{Binding ElementName=WpfBrowser, Path=CanReload}"
+                    ToolTip="Reload page">
+                <Image Source="../../Images/appbar.refresh.png" Height="25"/>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction TargetObject="{Binding ElementName=WpfBrowser, Path=WebBrowser}" MethodName="Reload"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button DockPanel.Dock="Left" x:Name="Home" Padding="0" Margin="5,0,0,0">
+                <Image Source="../../Images/appbar.home.png" Height="25"/>
+            </Button>
+            <TextBox Text="{Binding ElementName=WpfBrowser, Path=Address, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+        </DockPanel>
+
+        <controls:MetroProgressBar DockPanel.Dock="Top" 
+                                   IsIndeterminate="True" 
+                                   Visibility="{Binding ElementName=WpfBrowser, Path=IsLoading, Converter={StaticResource VisibilityConverter}}"/>
+
+        <wpf:ChromiumWebBrowser x:Name="WpfBrowser" 
+                                Address="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
+                                LifeSpanHandler="{StaticResource CustomLifeSpanHandler}"/>
+    </DockPanel>
+</UserControl>
