@@ -36,7 +36,7 @@ namespace ImageDownloader.Screens.Start
         private readonly ObservableAsPropertyHelper<bool> _CanLoadSite;
         public bool CanLoadSite { get { return _CanLoadSite.Value; } }
 
-        public StartViewModel(ApplicationController controller, SiteController site_controller) : base(controller, site_controller)
+        public StartViewModel(ApplicationController controller) : base(controller)
         {
             DisplayName = "Start";
 

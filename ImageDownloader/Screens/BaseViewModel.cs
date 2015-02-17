@@ -8,7 +8,6 @@ namespace ImageDownloader.Screens
     public class BaseViewModel : ReactiveScreen
     {
         protected readonly ApplicationController controller;
-        protected readonly SiteController site_controller;
 
         public BaseViewModel Previous { get; set; }
         public BaseViewModel Next { get; set; }
@@ -20,10 +19,9 @@ namespace ImageDownloader.Screens
             set { this.RaiseAndSetIfChanged(ref _Option, value); }
         }
 
-        public BaseViewModel(ApplicationController controller, SiteController site_controller)
+        public BaseViewModel(ApplicationController controller)
         {
             this.controller = controller;
-            this.site_controller = site_controller;
         }
 
         public void Connect(BaseViewModel previous, BaseViewModel next)

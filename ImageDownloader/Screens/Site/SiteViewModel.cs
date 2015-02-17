@@ -45,10 +45,10 @@ namespace ImageDownloader.Screens.Site
         //private readonly ObservableAsPropertyHelper<bool> _CanNext;
         //public bool CanNext { get { return _CanNext.Value; } }
 
-        public SiteViewModel(ApplicationController controller, SiteController site_controller) : base(controller, site_controller)
+        public SiteViewModel(ApplicationController controller) : base(controller)
         {
             DisplayName = "Site";
-            Option = new SiteOptionViewModel(controller, site_controller);
+            Option = new SiteOptionViewModel(controller);
 
             SelectedNodes.CountChanged.Subscribe(x =>
             {
@@ -65,7 +65,7 @@ namespace ImageDownloader.Screens.Site
 
             Nodes = new ReactiveList<Node>
             {
-                new Node(site_controller.Sitemap, string.Empty, null, Node.NodeKind.Page, SelectedNodes)
+                //new Node(site_controller.Sitemap, string.Empty, null, Node.NodeKind.Page, SelectedNodes)
             };
         }
 

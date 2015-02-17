@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Panda.WebCrawler;
-using Panda.WebCrawler.Extensions;
-using Panda.WebCrawler.LinkExtractor;
+using WebCrawler.Data;
+using WebCrawler.Extensions;
 
-namespace ImageDownloader.Sitemap
+namespace WebCrawler.LinkExtractor
 {
     public class AllInternalLinksExtractor : ILinkExtractor
     {

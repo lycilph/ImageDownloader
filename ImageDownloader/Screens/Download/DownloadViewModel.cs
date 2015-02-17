@@ -4,7 +4,7 @@ namespace ImageDownloader.Screens.Download
 {
     public sealed class DownloadViewModel : BaseViewModel
     {
-        public DownloadViewModel(ApplicationController controller, SiteController site_controller) : base(controller, site_controller)
+        public DownloadViewModel(ApplicationController controller) : base(controller)
         {
             DisplayName = "Download";
         }

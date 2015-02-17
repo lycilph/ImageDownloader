@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Panda.Utilities.Extensions;
 
-namespace ImageDownloader.Sitemap
+namespace WebCrawler.Sitemap
 {
-    [DebuggerDisplay("Name = {Name}, Nodes = {Nodes.Count}, Images = {Images.Count}")]
+    [DebuggerDisplay("Name = {Name}, Nodes = {Nodes.Count}, Files = {Files.Count}")]
     public class SitemapNode
     {
         public string Name { get; set; }
@@ -44,6 +45,16 @@ namespace ImageDownloader.Sitemap
             var node = new SitemapNode(element);
             Nodes.Add(element, node);
             return node;
+        }
+
+        public void Save(string filename)
+        {
+            JsonExtensions.ZipAndWriteToFile(filename, this);
+        }
+
+        public static SitemapNode Load(string filename)
+        {
+            return JsonExtensions.ReadFromFileAndUnzip<SitemapNode>(filename);
         }
     }
 }

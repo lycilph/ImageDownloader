@@ -51,10 +51,10 @@ namespace ImageDownloader.Screens.Main
 
         private void CreateScreens()
         {
-            start = new StartViewModel(controller, controller.SiteController);
-            process = new ProcessingViewModel(controller, controller.SiteController);
-            site = new SiteViewModel(controller, controller.SiteController);
-            download = new DownloadViewModel(controller, controller.SiteController);
+            start = new StartViewModel(controller);
+            process = new ProcessingViewModel(controller);
+            site = new SiteViewModel(controller);
+            download = new DownloadViewModel(controller);
 
             process.Connect(start, site);
             site.Connect(start, download);

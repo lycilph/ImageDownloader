@@ -2,7 +2,7 @@
 
 namespace ImageDownloader.Screens.Processing
 {
-    public class CrawlerViewModel : ReactiveObject
+    public class TaskInformationViewModel : ReactiveObject
     {
         private string _DisplayName;
         public string DisplayName

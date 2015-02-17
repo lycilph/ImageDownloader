@@ -9,7 +9,7 @@ namespace ImageDownloader.Screens.Site
         private readonly ObservableAsPropertyHelper<bool> _CanSave;
         public bool CanSave { get { return _CanSave.Value; } }
 
-        public SiteOptionViewModel(ApplicationController controller, SiteController site_controller) : base(controller, site_controller)
+        public SiteOptionViewModel(ApplicationController controller) : base(controller)
         {
             _CanSave = controller.WhenAny(x => x.IsBusy, x => !x.Value)
                                  .ToProperty(this, x => x.CanSave);
@@ -26,8 +26,8 @@ namespace ImageDownloader.Screens.Site
 
             if (save_file_dialog.ShowDialog() == true)
             {
-                site_controller.Save(save_file_dialog.FileName);
-                controller.MainStatusText = string.Format("Saved {0} to {1}", site_controller.Url, save_file_dialog.FileName);
+                //site_controller.Save(save_file_dialog.FileName);
+                //controller.MainStatusText = string.Format("Saved {0} to {1}", site_controller.Url, save_file_dialog.FileName);
             }
         }
     }

@@ -25,7 +25,7 @@ namespace ImageDownloader.Screens.Browser
         protected override void OnActivate()
         {
             base.OnActivate();
-            var url = controller.SiteController.Url;
+            var url = controller.SiteInformation.Url;
             Address = (string.IsNullOrWhiteSpace(url) ? HomeUrl : url);
         }
 

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
-using ImageDownloader.Sitemap;
 using ReactiveUI;
+using WebCrawler.Sitemap;
 
 namespace ImageDownloader.Screens.Site
 {

@@ -1,9 +1,9 @@
-﻿using System.Threading;
-using ImageDownloader.Model;
+﻿using ImageDownloader.Model;
 using ImageDownloader.Screens.Browser;
 using ImageDownloader.Screens.Main;
 using ImageDownloader.Shell;
 using ReactiveUI;
+using WebCrawler.Sitemap;
 
 namespace ImageDownloader.Controllers
 {
@@ -15,7 +15,7 @@ namespace ImageDownloader.Controllers
 
         public Settings Settings { get; private set; }
 
-        public SiteController SiteController { get; private set; }
+        public SiteInformation SiteInformation { get; set; } // This is data shared between view models
 
         private bool _IsBusy;
         public bool IsBusy
@@ -35,19 +35,9 @@ namespace ImageDownloader.Controllers
         {
             this.shell = shell;
             Settings = Settings.Load();
-            SiteController = new SiteController(this);
+            SiteInformation = new SiteInformation();
             main = new MainViewModel(this);
             browser = new BrowserViewModel(this);
-
-            EnsureMinThreadCount();
-        }
-
-        private static void EnsureMinThreadCount()
-        {
-            int min_worker, min_ioc;
-            ThreadPool.GetMinThreads(out min_worker, out min_ioc);
-            if (min_worker < Settings.MaxTotalThreadCount)
-                ThreadPool.SetMinThreads(Settings.MaxTotalThreadCount, min_ioc);
         }
 
         public void Activate()
@@ -72,19 +62,19 @@ namespace ImageDownloader.Controllers
 
         public void CrawlSite(string url)
         {
-            SiteController.Url = url;
+            SiteInformation.Url = url;
             main.ShowCrawl();
         }
 
         public void LoadSite(string filename)
         {
-            SiteController.Load(filename);
+            SiteInformation.Sitemap = SitemapNode.Load(filename);
             main.ShowSite();
         }
 
         public void ShowBrowser(string url)
         {
-            SiteController.Url = url;
+            SiteInformation.Url = url;
             shell.Show(browser);
         }
     }
