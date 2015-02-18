@@ -7,12 +7,20 @@
                       xmlns:cal="http://www.caliburnproject.org"
                       xmlns:panda="http://www.lycilph.com/Panda"
                       mc:Ignorable="d" 
-                      Height="600"
-                      Width="800"
+                      Height="800"
+                      Width="1000"
                       Icon="../Images/appbar.cloud.download.png">
     <controls:MetroWindow.Resources>
         <panda:BooleanToVisibilityConverter x:Key="HiddenVisibilityConverter" TrueValue="Visible" FalseValue="Hidden"/>
         <panda:BooleanToVisibilityConverter x:Key="CollapsedVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+
+        <Style TargetType="Image">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.25"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </controls:MetroWindow.Resources>
     
     <controls:MetroWindow.LeftWindowCommands>

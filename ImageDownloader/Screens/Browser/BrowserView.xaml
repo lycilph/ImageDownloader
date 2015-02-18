@@ -10,7 +10,9 @@
              xmlns:converters="http://www.lycilph.com/Panda"
              xmlns:browser="clr-namespace:ImageDownloader.Screens.Browser"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance browser:BrowserViewModel}">
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="VisibilityConverter" TrueValue="Visible" FalseValue="Hidden"/>
 
@@ -80,7 +82,7 @@
                                    Visibility="{Binding ElementName=WpfBrowser, Path=IsLoading, Converter={StaticResource VisibilityConverter}}"/>
 
         <wpf:ChromiumWebBrowser x:Name="WpfBrowser" 
-                                Address="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
+                                Address="{Binding Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 LifeSpanHandler="{StaticResource CustomLifeSpanHandler}"/>
     </DockPanel>
 </UserControl>

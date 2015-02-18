@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Caliburn.Micro;
 using ReactiveUI;
@@ -14,9 +15,16 @@ namespace ImageDownloader.Screens.Site
         private readonly Node parent;
         private readonly NodeKind kind;
         private readonly ReactiveList<Node> download_list;
+        private readonly string original_node_name;
 
-        public string Text { get; private set; }
         public List<Node> Children { get; private set; }
+
+        private string _Text;
+        public string Text
+        {
+            get { return _Text; }
+            private set { this.RaiseAndSetIfChanged(ref _Text, value); }
+        }
 
         public string Image
         {
@@ -30,6 +38,13 @@ namespace ImageDownloader.Screens.Site
             set { SetIsChecked(value, true, true); }
         }
 
+        private bool _IsExcluded;
+        public bool IsExcluded
+        {
+            get { return _IsExcluded; }
+            set { this.RaiseAndSetIfChanged(ref _IsExcluded, value); }
+        }
+
         public Node(SitemapNode site_map_node, string file, Node parent, NodeKind kind, ReactiveList<Node> download_list)
         {
             this.parent = parent;
@@ -39,19 +54,20 @@ namespace ImageDownloader.Screens.Site
             switch (kind)
             {
                 case NodeKind.File:
-                    {
-                        Text = file;
-                        Children = new List<Node>();
-                        break;
-                    }
+                {
+                    Text = file;
+                    Children = new List<Node>();
+                    break;
+                }
                 case NodeKind.Page:
-                    {
-                        var page_nodes = site_map_node.Nodes.Values.Select(n => new Node(n, string.Empty, this, NodeKind.Page, download_list));
-                        var file_nodes = site_map_node.Files.Select(f => new Node(null, f, this, NodeKind.File, download_list));
-                        Children = page_nodes.Concat(file_nodes).ToList();
-                        Text = string.Format("{0} [{1} images]", site_map_node.Name, GetFilesCount());
-                        break;
-                    }
+                {
+                    var page_nodes = site_map_node.Nodes.Values.Select(n => new Node(n, string.Empty, this, NodeKind.Page, download_list));
+                    var file_nodes = site_map_node.Files.Select(f => new Node(null, f, this, NodeKind.File, download_list));
+                    Children = page_nodes.Concat(file_nodes).ToList();
+                    original_node_name = site_map_node.Name;
+                    Text = string.Format("{0} [{1} image(s)]", original_node_name, GetFilesCount());
+                    break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException("kind");
             }
@@ -59,7 +75,9 @@ namespace ImageDownloader.Screens.Site
 
         private int GetFilesCount()
         {
-            return (kind == NodeKind.File ? 1 : Children.Sum(n => n.GetFilesCount()));
+            return (kind == NodeKind.File ?
+                    (IsExcluded ? 0 : 1) :
+                    Children.Sum(n => n.GetFilesCount()));
         }
 
         private void SetIsChecked(bool? value, bool update_children, bool update_parent)
@@ -95,6 +113,30 @@ namespace ImageDownloader.Screens.Site
                 state = null;
 
             SetIsChecked(state, false, true);
+        }
+
+        public void UpdateExclusions(ReactiveList<string> strings, ReactiveList<string> extensions)
+        {
+            Children.Apply(c => c.UpdateExclusions(strings, extensions));
+
+            switch (kind)
+            {
+                case NodeKind.File:
+                {
+                    var ext = Path.GetExtension(Text).TrimStart(new[] {'.'}).ToLowerInvariant();
+                    IsExcluded = strings.Any(s => Text.ToLowerInvariant().Contains(s)) || extensions.Contains(ext);
+                    IsChecked = (IsChecked == true && !IsExcluded);
+                    break;
+                }
+                case NodeKind.Page:
+                {
+                    IsExcluded = Children.All(c => c.IsExcluded);
+                    Text = string.Format("{0} [{1} image(s)]", original_node_name, GetFilesCount());
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException("kind");
+            }
         }
     }
 }

@@ -58,8 +58,6 @@ namespace ImageDownloader.Screens.Start
 
         public void CrawlSite()
         {
-            if(!FavoriteUrls.Contains(Url))
-                controller.Settings.FavoriteSiteUrls.Insert(0, Url);
             controller.CrawlSite(Url);
         }
 
@@ -70,9 +68,6 @@ namespace ImageDownloader.Screens.Start
                 controller.MainStatusText = Filename + " does not exist!";
                 return;
             }
-
-            if (!FavoriteFiles.Contains(Filename))
-                controller.Settings.FavoriteSiteFiles.Insert(0, Filename);
             controller.LoadSite(Filename);
         }
 

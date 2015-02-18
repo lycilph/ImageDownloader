@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Linq;
 using ImageDownloader.Controllers;
 using ReactiveUI;
@@ -42,21 +43,16 @@ namespace ImageDownloader.Screens.Site
             set { this.RaiseAndSetIfChanged(ref _CurrentFocus, value); }
         }
 
-        //private readonly ObservableAsPropertyHelper<bool> _CanNext;
-        //public bool CanNext { get { return _CanNext.Value; } }
-
         public SiteViewModel(ApplicationController controller) : base(controller)
         {
             DisplayName = "Site";
-            Option = new SiteOptionViewModel(controller);
+            Option = new SiteOptionViewModel(controller, this);
 
             SelectedNodes.CountChanged.Subscribe(x =>
             {
                 controller.MainStatusText = (SelectedNodes.Count > 0 ? "Selected files: " + SelectedNodes.Count : string.Empty);
                 controller.AuxiliaryStatusText = string.Empty;
             });
-
-            //_CanNext = SelectedNodes.CountChanged.Select(c => c > 0).ToProperty(this, x => x.CanNext);
         }
 
         protected override void OnActivate()
@@ -65,8 +61,15 @@ namespace ImageDownloader.Screens.Site
 
             Nodes = new ReactiveList<Node>
             {
-                //new Node(site_controller.Sitemap, string.Empty, null, Node.NodeKind.Page, SelectedNodes)
+                new Node(controller.SiteInformation.Sitemap, string.Empty, null, Node.NodeKind.Page, SelectedNodes)
             };
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            controller.SiteInformation.Files = SelectedNodes.Select(n => n.Text).ToList();
         }
 
         public void Delete()

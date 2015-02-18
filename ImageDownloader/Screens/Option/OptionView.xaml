@@ -1,41 +1,42 @@
-﻿<UserControl x:Class="ImageDownloader.Screens.Site.SiteOptionView"
+﻿<UserControl x:Class="ImageDownloader.Screens.Option.OptionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="300">
-    <Grid Margin="10,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <StackPanel>
+        <TextBlock Text="Options" FontSize="{StaticResource SubHeaderFontSize}"/>
         
-        <StackPanel Grid.Row="0">
-            <TextBlock Text="Actions" FontSize="{StaticResource HeaderFontSize}" HorizontalAlignment="Center"/>
-            <Separator Margin="7,5"/>
-            <Button x:Name="Save" Content="Save"/>
+        <CheckBox x:Name="UseCache" Content="Enabled cache" Margin="0,20,0,0"/>
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,0" IsEnabled="{Binding ElementName=UseCache, Path=IsChecked}">
+            <TextBlock Text="Cache lifetime" VerticalAlignment="Center"/>
+            <TextBox Text="7" Width="50" Margin="10,0"/>
+            <TextBlock Text="Days" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Grid Grid.Row="1" Margin="0,5,0,0">
+        <CheckBox Content="Flatten file hierarchy" Margin="0,20,0,0"/>
+        
+        <CheckBox Content="Only crawl subpages" Margin="0,20,0,0"/>
+        
+        <DockPanel Margin="0,20,0,0">
+            <TextBlock DockPanel.Dock="Left" Text="Base folder" VerticalAlignment="Center"/>
+            <TextBox Text="ABC" Margin="10,0,0,0"/>
+        </DockPanel>
+
+        <Grid Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
-            <TextBox x:Name="ExclusionExtension" 
-                     Grid.Row="0" 
-                     Grid.Column="0" 
-                     controls:TextBoxHelper.Watermark="Extension"
-                     cal:Message.Attach="[Event KeyUp] = [AddExtensionOnEnter($pressedkey)]"/>
+
+            <TextBox x:Name="ExclusionExtension" Grid.Row="0" Grid.Column="0" controls:TextBoxHelper.Watermark="Extension"/>
             <Button Grid.Row="0"
                     Grid.Column="1"
                     x:Name="AddExtension"
@@ -43,7 +44,7 @@
                     Margin="5,0,0,0">
                 <Image Source="../../Images/appbar.add.png"/>
             </Button>
-            <ListBox Grid.Row="1" Grid.Column="0" x:Name="Extensions" Margin="0,5,0,0" MinHeight="100"/>
+            <ListBox Grid.Row="1" Grid.Column="0" x:Name="Extensions" Margin="0,5,0,0" MinHeight="150"/>
             <Button Grid.Row="1"
                     Grid.Column="1"
                     x:Name="RemoveExtension"
@@ -54,7 +55,7 @@
             </Button>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="0,5,0,0">
+        <Grid Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
@@ -65,11 +66,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="ExclusionString" 
-                     Grid.Row="0" 
-                     Grid.Column="0" 
-                     controls:TextBoxHelper.Watermark="String"
-                     cal:Message.Attach="[Event KeyUp] = [AddStringOnEnter($pressedkey)]"/>
+            <TextBox x:Name="ExclusionString" Grid.Row="0" Grid.Column="0" controls:TextBoxHelper.Watermark="String"/>
             <Button Grid.Row="0"
                     Grid.Column="1"
                     x:Name="AddString"
@@ -77,7 +74,7 @@
                     Margin="5,0,0,0">
                 <Image Source="../../Images/appbar.add.png"/>
             </Button>
-            <ListBox Grid.Row="1" Grid.Column="0" x:Name="Strings" Margin="0,5,0,0" MinHeight="100"/>
+            <ListBox Grid.Row="1" Grid.Column="0" x:Name="Strings" Margin="0,5,0,0" MinHeight="150"/>
             <Button Grid.Row="1"
                     Grid.Column="1"
                     x:Name="RemoveString"
@@ -87,5 +84,5 @@
                 <Image Source="../../Images/appbar.minus.png"/>
             </Button>
         </Grid>
-    </Grid>
+    </StackPanel>
 </UserControl>

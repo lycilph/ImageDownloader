@@ -2,6 +2,7 @@
 using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Controllers;
 using ImageDownloader.Screens.Download;
+using ImageDownloader.Screens.Option;
 using ImageDownloader.Screens.Processing;
 using ImageDownloader.Screens.Site;
 using ImageDownloader.Screens.Start;
@@ -16,6 +17,7 @@ namespace ImageDownloader.Screens.Main
 
         private readonly ApplicationController controller;
         private BaseViewModel start;
+        private BaseViewModel option;
         private BaseViewModel process;
         private BaseViewModel site;
         private BaseViewModel download;
@@ -52,21 +54,23 @@ namespace ImageDownloader.Screens.Main
         private void CreateScreens()
         {
             start = new StartViewModel(controller);
+            option = new OptionViewModel(controller);
             process = new ProcessingViewModel(controller);
             site = new SiteViewModel(controller);
             download = new DownloadViewModel(controller);
 
-            process.Connect(start, site);
+            option.Connect(start, process);
+            process.Connect(option, site);
             site.Connect(start, download);
             download.Connect(site, null);
 
-            Screens = new List<BaseViewModel> {start, process, site, download};
+            Screens = new List<BaseViewModel> {start, option, process, site, download};
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            ActivateItem(start);
+            ShowStart();
         }
 
         protected override void ChangeActiveItem(BaseViewModel new_item, bool close_previous)
@@ -77,9 +81,14 @@ namespace ImageDownloader.Screens.Main
             base.ChangeActiveItem(new_item, close_previous);
         }
 
-        public void ShowCrawl()
+        public void ShowStart()
         {
-            ActivateItem(process);
+            ActivateItem(start);
+        }
+
+        public void ShowOption()
+        {
+            ActivateItem(option);
         }
 
         public void ShowSite()

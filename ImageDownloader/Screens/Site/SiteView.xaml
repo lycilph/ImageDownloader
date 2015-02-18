@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:site="clr-namespace:ImageDownloader.Screens.Site"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:site="clr-namespace:ImageDownloader.Screens.Site"
+             xmlns:panda="http://www.lycilph.com/Panda"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
+        <panda:BooleanToVisibilityConverter x:Key="VisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
         <BitmapImage x:Key="PlaceHolderImage" UriSource="../../Images/noimage.gif"/>
 
         <site:MultiSourceConverter x:Key="MultiSourceConverter"/>
@@ -22,6 +24,7 @@
         </HierarchicalDataTemplate>
 
         <Style x:Key="TreeViewItemStyle" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+            <Setter Property="Visibility" Value="{Binding IsExcluded, Converter={StaticResource VisibilityConverter}}"/>
             <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
             <Setter Property="site:VirtualToggleButton.IsVirtualToggleButton" Value="True" />
             <Setter Property="site:VirtualToggleButton.IsChecked" Value="{Binding IsChecked}"/>

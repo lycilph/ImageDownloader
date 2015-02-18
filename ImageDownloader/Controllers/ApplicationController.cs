@@ -60,15 +60,24 @@ namespace ImageDownloader.Controllers
             main.Next();
         }
 
+        public void Home()
+        {
+            main.ShowStart();
+        }
+
         public void CrawlSite(string url)
         {
             SiteInformation.Url = url;
-            main.ShowCrawl();
+            if (!Settings.FavoriteSiteUrls.Contains(url))
+                Settings.FavoriteSiteUrls.Insert(0, url);
+            main.ShowOption();
         }
 
         public void LoadSite(string filename)
         {
             SiteInformation.Sitemap = SitemapNode.Load(filename);
+            if (!Settings.FavoriteSiteFiles.Contains(filename))
+                Settings.FavoriteSiteFiles.Insert(0, filename);
             main.ShowSite();
         }
 

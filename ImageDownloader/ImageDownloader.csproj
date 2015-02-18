@@ -142,11 +142,21 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Model\SiteInformation.cs" />
+    <Compile Include="Model\SiteOptions.cs" />
     <Compile Include="Screens\Browser\BrowserView.xaml.cs">
       <DependentUpon>BrowserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Browser\BrowserViewModel.cs" />
     <Compile Include="Screens\Browser\CustomLifeSpanHandler.cs" />
+    <Compile Include="Screens\Download\DownloadOptionView.xaml.cs">
+      <DependentUpon>DownloadOptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Download\DownloadOptionViewModel.cs" />
+    <Compile Include="Screens\Download\ScrollToItemBehavior.cs" />
+    <Compile Include="Screens\Option\OptionView.xaml.cs">
+      <DependentUpon>OptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Option\OptionViewModel.cs" />
     <Compile Include="Screens\Site\MultiSourceConverter.cs" />
     <Compile Include="Screens\BaseViewModel.cs" />
     <Compile Include="Screens\Processing\TaskInformationView.xaml.cs">
@@ -175,6 +185,7 @@
     </Compile>
     <Compile Include="Screens\Site\SiteViewModel.cs" />
     <Compile Include="Screens\Site\VirtualToggleButton.cs" />
+    <Compile Include="Screens\Start\StartupTasks.cs" />
     <Compile Include="Screens\Start\StartView.xaml.cs">
       <DependentUpon>StartView.xaml</DependentUpon>
     </Compile>
@@ -203,6 +214,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Images\appbar.add.png" />
+    <Resource Include="Images\appbar.minus.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -227,6 +240,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Browser\BrowserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Download\DownloadOptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Option\OptionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

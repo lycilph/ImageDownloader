@@ -10,7 +10,7 @@ namespace ImageDownloader.Model
         private const string Filename = "settings.txt";
         private const string DefaultDataFolder = "Data";
 
-        //public const int ImageDownloadDelay = 250;
+        public const int ThreadDelay = 100;
         public const int MaxThreadCount = 16;
 
         public static string ApplicationFolder
@@ -46,6 +46,11 @@ namespace ImageDownloader.Model
         {
             _DataFolder = folder;
             Directory.CreateDirectory(folder);
+        }
+
+        public SiteOptions GetDefaultSiteOptions()
+        {
+            
         }
 
         public static Settings Load()

@@ -125,7 +125,7 @@ namespace ImageDownloader.Screens.Processing
                 {
                     var builder = new SitemapBuilder(Url, options, progress, link_extractor);
                     var builder_task = builder.Build(pages);
-                    builder_task.Wait();
+                    controller.SiteInformation.Sitemap = builder_task.Result;
                     progress.Report("Done");
                     main_progress.Report(string.Format("Built sitemap for {0} in {1} ms", Url, timer.Elapsed));
                 }
@@ -138,6 +138,7 @@ namespace ImageDownloader.Screens.Processing
             {
                 DataFolder = controller.Settings.DataFolder,
                 MaxThreadCount = Settings.MaxThreadCount,
+                ThreadDelay = Settings.ThreadDelay
             };
             var progress = new ProcessProgress
             {
