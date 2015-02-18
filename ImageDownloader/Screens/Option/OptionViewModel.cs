@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using AutoMapper;
 using ImageDownloader.Controllers;
 using ImageDownloader.Model;
 using Panda.Utilities.Extensions;
@@ -10,8 +11,6 @@ namespace ImageDownloader.Screens.Option
 {
     public sealed class OptionViewModel : BaseViewModel
     {
-        private SiteOptions options;
-
         private bool _UseCache;
         public bool UseCache
         {
@@ -26,6 +25,41 @@ namespace ImageDownloader.Screens.Option
             set { this.RaiseAndSetIfChanged(ref _CacheLifetime, value); }
         }
 
+        private string _Folder;
+        public string Folder
+        {
+            get { return _Folder; }
+            set { this.RaiseAndSetIfChanged(ref _Folder, value); }
+        }
+
+        private bool _FlattenFilename;
+        public bool FlattenFilename
+        {
+            get { return _FlattenFilename; }
+            set { this.RaiseAndSetIfChanged(ref _FlattenFilename, value); }
+        }
+
+        private bool _OnlySubpages;
+        public bool OnlySubpages
+        {
+            get { return _OnlySubpages; }
+            set { this.RaiseAndSetIfChanged(ref _OnlySubpages, value); }
+        }
+
+        private ReactiveList<string> _ExcludedExtensions = new ReactiveList<string>();
+        public ReactiveList<string> ExcludedExtensions
+        {
+            get { return _ExcludedExtensions; }
+            set { this.RaiseAndSetIfChanged(ref _ExcludedExtensions, value); }
+        }
+
+        private ReactiveList<string> _ExcludedStrings = new ReactiveList<string>();
+        public ReactiveList<string> ExcludedStrings
+        {
+            get { return _ExcludedStrings; }
+            set { this.RaiseAndSetIfChanged(ref _ExcludedStrings, value); }
+        }
+
         public OptionViewModel(ApplicationController controller) : base(controller)
         {
             DisplayName = "Options";
@@ -36,7 +70,18 @@ namespace ImageDownloader.Screens.Option
             base.OnActivate();
 
             var path = GetOptionFilename();
-            options = File.Exists(path) ? JsonExtensions.ReadFromFile<SiteOptions>(path) : controller.Settings.GetDefaultSiteOptions();
+            var options = File.Exists(path) ? JsonExtensions.ReadFromFile<SiteOptions>(path) : controller.Settings.GetDefaultSiteOptions();
+            Mapper.Map(options, this);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+
+            var path = GetOptionFilename();
+            var options = new SiteOptions();
+            Mapper.Map(this, options);
+            JsonExtensions.WriteToFile(path, options);
         }
 
         private string GetOptionFilename()

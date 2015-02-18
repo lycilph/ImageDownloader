@@ -1,7 +1,8 @@
 ﻿<Application x:Class="ImageDownloader.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:applicationCore="clr-namespace:Panda.ApplicationCore;assembly=Panda.ApplicationCore">
+             xmlns:applicationCore="clr-namespace:Panda.ApplicationCore;assembly=Panda.ApplicationCore"
+             Startup="OnStartup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

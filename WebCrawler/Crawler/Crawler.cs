@@ -44,9 +44,7 @@ namespace WebCrawler.Crawler
         
         private void CreateCache(string url)
         {
-            var filename = url.TrimEnd(new []{'/'})
-                              .GetFilename()
-                              .MakeFilenameSafe();
+            var filename = url.GetHost().MakeFilenameSafe();
             var path = Path.Combine(options.DataFolder, filename + ".cache");
             cache = new Cache(path);
         }

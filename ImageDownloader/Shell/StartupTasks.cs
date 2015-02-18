@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Panda.ApplicationCore;
 
-namespace ImageDownloader.Screens.Start
+namespace ImageDownloader.Shell
 {
     public class StartupTasks
     {

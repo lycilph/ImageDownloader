@@ -34,6 +34,13 @@ namespace WebCrawler.Sitemap
                 ThreadPool.SetMinThreads(options.MaxThreadCount, min_ioc);
         }
 
+        private string GetSitemapRoot()
+        {
+            if (!url.EndsWith("/"))
+                return url.Substring(0, url.LastIndexOf('/') + 1);
+            return url;
+        }
+
         public Task<SitemapNode> Build(ConcurrentQueue<Page> pages)
         {
             var item_queue = new ConcurrentQueue<string>();
@@ -60,7 +67,8 @@ namespace WebCrawler.Sitemap
             return Task.WhenAll(page_queue_processor_tasks.ToArray())
                        .ContinueWith(parent =>
                        {
-                           var node = new SitemapNode(url);
+                           var root = GetSitemapRoot();
+                           var node = new SitemapNode(root);
                            item_queue.Apply(i => node.Add(i, i));
                            return node;
                        });

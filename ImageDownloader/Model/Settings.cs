@@ -25,17 +25,27 @@ namespace ImageDownloader.Model
             set { SetDataFolder(value); }
         }
 
-        public bool UseCache { get; set; }
-        
-        public List<string> FavoriteSiteUrls { get; set; }
+        public bool DefaultUseCache { get; set; }
+        public int DefaultCacheLifetime { get; set; }
+        public bool DefaultFlattenFilename { get; set; }
+        public bool DefaultOnlySubpages { get; set; }
+        public List<string> DefaultExcludedExtensions { get; set; }
+        public List<string> DefaultExcludedStrings { get; set; }
 
+        public List<string> FavoriteSiteUrls { get; set; }
         public List<string> FavoriteSiteFiles { get; set; }
 
         // Default image extensions
 
         public Settings()
         {
-            UseCache = true;
+            DefaultUseCache = true;
+            DefaultCacheLifetime = 7;
+            DefaultFlattenFilename = false;
+            DefaultOnlySubpages = true;
+            DefaultExcludedExtensions = new List<string>();
+            DefaultExcludedStrings = new List<string>();
+
             FavoriteSiteUrls = new List<string>();
             FavoriteSiteFiles = new List<string>();
 
@@ -50,7 +60,16 @@ namespace ImageDownloader.Model
 
         public SiteOptions GetDefaultSiteOptions()
         {
-            
+            return new SiteOptions
+            {
+                UseCache = DefaultUseCache,
+                CacheLifetime = DefaultCacheLifetime,
+                FlattenFilename = DefaultFlattenFilename,
+                OnlySubpages = DefaultOnlySubpages,
+                ExcludedExtensions = new List<string>(DefaultExcludedExtensions),
+                ExcludedStrings = new List<string>(DefaultExcludedStrings),
+                Folder = DataFolder,
+            };
         }
 
         public static Settings Load()
