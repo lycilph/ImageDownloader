@@ -13,5 +13,12 @@
             <Button DockPanel.Dock="Right" x:Name="BrowseFolder" Content="..." VerticalAlignment="Center"/>
             <TextBox x:Name="Folder" Margin="10,0"/>
         </DockPanel>
+        
+        <CheckBox x:Name="UseCache" Content="Enabled cache" Margin="0,20,0,0"/>
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,0" IsEnabled="{Binding ElementName=UseCache, Path=IsChecked}">
+            <TextBlock Text="Cache lifetime" VerticalAlignment="Center"/>
+            <TextBox x:Name="CacheLifetime" Width="50" Margin="10,0"/>
+            <TextBlock Text="Days" VerticalAlignment="Center"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

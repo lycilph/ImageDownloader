@@ -52,25 +52,36 @@ namespace ImageDownloader.Controllers
         private void LoadOrCreateSiteCache()
         {
             var path = GetCachePath();
-            SiteCacheTask = Task.Factory.StartNew(() => new Cache(path), TaskCreationOptions.LongRunning);
+            SiteCacheTask = Task.Factory.StartNew(() => new Cache(path, SiteOptions.CacheLifetime), TaskCreationOptions.LongRunning);
         }
 
-        public void SaveSiteOptions()
+        private async void CleanupCache()
+        {
+            if (SiteCacheTask == null)
+                return;
+
+            var cache = await SiteCacheTask;
+            cache.Dispose();
+            SiteCacheTask = null;
+        }
+
+        public void UpdateSiteOptions()
         {
             var path = GetSiteOptionsPath();
             JsonExtensions.WriteToFile(path, SiteOptions);
+
+            if (SiteOptions.UseCache && SiteCacheTask == null)
+                LoadOrCreateSiteCache();
+            
+            if (!SiteOptions.UseCache && SiteCacheTask != null)
+                CleanupCache();
         }
 
         public void Cleanup()
         {
             Url = null;
             SiteOptions = null;
-            if (SiteCacheTask == null) 
-                return;
-
-            var cache = SiteCacheTask.Result;
-            cache.Dispose();
-            SiteCacheTask = null;
+            CleanupCache();
         }
 
         public void Initialize(string url)

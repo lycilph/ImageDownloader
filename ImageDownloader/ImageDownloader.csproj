@@ -60,6 +60,9 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf">
+      <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Panda.ApplicationCore">
       <HintPath>..\packages\Panda.ApplicationCore.0.1.0-alpha\lib\net451\Panda.ApplicationCore.dll</HintPath>
     </Reference>
@@ -123,6 +126,10 @@
       <DependentUpon>ProcessView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Process\ProcessViewModel.cs" />
+    <Compile Include="Screens\Process\TaskInformationView.xaml.cs">
+      <DependentUpon>TaskInformationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Process\TaskInformationViewModel.cs" />
     <Compile Include="Screens\StepScreenBase.cs" />
     <Compile Include="Screens\Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -195,6 +202,10 @@
     <Page Include="Screens\Process\ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Process\TaskInformationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Start\StartView.xaml">
       <SubType>Designer</SubType>

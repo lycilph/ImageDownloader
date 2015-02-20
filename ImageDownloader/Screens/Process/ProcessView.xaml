@@ -5,7 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+    <StackPanel>
+        <TextBlock x:Name="Url" FontSize="{StaticResource SubHeaderFontSize}"/>
+        <Separator Margin="7,5"/>
+        <TextBlock x:Name="CrawlerStatus" FontSize="{StaticResource SubHeaderFontSize}"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
+            <ItemsControl x:Name="Crawlers" Grid.IsSharedSizeScope="True">
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Control.Margin" Value="0,2"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </ScrollViewer>
+    </StackPanel>
 </UserControl>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Security.Policy;
 using AutoMapper;
 using ImageDownloader.Controllers;
+using Ookii.Dialogs.Wpf;
 using Panda.ApplicationCore;
 using ReactiveUI;
 
@@ -58,15 +58,11 @@ namespace ImageDownloader.Screens.Options
             this.site_controller = site_controller;
         }
 
-        protected override async void OnActivate()
+        protected override void OnActivate()
         {
             base.OnActivate();
 
             Mapper.Map(site_controller.SiteOptions, this);
-            
-            status_controller.IsBusy = true;
-            await site_controller.SiteCacheTask;
-            status_controller.IsBusy = false;
         }
 
         protected override void OnDeactivate(bool close)
@@ -74,7 +70,16 @@ namespace ImageDownloader.Screens.Options
             base.OnDeactivate(close);
 
             Mapper.Map(this, site_controller.SiteOptions);
-            site_controller.SaveSiteOptions();
+            site_controller.UpdateSiteOptions();
+        }
+
+        public void BrowseFolder()
+        {
+            var folder_dialog = new VistaFolderBrowserDialog();
+            if (folder_dialog.ShowDialog() == true)
+            {
+                Folder = folder_dialog.SelectedPath;
+            }
         }
     }
 }
