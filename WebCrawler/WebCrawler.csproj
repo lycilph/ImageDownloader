@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{432333A8-6831-424E-8627-4AB9B9DB0CEB}</ProjectGuid>
+    <ProjectGuid>{D12DAE6F-9057-49A4-8FCA-E3C07871EF3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebCrawler</RootNamespace>
@@ -36,51 +36,30 @@
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Panda.Utilities">
       <HintPath>..\packages\Panda.Utilities.0.1.0-alpha\lib\net451\Panda.Utilities.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Cache.cs" />
-    <Compile Include="Crawler\Crawler.cs" />
-    <Compile Include="Crawler\CrawlerOptions.cs" />
-    <Compile Include="Sitemap\SitemapOptions.cs" />
-    <Compile Include="Utils\ProcessProgress.cs" />
+    <Compile Include="Data\Page.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UrlExtensions.cs" />
-    <Compile Include="LinkExtractor\ILinkExtractor.cs" />
-    <Compile Include="Data\Page.cs" />
-    <Compile Include="PageProcessor\IPageProcessor.cs" />
-    <Compile Include="PageProcessor\NullPageProcessor.cs" />
-    <Compile Include="PageProcessor\PageCollector.cs" />
-    <Compile Include="PageProvider\CachedPageProvider.cs" />
-    <Compile Include="PageProvider\IPageProvider.cs" />
-    <Compile Include="PageProvider\WebPageProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LinkExtractor\AllInternalFilesExtractor.cs" />
-    <Compile Include="LinkExtractor\AllInternalLinksExtractor.cs" />
-    <Compile Include="Sitemap\SitemapNode.cs" />
-    <Compile Include="Sitemap\SitemapBuilder.cs" />
-    <Compile Include="Utils\CrawlerWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

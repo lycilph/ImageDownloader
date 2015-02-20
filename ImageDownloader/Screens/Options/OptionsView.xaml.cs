@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageDownloader.Screens.Start
+namespace ImageDownloader.Screens.Options
 {
     /// <summary>
-    /// Interaction logic for StartView.xaml
+    /// Interaction logic for OptionsView.xaml
     /// </summary>
-    public partial class StartView : UserControl
+    public partial class OptionsView : UserControl
     {
-        public StartView()
+        public OptionsView()
         {
             InitializeComponent();
         }

@@ -1,109 +1,98 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Reactive.Linq;
+using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Controllers;
-using ImageDownloader.Screens.Download;
-using ImageDownloader.Screens.Option;
-using ImageDownloader.Screens.Processing;
-using ImageDownloader.Screens.Site;
-using ImageDownloader.Screens.Start;
 using NLog;
+using Panda.ApplicationCore;
+using Panda.ApplicationCore.Extensions;
 using ReactiveUI;
+using LogManager = NLog.LogManager;
 
 namespace ImageDownloader.Screens.Main
 {
-    public class MainViewModel : ReactiveConductor<BaseViewModel>
+    [Export(typeof(MainViewModel))]
+    public class MainViewModel : ReactiveConductor<StepScreenBase>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ApplicationController controller;
-        private BaseViewModel start;
-        private BaseViewModel option;
-        private BaseViewModel process;
-        private BaseViewModel site;
-        private BaseViewModel download;
+        private readonly Stack<StepScreenBase> screens = new Stack<StepScreenBase>();
+        private readonly List<IDisposable> subscriptions = new List<IDisposable>();
+        private readonly StatusController status_controller;
 
-        private List<BaseViewModel> _Screens;
-        public List<BaseViewModel> Screens
+        private ReactiveList<StepScreenBase> _Steps;
+        public ReactiveList<StepScreenBase> Steps
         {
-            get { return _Screens; }
-            set { this.RaiseAndSetIfChanged(ref _Screens, value); }
+            get { return _Steps; }
+            set { this.RaiseAndSetIfChanged(ref _Steps, value); }
         }
 
-        private readonly ObservableAsPropertyHelper<bool> _CanNext;
-        public bool CanNext { get { return _CanNext.Value; } }
-
-        private readonly ObservableAsPropertyHelper<bool> _CanPrevious;
-        public bool CanPrevious { get { return _CanPrevious.Value; } }
-
-        public MainViewModel(ApplicationController controller)
+        private bool _CanNext;
+        public bool CanNext
         {
-            this.controller = controller;
-            CreateScreens();
-
-            _CanNext = this.WhenAny(x => x.ActiveItem,
-                                    x => x.controller.IsBusy,
-                                    (item, busy) => item.Value.Next != null && !busy.Value)
-                                    .ToProperty(this, x => x.CanNext);
-
-            _CanPrevious = this.WhenAny(x => x.ActiveItem,
-                                        x => x.controller.IsBusy,
-                                        (item, busy) => item.Value.Previous != null && !busy.Value)
-                                        .ToProperty(this, x => x.CanPrevious);
+            get { return _CanNext; }
+            set { this.RaiseAndSetIfChanged(ref _CanNext, value); }
         }
 
-        private void CreateScreens()
+        private bool _CanPrevious;
+        public bool CanPrevious
         {
-            start = new StartViewModel(controller);
-            option = new OptionViewModel(controller);
-            process = new ProcessingViewModel(controller);
-            site = new SiteViewModel(controller);
-            download = new DownloadViewModel(controller);
-
-            option.Connect(start, process);
-            process.Connect(option, site);
-            site.Connect(start, download);
-            download.Connect(site, null);
-
-            Screens = new List<BaseViewModel> {start, option, process, site, download};
+            get { return _CanPrevious; }
+            set { this.RaiseAndSetIfChanged(ref _CanPrevious, value); }
         }
 
-        protected override void OnInitialize()
+        [ImportingConstructor]
+        public MainViewModel([ImportMany] IEnumerable<Lazy<StepScreenBase, IExportOrderMetadata>> steps, StatusController status_controller)
         {
-            base.OnInitialize();
-            ShowStart();
+            this.status_controller = status_controller;
+            Steps = steps.OrderBy(s => s.Metadata.Order)
+                         .Select(s => s.Value)
+                         .ToReactiveList();
         }
 
-        protected override void ChangeActiveItem(BaseViewModel new_item, bool close_previous)
+        protected override void ChangeActiveItem(StepScreenBase new_item, bool close_previous)
         {
-            logger.Trace("Changing to step: " + new_item.DisplayName);
-            controller.MainStatusText = string.Empty;
-            controller.AuxiliaryStatusText = string.Empty;
+            logger.Trace("Changing to screen: " + new_item.DisplayName);
+
+            subscriptions.Apply(s => s.Dispose());
+            subscriptions.Clear();
+
+            var next_observable = new_item.WhenAnyValue(x => x.CanNext);
+            var previous_observable = new_item.WhenAnyValue(x => x.CanPrevious);
+            var busy_observable = status_controller.WhenAnyValue(x => x.IsBusy);
+
+            subscriptions.Add(next_observable.CombineLatest(busy_observable, (next, busy) => next && !busy)
+                                             .Subscribe(x => CanNext = x));
+            subscriptions.Add(previous_observable.CombineLatest(busy_observable, (previous, busy) => previous && !busy)
+                                                 .Subscribe(x => CanPrevious = x));
+
             base.ChangeActiveItem(new_item, close_previous);
         }
 
-        public void ShowStart()
+        public void Back()
         {
-            ActivateItem(start);
+            screens.Pop();
+            ActivateItem(screens.Peek());
         }
 
-        public void ShowOption()
+        public void Show(StepScreenBase screen)
         {
-            ActivateItem(option);
-        }
-
-        public void ShowSite()
-        {
-            ActivateItem(site);
+            screens.Push(screen);
+            ActivateItem(screen);
         }
 
         public void Next()
         {
-            ActivateItem(ActiveItem.Next);
+            var index = Steps.IndexOf(ActiveItem);
+            Show(Steps[index+1]);
         }
 
         public void Previous()
         {
-            ActivateItem(ActiveItem.Previous);
+            Back();
         }
     }
 }

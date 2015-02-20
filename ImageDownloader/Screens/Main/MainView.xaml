@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:main="clr-namespace:ImageDownloader.Screens.Main"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300"
+             d:DesignWidth="300" d:DataContext="{d:DesignInstance main:MainViewModel}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -23,7 +25,7 @@
             <StackPanel Grid.Row="0">
                 <TextBlock Text="Steps" FontSize="{StaticResource HeaderFontSize}" HorizontalAlignment="Center"/>
                 <Separator Margin="7,5"/>
-                <ItemsControl ItemsSource="{Binding Screens}" Margin="10,0">
+                <ItemsControl x:Name="Steps" Margin="10,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type micro:IScreen}">
                             <TextBlock x:Name="StepTextBlock" Text="{Binding DisplayName}" FontSize="{StaticResource StepItemFontSize}"/>
@@ -37,7 +39,7 @@
                 </ItemsControl>
             </StackPanel>
 
-            <ContentControl Grid.Row="1" x:Name="ActiveItem_Option" VerticalAlignment="Bottom"/>
+            <!--<ContentControl Grid.Row="1" x:Name="ActiveItem_Option" VerticalAlignment="Bottom"/>-->
 
             <StackPanel Grid.Row="2" Margin="0,10,0,0">
                 <TextBlock Text="Navigate" FontSize="{StaticResource HeaderFontSize}" HorizontalAlignment="Center"/>

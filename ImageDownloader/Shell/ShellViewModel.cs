@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using ImageDownloader.Controllers;
 using NLog;
 using Panda.ApplicationCore.Shell;
 using ReactiveUI;
@@ -10,11 +9,11 @@ using IScreen = Caliburn.Micro.IScreen;
 namespace ImageDownloader.Shell
 {
     [Export(typeof(IShell))]
+    [Export(typeof(ShellViewModel))]
     public sealed class ShellViewModel : ConductorShell<IScreen>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ApplicationController controller;
         private readonly Stack<IScreen> screens = new Stack<IScreen>();
 
         private string _MainStatusText;
@@ -41,21 +40,6 @@ namespace ImageDownloader.Shell
         public ShellViewModel()
         {
             DisplayName = "ImageDownloader";
-            controller = new ApplicationController(this);
-        }
-
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-            controller.Activate();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            base.OnDeactivate(close);
-
-            if (close)
-                controller.Deactivate();
         }
 
         protected override void ChangeActiveItem(IScreen new_item, bool close_previous)
@@ -72,10 +56,10 @@ namespace ImageDownloader.Shell
             ActivateItem(screens.Peek());
         }
 
-        public void Show(IScreen view_model)
+        public void Show(IScreen screen)
         {
-            screens.Push(view_model);
-            ActivateItem(view_model);
+            screens.Push(screen);
+            ActivateItem(screen);
         }
     }
 }

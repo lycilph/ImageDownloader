@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:start="clr-namespace:ImageDownloader.Screens.Start"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:start="clr-namespace:ImageDownloader.Screens.Start"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300"
-             d:DesignWidth="300"
+             d:DesignHeight="300" 
+             d:DesignWidth="500" 
              d:DataContext="{d:DesignInstance start:StartViewModel}">
-    <Grid HorizontalAlignment="Center">
+    <Grid Margin="50,0">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -35,19 +36,28 @@
                 <Image Source="../../Images/appbar.globe.wire.png"/>
             </Button>
             <ComboBox x:Name="FavoriteUrls" 
-                      Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" 
+                      Text="{Binding CurrentFavoriteUrl, UpdateSourceTrigger=PropertyChanged}" 
                       IsEditable="True"
-                      controls:TextBoxHelper.Watermark="Enter an url"/>
+                      controls:TextBoxHelper.Watermark="Enter an url"
+                      cal:Message.Attach="[Event KeyUp] = [CrawlSiteOnEnter($pressedkey)]"/>
         </DockPanel>
 
-        <Button x:Name="LoadSite" Grid.Row="1" Grid.Column="0" Content="Load Site" VerticalAlignment="Top" Margin="10"/>
+        <Button x:Name="LoadSite" 
+                Grid.Row="1"
+                Grid.Column="0"
+                Content="Load Site" 
+                VerticalAlignment="Top" 
+                Margin="10"/>
         <DockPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="10">
-            <Button x:Name="Browse" DockPanel.Dock="Right" Content="..." Margin="10,0,0,0"/>
+            <Button x:Name="Browse"
+                    DockPanel.Dock="Right" 
+                    Content="..." 
+                    Margin="10,0,0,0"/>
             <ComboBox x:Name="FavoriteFiles"
-                      MinWidth="300"
-                      Text="{Binding Filename, UpdateSourceTrigger=PropertyChanged}"
+                      Text="{Binding CurrentFavoriteFile, UpdateSourceTrigger=PropertyChanged}"
                       IsEditable="True"
-                      controls:TextBoxHelper.Watermark="Enter a filename"/>
+                      controls:TextBoxHelper.Watermark="Enter a filename"
+                      cal:Message.Attach="[Event KeyUp] = [LoadSiteOnEnter($pressedkey)]"/>
         </DockPanel>
     </Grid>
 </UserControl>
