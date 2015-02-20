@@ -119,6 +119,9 @@
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\SiteOptions.cs" />
+    <Compile Include="Screens\Process\ProcessView.xaml.cs">
+      <DependentUpon>ProcessView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\Process\ProcessViewModel.cs" />
     <Compile Include="Screens\StepScreenBase.cs" />
     <Compile Include="Screens\Main\MainView.xaml.cs">
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Options\OptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Process\ProcessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

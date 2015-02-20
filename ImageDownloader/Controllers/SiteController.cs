@@ -80,7 +80,9 @@ namespace ImageDownloader.Controllers
             Url = url;
             settings.SetFavoriteUrl(url);
             LoadOrCreateSiteOptions();
-            LoadOrCreateSiteCache();
+
+            if (SiteOptions.UseCache)
+                LoadOrCreateSiteCache();
         }
 
         public void Load(string path)

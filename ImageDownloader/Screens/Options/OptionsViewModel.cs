@@ -23,6 +23,20 @@ namespace ImageDownloader.Screens.Options
             set { this.RaiseAndSetIfChanged(ref _Folder, value); }
         }
 
+        private bool _UseCache;
+        public bool UseCache
+        {
+            get { return _UseCache; }
+            set { this.RaiseAndSetIfChanged(ref _UseCache, value); }
+        }
+
+        private int _CacheLifetime;
+        public int CacheLifetime
+        {
+            get { return _CacheLifetime; }
+            set { this.RaiseAndSetIfChanged(ref _CacheLifetime, value); }
+        }
+
         private bool _CanNext = true;
         public override bool CanNext
         {

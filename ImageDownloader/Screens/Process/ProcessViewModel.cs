@@ -21,5 +21,12 @@ namespace ImageDownloader.Screens.Process
         {
             DisplayName = "Process";
         }
+
+        protected override void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+
+
+        }
     }
 }
