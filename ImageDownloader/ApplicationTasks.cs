@@ -63,9 +63,6 @@ namespace ImageDownloader
             logger.Trace("Deactivating application controller");
             var settings = IoC.Get<Settings>();
             settings.Save();
-
-            var site_controller = IoC.Get<SiteController>();
-            site_controller.Cleanup();
         }
     }
 }

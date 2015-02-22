@@ -55,7 +55,7 @@ namespace ImageDownloader.Controllers
             SiteCacheTask = Task.Factory.StartNew(() => new Cache(path, SiteOptions.CacheLifetime), TaskCreationOptions.LongRunning);
         }
 
-        private async void CleanupCache()
+        private async Task CleanupCache()
         {
             if (SiteCacheTask == null)
                 return;
@@ -65,7 +65,7 @@ namespace ImageDownloader.Controllers
             SiteCacheTask = null;
         }
 
-        public void UpdateSiteOptions()
+        public async Task UpdateSiteOptions()
         {
             var path = GetSiteOptionsPath();
             JsonExtensions.WriteToFile(path, SiteOptions);
@@ -74,20 +74,18 @@ namespace ImageDownloader.Controllers
                 LoadOrCreateSiteCache();
             
             if (!SiteOptions.UseCache && SiteCacheTask != null)
-                CleanupCache();
+                await CleanupCache();
         }
 
-        public void Cleanup()
+        public async Task Cleanup()
         {
             Url = null;
             SiteOptions = null;
-            CleanupCache();
+            await CleanupCache();
         }
 
         public void Initialize(string url)
         {
-            Cleanup();
-
             Url = url;
             settings.SetFavoriteUrl(url);
             LoadOrCreateSiteOptions();
@@ -98,7 +96,6 @@ namespace ImageDownloader.Controllers
 
         public void Load(string path)
         {
-            Cleanup();            
         }
     }
 }

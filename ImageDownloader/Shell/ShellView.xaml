@@ -6,11 +6,14 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:cal="http://www.caliburnproject.org"
                       xmlns:panda="http://www.lycilph.com/Panda"
+                      xmlns:shell="clr-namespace:ImageDownloader.Shell"
                       mc:Ignorable="d" 
                       WindowStartupLocation="CenterScreen"
                       Height="800"
                       Width="1000"
-                      Icon="../Images/appbar.cloud.download.png">
+                      Icon="../Images/appbar.cloud.download.png"
+                      IsEnabled="{Binding IsEnabled}"
+                      d:DataContext="{d:DesignInstance shell:ShellViewModel}">
     <controls:MetroWindow.Resources>
         <panda:BooleanToVisibilityConverter x:Key="HiddenVisibilityConverter" TrueValue="Visible" FalseValue="Hidden"/>
         <panda:BooleanToVisibilityConverter x:Key="CollapsedVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
@@ -18,7 +21,7 @@
         <Style TargetType="Image">
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.25"></Setter>
+                    <Setter Property="Opacity" Value="{StaticResource DisabledOpacity}"></Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>

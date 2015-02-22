@@ -36,6 +36,15 @@
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="FrameworkElement">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="{StaticResource DisabledOpacity}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
                 </ItemsControl>
             </StackPanel>
 

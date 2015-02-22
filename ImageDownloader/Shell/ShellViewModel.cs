@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using ImageDownloader.Controllers;
 using NLog;
 using Panda.ApplicationCore.Shell;
 using ReactiveUI;
@@ -14,6 +18,7 @@ namespace ImageDownloader.Shell
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly SiteController site_controller;
         private readonly Stack<IScreen> screens = new Stack<IScreen>();
 
         private string _MainStatusText;
@@ -37,9 +42,18 @@ namespace ImageDownloader.Shell
             set { this.RaiseAndSetIfChanged(ref _IsBusy, value); }
         }
 
-        public ShellViewModel()
+        private bool _IsEnabled = true;
+        public bool IsEnabled
+        {
+            get { return _IsEnabled; }
+            set { this.RaiseAndSetIfChanged(ref _IsEnabled, value); }
+        }
+
+        [ImportingConstructor]
+        public ShellViewModel(SiteController site_controller)
         {
             DisplayName = "ImageDownloader";
+            this.site_controller = site_controller;
         }
 
         protected override void ChangeActiveItem(IScreen new_item, bool close_previous)
@@ -48,6 +62,14 @@ namespace ImageDownloader.Shell
             MainStatusText = string.Empty;
             AuxiliaryStatusText = string.Empty;
             base.ChangeActiveItem(new_item, close_previous);
+        }
+
+        public override async void CanClose(Action<bool> callback)
+        {
+            IsEnabled = false;
+            Mouse.OverrideCursor = Cursors.Wait;
+            await site_controller.Cleanup();
+            callback(true);
         }
 
         public void Back()

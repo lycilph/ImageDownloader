@@ -71,11 +71,13 @@ namespace ImageDownloader.Screens.Start
             this.navigation_controller = navigation_controller;
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
         {
             base.OnActivate();
 
             Mapper.Map(settings, this);
+
+            await site_controller.Cleanup();
 
             if (string.IsNullOrWhiteSpace(CurrentFavoriteUrl) && FavoriteUrls.Any())
                 CurrentFavoriteUrl = FavoriteUrls.First();

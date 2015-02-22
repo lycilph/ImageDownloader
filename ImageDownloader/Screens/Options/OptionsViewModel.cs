@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using AutoMapper;
 using ImageDownloader.Controllers;
 using Ookii.Dialogs.Wpf;
@@ -65,12 +66,12 @@ namespace ImageDownloader.Screens.Options
             Mapper.Map(site_controller.SiteOptions, this);
         }
 
-        protected override void OnDeactivate(bool close)
+        protected override async void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
 
             Mapper.Map(this, site_controller.SiteOptions);
-            site_controller.UpdateSiteOptions();
+            await site_controller.UpdateSiteOptions();
         }
 
         public void BrowseFolder()
