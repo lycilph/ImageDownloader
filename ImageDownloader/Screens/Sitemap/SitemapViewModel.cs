@@ -14,7 +14,6 @@ namespace ImageDownloader.Screens.Sitemap
     public sealed class SitemapViewModel : StepScreenBase
     {
         private readonly SiteController site_controller;
-        private readonly StatusController status_controller;
         private readonly SitemapOptionViewModel option_view_model;
 
         private SitemapNodeViewModel _CurrentNode;
@@ -71,7 +70,6 @@ namespace ImageDownloader.Screens.Sitemap
             DisplayName = "Sitemap";
             this.site_controller = site_controller;
             this.option_view_model = option_view_model;
-            this.status_controller = status_controller;
 
             Option = option_view_model;
 
@@ -96,6 +94,7 @@ namespace ImageDownloader.Screens.Sitemap
         {
             base.OnViewLoaded(view);
 
+            SelectedNodes.Clear();
             Nodes = new ReactiveList<SitemapNodeViewModel>
             {
                 new SitemapNodeViewModel(site_controller.Sitemap, string.Empty, null, SitemapNodeViewModel.NodeKind.Page, SelectedNodes)

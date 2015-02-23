@@ -20,6 +20,7 @@ namespace ImageDownloader.Screens.Sitemap
         private readonly NodeKind kind;
         private readonly ReactiveList<SitemapNodeViewModel> download_list;
         private readonly string original_node_name;
+        private readonly string extension;
 
         public List<SitemapNodeViewModel> Children { get; private set; }
 
@@ -60,6 +61,8 @@ namespace ImageDownloader.Screens.Sitemap
                 case NodeKind.File:
                 {
                     Text = file;
+                    // ReSharper disable once PossibleNullReferenceException
+                    extension = Path.GetExtension(Text).TrimStart(new[] { '.' }).ToLowerInvariant();
                     Children = new List<SitemapNodeViewModel>();
                     break;
                 }
@@ -94,9 +97,10 @@ namespace ImageDownloader.Screens.Sitemap
 
             if (kind == NodeKind.File)
             {
-                if (IsChecked == true)
+                if (IsChecked == true && IsExcluded == false)
                     download_list.Add(this);
-                else
+                
+                if (IsChecked == false)
                     download_list.Remove(this);
             }
 
@@ -127,9 +131,7 @@ namespace ImageDownloader.Screens.Sitemap
             {
                 case NodeKind.File:
                 {
-                    // ReSharper disable once PossibleNullReferenceException
-                    var ext = Path.GetExtension(Text).TrimStart(new[] {'.'}).ToLowerInvariant();
-                    IsExcluded = strings.Any(s => Text.ToLowerInvariant().Contains(s)) || extensions.Contains(ext);
+                    IsExcluded = strings.Any(s => Text.ToLowerInvariant().Contains(s)) || extensions.Contains(extension);
                     IsChecked = (IsChecked == true && !IsExcluded);
                     break;
                 }

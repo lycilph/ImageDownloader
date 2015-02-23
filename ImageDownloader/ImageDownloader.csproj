@@ -126,6 +126,7 @@
       <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Download\DownloadViewModel.cs" />
+    <Compile Include="Screens\Download\ScrollToItemBehavior.cs" />
     <Compile Include="Screens\Sitemap\MultiSourceConverter.cs" />
     <Compile Include="Screens\Sitemap\Option\SitemapOptionView.xaml.cs">
       <DependentUpon>SitemapOptionView.xaml</DependentUpon>
