@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ImageDownloader.Controllers;
 using NLog;
@@ -68,7 +67,7 @@ namespace ImageDownloader.Shell
         {
             IsEnabled = false;
             Mouse.OverrideCursor = Cursors.Wait;
-            await site_controller.Cleanup();
+            await site_controller.CleanupCache();
             callback(true);
         }
 

@@ -62,20 +62,21 @@
     <Compile Include="PageProcessor\IPageProcessor.cs" />
     <Compile Include="PageProcessor\NullPageProcessor.cs" />
     <Compile Include="PageProvider\CachedPageProvider.cs" />
-    <Compile Include="PageProvider\CrawlerWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="PageProvider\CrawlerWebClient.cs" />
     <Compile Include="PageProvider\IPageProvider.cs" />
+    <Compile Include="PageProvider\IPageProviderFactory.cs" />
+    <Compile Include="PageProvider\PageProviderFactory.cs" />
     <Compile Include="PageProvider\WebPageProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sitemap\SitemapBuilder.cs" />
+    <Compile Include="Sitemap\SitemapNode.cs" />
+    <Compile Include="Sitemap\SitemapOptions.cs" />
     <Compile Include="Utils\ProcessStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Sitemap\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

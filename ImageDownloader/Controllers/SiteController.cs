@@ -20,7 +20,6 @@ namespace ImageDownloader.Controllers
 
         public string Url { get; set; }
         public SiteOptions SiteOptions { get; set; }
-        public Task<Cache> SiteCacheTask { get; set; }
 
         [ImportingConstructor]
         public SiteController(Settings settings)
@@ -52,17 +51,7 @@ namespace ImageDownloader.Controllers
         private void LoadOrCreateSiteCache()
         {
             var path = GetCachePath();
-            SiteCacheTask = Task.Factory.StartNew(() => new Cache(path, SiteOptions.CacheLifetime), TaskCreationOptions.LongRunning);
-        }
-
-        private async Task CleanupCache()
-        {
-            if (SiteCacheTask == null)
-                return;
-
-            var cache = await SiteCacheTask;
-            cache.Dispose();
-            SiteCacheTask = null;
+            SiteOptions.CacheTask = Task.Factory.StartNew(() => new Cache(path, SiteOptions.CacheLifetime), TaskCreationOptions.LongRunning);
         }
 
         public async Task UpdateSiteOptions()
@@ -70,10 +59,10 @@ namespace ImageDownloader.Controllers
             var path = GetSiteOptionsPath();
             JsonExtensions.WriteToFile(path, SiteOptions);
 
-            if (SiteOptions.UseCache && SiteCacheTask == null)
+            if (SiteOptions.UseCache && SiteOptions.CacheTask == null)
                 LoadOrCreateSiteCache();
-            
-            if (!SiteOptions.UseCache && SiteCacheTask != null)
+
+            if (!SiteOptions.UseCache && SiteOptions.CacheTask != null)
                 await CleanupCache();
         }
 
@@ -82,6 +71,16 @@ namespace ImageDownloader.Controllers
             Url = null;
             SiteOptions = null;
             await CleanupCache();
+        }
+
+        public async Task CleanupCache()
+        {
+            if (SiteOptions.CacheTask == null)
+                return;
+
+            var cache = await SiteOptions.CacheTask;
+            cache.Dispose();
+            SiteOptions.CacheTask = null;
         }
 
         public void Initialize(string url)

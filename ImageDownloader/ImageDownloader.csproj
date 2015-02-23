@@ -118,8 +118,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApplicationTasks.cs" />
-    <Compile Include="Controllers\CrawlerController.cs" />
-    <Compile Include="Controllers\SitemapController.cs" />
+    <Compile Include="Services\CrawlerService.cs" />
+    <Compile Include="Services\SitemapService.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\SiteOptions.cs" />

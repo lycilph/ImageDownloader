@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using AutoMapper;
 using ImageDownloader.Controllers;
 using Ookii.Dialogs.Wpf;

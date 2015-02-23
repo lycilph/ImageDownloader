@@ -20,6 +20,7 @@ namespace WebCrawler.Crawler
         private readonly ProcessStatus status;
         private readonly ILinkExtractor link_extractor;
         private readonly IPageProcessor page_processor;
+        private readonly IPageProviderFactory page_provider_factory;
         // Working variables
         private readonly ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
         private readonly ConcurrentBag<string> visited = new ConcurrentBag<string>();
@@ -33,6 +34,7 @@ namespace WebCrawler.Crawler
 
             link_extractor = options.LinkExtractor;
             page_processor = options.PageProcessor;
+            page_provider_factory = options.PageProviderFactory;
 
             EnsureMinThreadCount();
         }
@@ -46,13 +48,6 @@ namespace WebCrawler.Crawler
                 ThreadPool.SetMinThreads(thread_count, min_ioc);
         }
 
-        private IPageProvider GetPageProvider()
-        {
-            return (options.UseCache
-                ? (IPageProvider)new CachedPageProvider(options.Cache, options.UserAgent, options.RequestTimeout)
-                : (IPageProvider)new WebPageProvider(options.UserAgent, options.RequestTimeout));
-        }
-
         private Task CreateProcessorTask(int id)
         {
             var progress = status[id];
@@ -60,7 +55,7 @@ namespace WebCrawler.Crawler
             {
                 log.Debug("Starting consumer " + id);
 
-                using (var page_provider = GetPageProvider())
+                using (var page_provider = page_provider_factory.Create())
                 {
                     while (true)
                     {
@@ -95,6 +90,7 @@ namespace WebCrawler.Crawler
                         Interlocked.Decrement(ref execution_count);
                     }
 
+                    progress.Report("Status: " + page_provider.Status());
                     log.Debug("Stopping consumer {0} [{1}]", id, page_provider.Status());
                 }
             }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -104,7 +100,9 @@ namespace WebCrawler.Crawler
         {
             return Task.Factory.StartNew(() =>
             {
+                status.Report("Starting crawler");
                 log.Debug("Starting finalizer");
+
                 while (true)
                 {
                     if (!queue.Any() && execution_count == 0)
@@ -118,6 +116,7 @@ namespace WebCrawler.Crawler
                     status.Report(string.Format("Queued {0}, Visited {1}", queue.Count, visited.Count));
                 }
 
+                status.Report("Status: Done");
                 log.Debug("Stopping finalizer");
             }, TaskCreationOptions.LongRunning);
         }
