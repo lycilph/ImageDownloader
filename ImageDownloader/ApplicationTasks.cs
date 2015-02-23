@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using ImageDownloader.Controllers;
 using ImageDownloader.Data;
 using ImageDownloader.Screens.Options;
+using ImageDownloader.Screens.Sitemap.Option;
 using ImageDownloader.Screens.Start;
 using NLog;
 using Panda.ApplicationCore;
@@ -54,6 +55,8 @@ namespace ImageDownloader
                   .ForMember(destination => destination.CurrentFavoriteUrl, opt => opt.MapFrom(source => source.LastFavoriteUrl))
                   .ForMember(destination => destination.CurrentFavoriteFile, opt => opt.MapFrom(source => source.LastFavoriteFile));
             Mapper.CreateMap<SiteOptions, OptionsViewModel>()
+                  .ReverseMap();
+            Mapper.CreateMap<SiteOptions, SitemapOptionViewModel>()
                   .ReverseMap();
         }
 

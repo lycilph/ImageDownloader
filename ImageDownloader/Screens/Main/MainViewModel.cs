@@ -57,6 +57,9 @@ namespace ImageDownloader.Screens.Main
         {
             logger.Trace("Changing to screen: " + new_item.DisplayName);
 
+            status_controller.MainStatusText = string.Empty;
+            status_controller.AuxiliaryStatusText = string.Empty;
+
             subscriptions.Apply(s => s.Dispose());
             subscriptions.Clear();
 
@@ -70,6 +73,12 @@ namespace ImageDownloader.Screens.Main
                                                  .Subscribe(x => CanPrevious = x));
 
             base.ChangeActiveItem(new_item, close_previous);
+        }
+
+        public void ResetAndShow(StepScreenBase screen)
+        {
+            screens.Clear();
+            Show(screen);
         }
 
         public void Back()

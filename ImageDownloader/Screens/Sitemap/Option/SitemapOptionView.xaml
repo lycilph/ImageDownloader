@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ImageDownloader.Screens.Options.OptionsView"
+﻿<UserControl x:Class="ImageDownloader.Screens.Sitemap.Option.SitemapOptionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,25 +6,21 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="600" 
-             d:DesignWidth="600">
-    <StackPanel Margin="50,0">
-        <TextBlock Text="Options" FontSize="{StaticResource SubHeaderFontSize}"/>
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Margin="10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <DockPanel Margin="0,20,0,0">
-            <TextBlock DockPanel.Dock="Left" Text="Base folder" VerticalAlignment="Center"/>
-            <Button DockPanel.Dock="Right" x:Name="BrowseFolder" Content="..." VerticalAlignment="Center"/>
-            <TextBox x:Name="Folder" Margin="10,0"/>
-        </DockPanel>
-        
-        <CheckBox x:Name="UseCache" Content="Enabled cache" Margin="0,20,0,0"/>
-        <StackPanel Orientation="Horizontal" Margin="0,5,0,0" IsEnabled="{Binding ElementName=UseCache, Path=IsChecked}">
-            <TextBlock Text="Cache lifetime" VerticalAlignment="Center"/>
-            <TextBox x:Name="CacheLifetime" Width="50" Margin="10,0"/>
-            <TextBlock Text="Days" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Actions" FontSize="{StaticResource HeaderFontSize}" HorizontalAlignment="Center"/>
+            <Separator Margin="7,5"/>
+            <Button x:Name="Save" Content="Save"/>
         </StackPanel>
 
-        <Grid Margin="0,20,0,0">
+        <Grid Grid.Row="1" Margin="0,5,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
@@ -45,7 +41,7 @@
                     x:Name="AddExtension"
                     Height="{Binding ElementName=ExcludedExtensionText, Path=ActualHeight}"
                     Margin="5,0,0,0">
-                <Image Source="../../Images/appbar.add.png"/>
+                <Image Source="../../../Images/appbar.add.png"/>
             </Button>
             <ListBox Grid.Row="1" Grid.Column="0" x:Name="ExcludedExtensions" Margin="0,5,0,0" MinHeight="150"/>
             <Button Grid.Row="1"
@@ -54,11 +50,11 @@
                     Height="{Binding ElementName=ExcludedExtensionText, Path=ActualHeight}"
                     VerticalAlignment="Top"
                     Margin="5,5,0,0">
-                <Image Source="../../Images/appbar.minus.png"/>
+                <Image Source="../../../Images/appbar.minus.png"/>
             </Button>
         </Grid>
 
-        <Grid Margin="0,20,0,0">
+        <Grid Grid.Row="2" Margin="0,5,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
@@ -79,7 +75,7 @@
                     x:Name="AddString"
                     Height="{Binding ElementName=ExcludedStringText, Path=ActualHeight}"
                     Margin="5,0,0,0">
-                <Image Source="../../Images/appbar.add.png"/>
+                <Image Source="../../../Images/appbar.add.png"/>
             </Button>
             <ListBox Grid.Row="1" Grid.Column="0" x:Name="ExcludedStrings" Margin="0,5,0,0" MinHeight="150"/>
             <Button Grid.Row="1"
@@ -88,8 +84,8 @@
                     Height="{Binding ElementName=ExcludedStringText, Path=ActualHeight}"
                     VerticalAlignment="Top"
                     Margin="5,5,0,0">
-                <Image Source="../../Images/appbar.minus.png"/>
+                <Image Source="../../../Images/appbar.minus.png"/>
             </Button>
         </Grid>
-    </StackPanel>
+    </Grid>
 </UserControl>

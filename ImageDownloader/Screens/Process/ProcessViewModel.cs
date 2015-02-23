@@ -2,17 +2,14 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using ImageDownloader.Controllers;
 using ImageDownloader.Data;
 using ImageDownloader.Services;
+using ImageDownloader.Utils;
 using Panda.ApplicationCore;
 using Panda.ApplicationCore.Extensions;
 using ReactiveUI;
-using WebCrawler.Crawler;
-using WebCrawler.Extensions;
-using WebCrawler.LinkExtractor;
-using WebCrawler.PageProcessor;
-using WebCrawler.PageProvider;
 using WebCrawler.Utils;
 
 namespace ImageDownloader.Screens.Process
@@ -74,7 +71,11 @@ namespace ImageDownloader.Screens.Process
             set { this.RaiseAndSetIfChanged(ref _ProcessingStep, value); }
         }
 
-        public override bool CanNext { get; protected set; }
+        public override bool CanNext
+        {
+            get { return true; }
+            protected set { throw new NotSupportedException(); }
+        }
 
         public override bool CanPrevious
         {
@@ -116,24 +117,37 @@ namespace ImageDownloader.Screens.Process
             };
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            CrawlerStatus = "Waiting for crawler service";
+            SitemapStatus = "Waiting for sitemap service";
+
+            Crawlers.Apply(c => c.Text = "Waiting");
+            Builders.Apply(c => c.Text = "Waiting");
+        }
+
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
 
-            Url = site_controller.Url;
-            status_controller.IsBusy = true;
+            var progress = new Progress<string>(str => status_controller.AuxiliaryStatusText = str);
+            using (var timer = new Timer(progress))
+            {
+                Url = site_controller.Url;
+                status_controller.IsBusy = true;
 
-            ProcessingStep = CrawlProcessingStep;
-            await crawler_service.Crawl(Url, site_controller.SiteOptions, crawler_status);
-            // Dummy variable to avoid compiler warning
-            var cache_cleanup = site_controller.CleanupCache();
+                ProcessingStep = CrawlProcessingStep;
+                await Task.Delay(500);
+                var pages = await crawler_service.Crawl(Url, site_controller.SiteOptions, crawler_status);
+                await Task.Delay(500);
+                ProcessingStep = BuildProcessingStep;
+                await Task.Delay(500);
+                site_controller.Sitemap = await sitemap_service.Build(Url, pages, sitemap_status);
 
-            await Task.Delay(2000);
-
-            ProcessingStep = BuildProcessingStep;
-            sitemap_service.Build();
-
-            status_controller.IsBusy = false;
+                status_controller.IsBusy = false;                
+            }
         }
     }
 }

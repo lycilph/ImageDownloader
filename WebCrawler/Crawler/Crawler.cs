@@ -14,6 +14,7 @@ namespace WebCrawler.Crawler
     public class Crawler
     {
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
+        private const int ThreadCountOverhead = 2;
 
         // Input
         private readonly CrawlerOptions options;
@@ -43,7 +44,7 @@ namespace WebCrawler.Crawler
         {
             int min_worker, min_ioc;
             ThreadPool.GetMinThreads(out min_worker, out min_ioc);
-            var thread_count = options.MaxThreadCount + 2;
+            var thread_count = options.MaxThreadCount + ThreadCountOverhead;
             if (min_worker < thread_count)
                 ThreadPool.SetMinThreads(thread_count, min_ioc);
         }

@@ -1,42 +1,23 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
+using Caliburn.Micro.ReactiveUI;
 using ImageDownloader.Controllers;
-using Ookii.Dialogs.Wpf;
-using Panda.ApplicationCore;
+using ImageDownloader.Data;
+using Microsoft.Win32;
 using ReactiveUI;
 
-namespace ImageDownloader.Screens.Options
+namespace ImageDownloader.Screens.Sitemap.Option
 {
-    [Export(typeof(StepScreenBase))]
-    [Export(typeof(OptionsViewModel))]
-    [ExportOrder(2)]
-    public sealed class OptionsViewModel : StepScreenBase
+    [Export(typeof(SitemapOptionViewModel))]
+    public class SitemapOptionViewModel : ReactiveScreen
     {
+        private readonly Settings settings;
+        private readonly StatusController status_controller;
         private readonly SiteController site_controller;
-
-        private string _Folder;
-        public string Folder
-        {
-            get { return _Folder; }
-            set { this.RaiseAndSetIfChanged(ref _Folder, value); }
-        }
-
-        private bool _UseCache;
-        public bool UseCache
-        {
-            get { return _UseCache; }
-            set { this.RaiseAndSetIfChanged(ref _UseCache, value); }
-        }
-
-        private int _CacheLifetime;
-        public int CacheLifetime
-        {
-            get { return _CacheLifetime; }
-            set { this.RaiseAndSetIfChanged(ref _CacheLifetime, value); }
-        }
+        private SitemapNodeViewModel root_sitemap_node;
 
         private string _ExcludedExtensionText;
         public string ExcludedExtensionText
@@ -80,60 +61,84 @@ namespace ImageDownloader.Screens.Options
             set { this.RaiseAndSetIfChanged(ref _ExcludedStrings, value); }
         }
 
+        private readonly ObservableAsPropertyHelper<bool> _CanSave;
+        public bool CanSave { get { return _CanSave.Value; } }
+
+        private readonly ObservableAsPropertyHelper<bool> _CanAddExtension;
+        public bool CanAddExtension { get { return _CanAddExtension.Value; } }
+
         private readonly ObservableAsPropertyHelper<bool> _CanRemoveExtension;
         public bool CanRemoveExtension { get { return _CanRemoveExtension.Value; } }
+
+        private readonly ObservableAsPropertyHelper<bool> _CanAddString;
+        public bool CanAddString { get { return _CanAddString.Value; } }
 
         private readonly ObservableAsPropertyHelper<bool> _CanRemoveString;
         public bool CanRemoveString { get { return _CanRemoveString.Value; } }
 
-        private bool _CanNext = true;
-        public override bool CanNext
-        {
-            get { return _CanNext; }
-            protected set { this.RaiseAndSetIfChanged(ref _CanNext, value); }
-        }
-
-        public override bool CanPrevious
-        {
-            get { return true; }
-            protected set { throw new NotSupportedException(); }
-        }
-        
         [ImportingConstructor]
-        public OptionsViewModel(SiteController site_controller)
+        public SitemapOptionViewModel(Settings settings, StatusController status_controller, SiteController site_controller)
         {
-            DisplayName = "Options";
+            this.settings = settings;
+            this.status_controller = status_controller;
             this.site_controller = site_controller;
 
+            _CanSave = status_controller.WhenAny(x => x.IsBusy, x => !x.Value)
+                                        .ToProperty(this, x => x.CanSave);
+
+            _CanAddExtension = status_controller.WhenAny(x => x.IsBusy, x => !x.Value)
+                                                .ToProperty(this, x => x.CanAddExtension);
+
             _CanRemoveExtension = this.WhenAny(x => x.CurrentExcludedExtension, x => !string.IsNullOrWhiteSpace(x.Value))
+                                      .CombineLatest(status_controller.WhenAnyValue(x => x.IsBusy), (has_text, busy) => has_text && !busy)
                                       .ToProperty(this, x => x.CanRemoveExtension);
 
+            _CanAddString = status_controller.WhenAny(x => x.IsBusy, x => !x.Value)
+                                             .ToProperty(this, x => x.CanAddString);
+
             _CanRemoveString = this.WhenAny(x => x.CurrentExcludedString, x => !string.IsNullOrWhiteSpace(x.Value))
-                                   .ToProperty(this, x => x.CanRemoveString);
+                                      .CombineLatest(status_controller.WhenAnyValue(x => x.IsBusy), (has_text, busy) => has_text && !busy)
+                                      .ToProperty(this, x => x.CanRemoveString);
+        }
+
+        private async void UpdateExclusions()
+        {
+            status_controller.IsBusy = true;
+            await Task.Factory.StartNew(() => root_sitemap_node.UpdateExclusions(ExcludedStrings, ExcludedExtensions));
+            status_controller.IsBusy = false;
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-
             Mapper.Map(site_controller.SiteOptions, this);
+            UpdateExclusions();
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
-
             Mapper.Map(this, site_controller.SiteOptions);
-            // This is done in a task, so that is the cache is loaded, it doesn't disrupt the ui
-            Task.Factory.StartNew(() => site_controller.UpdateSiteOptions().Wait());
         }
 
-        public void BrowseFolder()
+        public void SetRootNode(SitemapNodeViewModel node)
         {
-            var folder_dialog = new VistaFolderBrowserDialog();
-            if (folder_dialog.ShowDialog() == true)
+            root_sitemap_node = node;
+        }
+
+        public void Save()
+        {
+            var save_file_dialog = new SaveFileDialog
             {
-                Folder = folder_dialog.SelectedPath;
+                InitialDirectory = settings.DataFolder,
+                DefaultExt = ".site",
+                Filter = "Site file (.site)|*.site"
+            };
+
+            if (save_file_dialog.ShowDialog() == true)
+            {
+                site_controller.Sitemap.Save(save_file_dialog.FileName);
+                status_controller.MainStatusText = string.Format("Saved {0} to {1}", site_controller.Url, save_file_dialog.FileName);
             }
         }
 
@@ -149,12 +154,14 @@ namespace ImageDownloader.Screens.Options
             {
                 ExcludedExtensions.Add(ExcludedExtensionText.ToLowerInvariant());
                 ExcludedExtensionText = string.Empty;
+                UpdateExclusions();
             }
         }
 
         public void RemoveExtension()
         {
             ExcludedExtensions.Remove(CurrentExcludedExtension);
+            UpdateExclusions();
         }
 
         public void AddStringOnEnter(Key key)
@@ -169,12 +176,14 @@ namespace ImageDownloader.Screens.Options
             {
                 ExcludedStrings.Add(ExcludedStringText.ToLowerInvariant());
                 ExcludedStringText = string.Empty;
+                UpdateExclusions();
             }
         }
 
         public void RemoveString()
         {
             ExcludedStrings.Remove(CurrentExcludedString);
+            UpdateExclusions();
         }
     }
 }

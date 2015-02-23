@@ -118,6 +118,25 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApplicationTasks.cs" />
+    <Compile Include="Screens\Download\Option\DownloadOptionView.xaml.cs">
+      <DependentUpon>DownloadOptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Download\Option\DownloadOptionViewModel.cs" />
+    <Compile Include="Screens\Download\DownloadView.xaml.cs">
+      <DependentUpon>DownloadView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Download\DownloadViewModel.cs" />
+    <Compile Include="Screens\Sitemap\MultiSourceConverter.cs" />
+    <Compile Include="Screens\Sitemap\Option\SitemapOptionView.xaml.cs">
+      <DependentUpon>SitemapOptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Sitemap\SitemapNodeViewModel.cs" />
+    <Compile Include="Screens\Sitemap\Option\SitemapOptionViewModel.cs" />
+    <Compile Include="Screens\Sitemap\SitemapView.xaml.cs">
+      <DependentUpon>SitemapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Sitemap\SitemapViewModel.cs" />
+    <Compile Include="Screens\Sitemap\VirtualToggleButton.cs" />
     <Compile Include="Services\CrawlerService.cs" />
     <Compile Include="Services\SitemapService.cs" />
     <Compile Include="Controllers\StatusController.cs" />
@@ -149,6 +168,7 @@
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
     <Compile Include="Utils\ReflectionExtensions.cs" />
+    <Compile Include="Utils\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NavigationController.cs" />
@@ -171,6 +191,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Images\appbar.globe.wire.png" />
+    <Resource Include="Images\noimage.gif" />
+    <Resource Include="Images\appbar.add.png" />
+    <Resource Include="Images\appbar.minus.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -196,6 +219,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\Download\DownloadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Download\Option\DownloadOptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screens\Main\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -211,6 +242,14 @@
     <Page Include="Screens\Process\TaskInformationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Sitemap\Option\SitemapOptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Sitemap\SitemapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Start\StartView.xaml">
       <SubType>Designer</SubType>
@@ -231,6 +270,7 @@
     <Resource Include="Images\appbar.cloud.download.ico" />
     <Resource Include="Images\appbar.cloud.download.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

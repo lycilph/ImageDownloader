@@ -5,6 +5,7 @@ using System.Windows.Input;
 using AutoMapper;
 using ImageDownloader.Controllers;
 using ImageDownloader.Data;
+using Microsoft.Win32;
 using NLog;
 using Panda.ApplicationCore;
 using ReactiveUI;
@@ -50,6 +51,12 @@ namespace ImageDownloader.Screens.Start
             set { this.RaiseAndSetIfChanged(ref _FavoriteFiles, value); }
         }
 
+        private readonly ObservableAsPropertyHelper<bool> _CanCrawlSite;
+        public bool CanCrawlSite { get { return _CanCrawlSite.Value; } }
+
+        private readonly ObservableAsPropertyHelper<bool> _CanLoadSite;
+        public bool CanLoadSite { get { return _CanLoadSite.Value; } }
+
         public override bool CanNext
         {
             get { return false; }
@@ -69,6 +76,12 @@ namespace ImageDownloader.Screens.Start
             this.settings = settings;
             this.site_controller = site_controller;
             this.navigation_controller = navigation_controller;
+
+            _CanCrawlSite = this.WhenAny(x => x.CurrentFavoriteUrl, x => !string.IsNullOrWhiteSpace(x.Value))
+                               .ToProperty(this, x => x.CanCrawlSite);
+
+            _CanLoadSite = this.WhenAny(x => x.CurrentFavoriteFile, x => !string.IsNullOrWhiteSpace(x.Value))
+                               .ToProperty(this, x => x.CanLoadSite);
         }
 
         protected override async void OnActivate()
@@ -109,6 +122,23 @@ namespace ImageDownloader.Screens.Start
         {
             logger.Trace("Loading site " + CurrentFavoriteFile);
             site_controller.Load(CurrentFavoriteFile);
+            navigation_controller.ShowSitemap();
+        }
+
+        public void Browse()
+        {
+            var open_file_dialog = new OpenFileDialog
+            {
+                InitialDirectory = settings.DataFolder,
+                DefaultExt = ".site",
+                Filter = "Site file (.site)|*.site"
+            };
+
+            if (open_file_dialog.ShowDialog() == true)
+            {
+                CurrentFavoriteFile = open_file_dialog.FileName;
+                LoadSite();
+            }
         }
     }
 }

@@ -67,7 +67,7 @@ namespace ImageDownloader.Shell
         {
             IsEnabled = false;
             Mouse.OverrideCursor = Cursors.Wait;
-            await site_controller.CleanupCache();
+            await site_controller.Cleanup();
             callback(true);
         }
 

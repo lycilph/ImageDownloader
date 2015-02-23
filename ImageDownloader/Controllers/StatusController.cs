@@ -20,6 +20,17 @@ namespace ImageDownloader.Controllers
             }
         }
 
+        private bool _IsEnabled;
+        public bool IsEnabled
+        {
+            get { return _IsEnabled; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _IsEnabled, value);
+                shell.IsEnabled = value;
+            }
+        }
+
         public string MainStatusText { set { shell.MainStatusText = value; } }
         public string AuxiliaryStatusText { set { shell.AuxiliaryStatusText = value; } }
 

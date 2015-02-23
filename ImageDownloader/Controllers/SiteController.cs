@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using ImageDownloader.Data;
 using Panda.Utilities.Extensions;
 using WebCrawler.Data;
 using WebCrawler.Extensions;
+using WebCrawler.Sitemap;
 
 namespace ImageDownloader.Controllers
 {
@@ -20,6 +22,8 @@ namespace ImageDownloader.Controllers
 
         public string Url { get; set; }
         public SiteOptions SiteOptions { get; set; }
+        public SitemapNode Sitemap { get; set; }
+        public List<string> SelectedFiles { get; set; }
 
         [ImportingConstructor]
         public SiteController(Settings settings)
@@ -54,10 +58,31 @@ namespace ImageDownloader.Controllers
             SiteOptions.CacheTask = Task.Factory.StartNew(() => new Cache(path, SiteOptions.CacheLifetime), TaskCreationOptions.LongRunning);
         }
 
-        public async Task UpdateSiteOptions()
+        private void SaveSiteOptions()
         {
+            if (SiteOptions == null)
+                return;
+            
             var path = GetSiteOptionsPath();
             JsonExtensions.WriteToFile(path, SiteOptions);
+        }
+
+        private async Task CleanupCache()
+        {
+            if (SiteOptions == null || SiteOptions.CacheTask == null)
+                return;
+
+            var cache = await SiteOptions.CacheTask;
+            cache.Dispose();
+            SiteOptions.CacheTask = null;
+        }
+
+        public async Task UpdateSiteOptions()
+        {
+            if (SiteOptions == null)
+                return;
+            
+            SaveSiteOptions();
 
             if (SiteOptions.UseCache && SiteOptions.CacheTask == null)
                 LoadOrCreateSiteCache();
@@ -68,19 +93,12 @@ namespace ImageDownloader.Controllers
 
         public async Task Cleanup()
         {
+            SaveSiteOptions();
+            await CleanupCache();
+
             Url = null;
             SiteOptions = null;
-            await CleanupCache();
-        }
-
-        public async Task CleanupCache()
-        {
-            if (SiteOptions.CacheTask == null)
-                return;
-
-            var cache = await SiteOptions.CacheTask;
-            cache.Dispose();
-            SiteOptions.CacheTask = null;
+            Sitemap = null;
         }
 
         public void Initialize(string url)
@@ -95,6 +113,14 @@ namespace ImageDownloader.Controllers
 
         public void Load(string path)
         {
+            if (!File.Exists(path))
+                return;
+
+            settings.SetFavoriteFile(path);
+            Sitemap = SitemapNode.Load(path);
+
+            Url = Sitemap.Name;
+            LoadOrCreateSiteOptions();
         }
     }
 }

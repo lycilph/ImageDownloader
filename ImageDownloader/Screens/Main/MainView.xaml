@@ -48,7 +48,7 @@
                 </ItemsControl>
             </StackPanel>
 
-            <!--<ContentControl Grid.Row="1" x:Name="ActiveItem_Option" VerticalAlignment="Bottom"/>-->
+            <ContentControl Grid.Row="1" x:Name="ActiveItem_Option" VerticalAlignment="Center"/>
 
             <StackPanel Grid.Row="2" Margin="0,10,0,0">
                 <TextBlock Text="Navigate" FontSize="{StaticResource HeaderFontSize}" HorizontalAlignment="Center"/>

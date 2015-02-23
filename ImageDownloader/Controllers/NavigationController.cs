@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using ImageDownloader.Screens.Main;
 using ImageDownloader.Screens.Options;
+using ImageDownloader.Screens.Sitemap;
 using ImageDownloader.Screens.Start;
 using ImageDownloader.Shell;
 
@@ -28,9 +29,19 @@ namespace ImageDownloader.Controllers
             main.Show(start);
         }
 
+        public void ShowStart()
+        {
+            main.ResetAndShow(IoC.Get<StartViewModel>());
+        }
+
         public void ShowOptions()
         {
             main.Show(IoC.Get<OptionsViewModel>());
+        }
+
+        public void ShowSitemap()
+        {
+            main.Show(IoC.Get<SitemapViewModel>());
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿namespace WebCrawler.Sitemap
+﻿using WebCrawler.LinkExtractor;
+
+namespace WebCrawler.Sitemap
 {
     public class SitemapOptions
     {
         public int MaxThreadCount { get; set; }
-
-        public SitemapOptions()
-        {
-            MaxThreadCount = 4;
-        }
+        public int ThreadDelay { get; set; }
+        public ILinkExtractor LinkExtractor { get; set; }
     }
 }
