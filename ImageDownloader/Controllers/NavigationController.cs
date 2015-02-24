@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using Caliburn.Micro;
+using ImageDownloader.Screens.Browser;
 using ImageDownloader.Screens.Main;
 using ImageDownloader.Screens.Options;
 using ImageDownloader.Screens.Sitemap;
@@ -42,6 +43,11 @@ namespace ImageDownloader.Controllers
         public void ShowSitemap()
         {
             main.Show(IoC.Get<SitemapViewModel>());
+        }
+
+        public void ShowBrowser()
+        {
+            shell.Show(IoC.Get<BrowserViewModel>());
         }
     }
 }

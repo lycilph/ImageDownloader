@@ -115,7 +115,7 @@ namespace ImageDownloader.Screens.Options
             _CanNext = this.WhenAny(x => x.Folder, x => !string.IsNullOrWhiteSpace(x.Value))
                            .ToProperty(this, x => x.CanNext);
 
-            this.Validate(x => x.Folder, string.IsNullOrWhiteSpace, "Please enter an output folder");
+            this.Validate(x => x.Folder, x => !string.IsNullOrWhiteSpace(x), "Please enter an output folder");
         }
 
         protected override void OnActivate()

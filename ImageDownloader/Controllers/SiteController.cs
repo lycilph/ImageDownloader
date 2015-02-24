@@ -101,7 +101,7 @@ namespace ImageDownloader.Controllers
             Sitemap = null;
         }
 
-        public void Initialize(string url)
+        public void InitializeCrawl(string url)
         {
             Url = url;
             settings.SetFavoriteUrl(url);
@@ -121,6 +121,11 @@ namespace ImageDownloader.Controllers
 
             Url = Sitemap.Name;
             LoadOrCreateSiteOptions();
+        }
+
+        public void InitializeCapture(string url)
+        {
+            Url = url;
         }
     }
 }

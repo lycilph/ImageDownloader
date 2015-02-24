@@ -86,7 +86,9 @@ namespace ImageDownloader.Screens.Start
             _CanLoadSite = this.WhenAny(x => x.CurrentFavoriteFile, x => !string.IsNullOrWhiteSpace(x.Value))
                                .ToProperty(this, x => x.CanLoadSite);
 
-            this.Validate(x => x.CurrentFavoriteUrl, x => !string.IsNullOrWhiteSpace(x) && !x.IsWellFormedUrl(), "Invalid url");
+            this.Validate(x => x.CurrentFavoriteUrl, 
+                          x => !string.IsNullOrWhiteSpace(x) && x.IsWellFormedUrl() || string.IsNullOrWhiteSpace(x),
+                          "Invalid url");
         }
 
         protected override async void OnActivate()
@@ -113,7 +115,7 @@ namespace ImageDownloader.Screens.Start
         public void CrawlSite()
         {
             logger.Trace("Crawling site " + CurrentFavoriteUrl);
-            site_controller.Initialize(CurrentFavoriteUrl);
+            site_controller.InitializeCrawl(CurrentFavoriteUrl);
             navigation_controller.ShowOptions();
         }
 
@@ -144,6 +146,12 @@ namespace ImageDownloader.Screens.Start
                 CurrentFavoriteFile = open_file_dialog.FileName;
                 LoadSite();
             }
+        }
+
+        public void Capture()
+        {
+            site_controller.InitializeCapture(CurrentFavoriteUrl);
+            navigation_controller.ShowBrowser();
         }
     }
 }
