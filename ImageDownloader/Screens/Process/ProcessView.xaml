@@ -7,7 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <ui:FillPanel SelectedIndex="{Binding ProcessingStep}" Duration="0:0:0.5">
-        <TextBlock x:Name="Url" FontSize="{StaticResource SubHeaderFontSize}"/>
+        <DockPanel>
+            <Button x:Name="Cancel"
+                    DockPanel.Dock="Right"
+                    Margin="10,0,0,0"
+                    Height="{Binding ElementName=Url, Path=ActualHeight}"
+                    Padding="0">
+                <Image Source="../../Images/appbar.cancel.png"/>
+            </Button>
+            <TextBlock x:Name="Url" FontSize="{StaticResource SubHeaderFontSize}"/>
+        </DockPanel>
         <Separator Margin="7,5"/>
         
         <TextBlock x:Name="CrawlerStatus" FontSize="{StaticResource SubHeaderFontSize}"/>

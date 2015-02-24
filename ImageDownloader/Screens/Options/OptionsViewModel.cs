@@ -6,6 +6,7 @@ using AutoMapper;
 using ImageDownloader.Controllers;
 using Ookii.Dialogs.Wpf;
 using Panda.ApplicationCore;
+using Panda.ApplicationCore.Validation;
 using ReactiveUI;
 
 namespace ImageDownloader.Screens.Options
@@ -85,12 +86,12 @@ namespace ImageDownloader.Screens.Options
 
         private readonly ObservableAsPropertyHelper<bool> _CanRemoveString;
         public bool CanRemoveString { get { return _CanRemoveString.Value; } }
-
-        private bool _CanNext = true;
+        
+        private readonly ObservableAsPropertyHelper<bool> _CanNext;
         public override bool CanNext
         {
-            get { return _CanNext; }
-            protected set { this.RaiseAndSetIfChanged(ref _CanNext, value); }
+            get { return _CanNext.Value; }
+            protected set { throw new NotSupportedException(); }
         }
 
         public override bool CanPrevious
@@ -110,6 +111,11 @@ namespace ImageDownloader.Screens.Options
 
             _CanRemoveString = this.WhenAny(x => x.CurrentExcludedString, x => !string.IsNullOrWhiteSpace(x.Value))
                                    .ToProperty(this, x => x.CanRemoveString);
+
+            _CanNext = this.WhenAny(x => x.Folder, x => !string.IsNullOrWhiteSpace(x.Value))
+                           .ToProperty(this, x => x.CanNext);
+
+            this.Validate(x => x.Folder, string.IsNullOrWhiteSpace, "Please enter an output folder");
         }
 
         protected override void OnActivate()
@@ -124,7 +130,7 @@ namespace ImageDownloader.Screens.Options
             base.OnDeactivate(close);
 
             Mapper.Map(this, site_controller.SiteOptions);
-            // This is done in a task, so that is the cache is loaded, it doesn't disrupt the ui
+            // This is done in a task, so that if the cache is loaded, it doesn't disrupt the ui
             Task.Factory.StartNew(() => site_controller.UpdateSiteOptions().Wait());
         }
 

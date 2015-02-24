@@ -1,16 +1,17 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using ImageDownloader.Controllers;
 using ImageDownloader.Data;
 using ImageDownloader.Services;
-using ImageDownloader.Utils;
 using Panda.ApplicationCore;
 using Panda.ApplicationCore.Extensions;
 using ReactiveUI;
 using WebCrawler.Utils;
+using Timer = ImageDownloader.Utils.Timer;
 
 namespace ImageDownloader.Screens.Process
 {
@@ -28,6 +29,7 @@ namespace ImageDownloader.Screens.Process
         private readonly SitemapService sitemap_service;
         private readonly ProcessStatus crawler_status;
         private readonly ProcessStatus sitemap_status;
+        private CancellationTokenSource cts;
 
         private string _Url;
         public string Url
@@ -71,10 +73,14 @@ namespace ImageDownloader.Screens.Process
             set { this.RaiseAndSetIfChanged(ref _ProcessingStep, value); }
         }
 
+        private readonly ObservableAsPropertyHelper<bool> _CanCancel;
+        public bool CanCancel { get { return _CanCancel.Value; } }
+
+        private bool _CanNext;
         public override bool CanNext
         {
-            get { return true; }
-            protected set { throw new NotSupportedException(); }
+            get { return _CanNext; }
+            protected set { this.RaiseAndSetIfChanged(ref _CanNext, value); }
         }
 
         public override bool CanPrevious
@@ -115,6 +121,9 @@ namespace ImageDownloader.Screens.Process
                                        .Cast<IProgress<string>>()
                                        .ToList()
             };
+
+            _CanCancel = status_controller.WhenAnyValue(x => x.IsBusy)
+                                          .ToProperty(this, x => x.CanCancel);
         }
 
         protected override void OnActivate()
@@ -126,6 +135,9 @@ namespace ImageDownloader.Screens.Process
 
             Crawlers.Apply(c => c.Text = "Waiting");
             Builders.Apply(c => c.Text = "Waiting");
+
+            CanNext = true;
+            cts = new CancellationTokenSource();
         }
 
         protected override async void OnViewLoaded(object view)
@@ -140,14 +152,30 @@ namespace ImageDownloader.Screens.Process
 
                 ProcessingStep = CrawlProcessingStep;
                 await Task.Delay(500);
-                var pages = await crawler_service.Crawl(Url, site_controller.SiteOptions, crawler_status);
-                await Task.Delay(500);
-                ProcessingStep = BuildProcessingStep;
-                await Task.Delay(500);
-                site_controller.Sitemap = await sitemap_service.Build(Url, pages, sitemap_status);
+                var pages = await crawler_service.Crawl(Url, site_controller.SiteOptions, crawler_status, cts.Token);
+
+                if (!cts.IsCancellationRequested)
+                {
+                    await Task.Delay(500);
+                    ProcessingStep = BuildProcessingStep;
+                    await Task.Delay(500);
+                    site_controller.Sitemap = await sitemap_service.Build(Url, pages, sitemap_status, cts.Token);
+                }
 
                 status_controller.IsBusy = false;                
             }
+
+            if (cts.IsCancellationRequested)
+            {
+                CrawlerStatus = "Cancelled";
+                SitemapStatus = "Cancelled";
+            }
+        }
+
+        public void Cancel()
+        {
+            CanNext = false;
+            cts.Cancel();
         }
     }
 }

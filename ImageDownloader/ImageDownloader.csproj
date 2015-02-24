@@ -195,6 +195,7 @@
     <Resource Include="Images\noimage.gif" />
     <Resource Include="Images\appbar.add.png" />
     <Resource Include="Images\appbar.minus.png" />
+    <Resource Include="Images\appbar.cancel.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -271,7 +272,9 @@
     <Resource Include="Images\appbar.cloud.download.ico" />
     <Resource Include="Images\appbar.cloud.download.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Screens\Browser\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

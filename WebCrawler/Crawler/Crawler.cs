@@ -49,7 +49,7 @@ namespace WebCrawler.Crawler
                 ThreadPool.SetMinThreads(thread_count, min_ioc);
         }
 
-        private Task CreateProcessorTask(int id)
+        private Task CreateProcessorTask(int id, CancellationToken token)
         {
             var progress = status[id];
             return Task.Factory.StartNew(() =>
@@ -60,7 +60,7 @@ namespace WebCrawler.Crawler
                 {
                     while (true)
                     {
-                        if (cts.Token.IsCancellationRequested)
+                        if (token.IsCancellationRequested)
                             break;
 
                         if (!queue.Any())
@@ -94,10 +94,10 @@ namespace WebCrawler.Crawler
                     progress.Report("Status: " + page_provider.Status());
                     log.Debug("Stopping consumer {0} [{1}]", id, page_provider.Status());
                 }
-            }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        private Task CreateFinalizerTask()
+        private Task CreateFinalizerTask(CancellationToken token)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -111,7 +111,7 @@ namespace WebCrawler.Crawler
                     else
                         Thread.Sleep(options.ThreadDelay);
 
-                    if (cts.Token.IsCancellationRequested)
+                    if (token.IsCancellationRequested)
                         break;
 
                     status.Report(string.Format("Queued {0}, Visited {1}", queue.Count, visited.Count));
@@ -119,18 +119,20 @@ namespace WebCrawler.Crawler
 
                 status.Report("Status: Done");
                 log.Debug("Stopping finalizer");
-            }, TaskCreationOptions.LongRunning);
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
-        public Task Start()
+        public Task Start(CancellationToken external_cancellation_token)
         {
+            var linked_cts = CancellationTokenSource.CreateLinkedTokenSource(external_cancellation_token, cts.Token);
+
             queue.Enqueue(options.Url);
             // Create processor tasks
             var tasks = Enumerable.Range(0, options.MaxThreadCount)
-                                  .Select(CreateProcessorTask)
+                                  .Select(id => CreateProcessorTask(id, linked_cts.Token))
                                   .ToList();
             // Create finalizer task
-            tasks.Add(CreateFinalizerTask());
+            tasks.Add(CreateFinalizerTask(linked_cts.Token));
             return Task.WhenAll(tasks.ToArray());
         }
     }

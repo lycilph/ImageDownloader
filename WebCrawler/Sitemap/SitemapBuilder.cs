@@ -49,7 +49,7 @@ namespace WebCrawler.Sitemap
             return url;
         }
 
-        public Task<SitemapNode> Build(ConcurrentQueue<Page> pages)
+        public Task<SitemapNode> Build(ConcurrentQueue<Page> pages, CancellationToken token)
         {
             var item_queue = new ConcurrentQueue<string>();
             var page_queue = new BlockingCollection<Page>(pages);
@@ -61,7 +61,7 @@ namespace WebCrawler.Sitemap
                 var task_progress = status[i];
                 var task = Task.Factory.StartNew(() =>
                 {
-                    foreach (var page in page_queue.GetConsumingEnumerable())
+                    foreach (var page in page_queue.GetConsumingEnumerable(token))
                     {
                         var files = link_extractor.Get(page);
                         files.Apply(item_queue.Enqueue);
@@ -72,6 +72,7 @@ namespace WebCrawler.Sitemap
             }
 
             var cts = new CancellationTokenSource();
+            var linked_cts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, token);
             var status_task = Task.Factory.StartNew(() =>
             {
                 status.Report("Starting builder");
@@ -82,7 +83,7 @@ namespace WebCrawler.Sitemap
                     var distinct_count = item_queue.Distinct().Count();
                     status.Report(string.Format("Total items found {0} [{1} unique]", item_queue.Count, distinct_count));
 
-                    if (cts.Token.IsCancellationRequested)
+                    if (linked_cts.Token.IsCancellationRequested)
                         break;
                         
                     // ReSharper disable MethodSupportsCancellation
@@ -92,7 +93,7 @@ namespace WebCrawler.Sitemap
 
                 status.Report("Status: Done");
                 log.Trace("Stopping builder");
-            }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }, linked_cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
             // ReSharper disable MethodSupportsCancellation
             Task.WhenAll(page_queue_processor_tasks.ToArray())
