@@ -151,7 +151,7 @@
       <DependentUpon>TaskInformationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Process\TaskInformationViewModel.cs" />
-    <Compile Include="Screens\StepScreenBase.cs" />
+    <Compile Include="Screens\StepScreen.cs" />
     <Compile Include="Screens\Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>

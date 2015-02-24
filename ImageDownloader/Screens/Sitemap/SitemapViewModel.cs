@@ -8,10 +8,10 @@ using ReactiveUI;
 
 namespace ImageDownloader.Screens.Sitemap
 {
-    [Export(typeof(StepScreenBase))]
+    [Export(typeof(StepScreen))]
     [Export(typeof(SitemapViewModel))]
     [ExportOrder(4)]
-    public sealed class SitemapViewModel : StepScreenBase
+    public sealed class SitemapViewModel : StepScreen
     {
         private readonly SiteController site_controller;
         private readonly SitemapOptionViewModel option_view_model;

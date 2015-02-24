@@ -15,16 +15,16 @@ using LogManager = NLog.LogManager;
 namespace ImageDownloader.Screens.Main
 {
     [Export(typeof(MainViewModel))]
-    public class MainViewModel : ReactiveConductor<StepScreenBase>
+    public class MainViewModel : ReactiveConductor<StepScreen>
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Stack<StepScreenBase> screens = new Stack<StepScreenBase>();
+        private readonly Stack<StepScreen> screens = new Stack<StepScreen>();
         private readonly List<IDisposable> subscriptions = new List<IDisposable>();
         private readonly StatusController status_controller;
 
-        private ReactiveList<StepScreenBase> _Steps;
-        public ReactiveList<StepScreenBase> Steps
+        private ReactiveList<StepScreen> _Steps;
+        public ReactiveList<StepScreen> Steps
         {
             get { return _Steps; }
             set { this.RaiseAndSetIfChanged(ref _Steps, value); }
@@ -45,7 +45,7 @@ namespace ImageDownloader.Screens.Main
         }
 
         [ImportingConstructor]
-        public MainViewModel([ImportMany] IEnumerable<Lazy<StepScreenBase, IExportOrderMetadata>> steps, StatusController status_controller)
+        public MainViewModel([ImportMany] IEnumerable<Lazy<StepScreen, IExportOrder>> steps, StatusController status_controller)
         {
             this.status_controller = status_controller;
             Steps = steps.OrderBy(s => s.Metadata.Order)
@@ -53,7 +53,7 @@ namespace ImageDownloader.Screens.Main
                          .ToReactiveList();
         }
 
-        protected override void ChangeActiveItem(StepScreenBase new_item, bool close_previous)
+        protected override void ChangeActiveItem(StepScreen new_item, bool close_previous)
         {
             logger.Trace("Changing to screen: " + new_item.DisplayName);
 
@@ -75,7 +75,7 @@ namespace ImageDownloader.Screens.Main
             base.ChangeActiveItem(new_item, close_previous);
         }
 
-        public void ResetAndShow(StepScreenBase screen)
+        public void ResetAndShow(StepScreen screen)
         {
             screens.Clear();
             Show(screen);
@@ -87,7 +87,7 @@ namespace ImageDownloader.Screens.Main
             ActivateItem(screens.Peek());
         }
 
-        public void Show(StepScreenBase screen)
+        public void Show(StepScreen screen)
         {
             screens.Push(screen);
             ActivateItem(screen);

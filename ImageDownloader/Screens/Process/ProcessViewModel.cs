@@ -14,10 +14,10 @@ using WebCrawler.Utils;
 
 namespace ImageDownloader.Screens.Process
 {
-    [Export(typeof(StepScreenBase))]
+    [Export(typeof(StepScreen))]
     [Export(typeof(ProcessViewModel))]
     [ExportOrder(3)]
-    public sealed class ProcessViewModel : StepScreenBase
+    public sealed class ProcessViewModel : StepScreen
     {
         private const int CrawlProcessingStep = 0;
         private const int BuildProcessingStep = 1;

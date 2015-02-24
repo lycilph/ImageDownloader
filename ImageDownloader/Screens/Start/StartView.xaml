@@ -36,7 +36,7 @@
                 <Image Source="../../Images/appbar.globe.wire.png"/>
             </Button>
             <ComboBox x:Name="FavoriteUrls" 
-                      Text="{Binding CurrentFavoriteUrl, UpdateSourceTrigger=PropertyChanged}" 
+                      Text="{Binding CurrentFavoriteUrl, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}" 
                       IsEditable="True"
                       controls:TextBoxHelper.Watermark="Enter an url"
                       cal:Message.Attach="[Event KeyUp] = [CrawlSiteOnEnter($pressedkey)]"/>
@@ -54,7 +54,7 @@
                     Content="..." 
                     Margin="10,0,0,0"/>
             <ComboBox x:Name="FavoriteFiles"
-                      Text="{Binding CurrentFavoriteFile, UpdateSourceTrigger=PropertyChanged}"
+                      Text="{Binding CurrentFavoriteFile, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                       IsEditable="True"
                       controls:TextBoxHelper.Watermark="Enter a filename"
                       cal:Message.Attach="[Event KeyUp] = [LoadSiteOnEnter($pressedkey)]"/>

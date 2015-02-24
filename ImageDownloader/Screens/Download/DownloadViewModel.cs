@@ -15,10 +15,10 @@ using WebCrawler.Extensions;
 
 namespace ImageDownloader.Screens.Download
 {
-    [Export(typeof(StepScreenBase))]
+    [Export(typeof(StepScreen))]
     [Export(typeof(DownloadViewModel))]
     [ExportOrder(5)]
-    public sealed class DownloadViewModel : StepScreenBase
+    public sealed class DownloadViewModel : StepScreen
     {
         private readonly Settings settings;
         private readonly SiteController site_controller;

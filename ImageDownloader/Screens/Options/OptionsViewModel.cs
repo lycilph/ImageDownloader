@@ -10,10 +10,10 @@ using ReactiveUI;
 
 namespace ImageDownloader.Screens.Options
 {
-    [Export(typeof(StepScreenBase))]
+    [Export(typeof(StepScreen))]
     [Export(typeof(OptionsViewModel))]
     [ExportOrder(2)]
-    public sealed class OptionsViewModel : StepScreenBase
+    public sealed class OptionsViewModel : StepScreen
     {
         private readonly SiteController site_controller;
 

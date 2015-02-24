@@ -8,14 +8,16 @@ using ImageDownloader.Data;
 using Microsoft.Win32;
 using NLog;
 using Panda.ApplicationCore;
+using Panda.ApplicationCore.Validation;
 using ReactiveUI;
+using WebCrawler.Extensions;
 
 namespace ImageDownloader.Screens.Start
 {
-    [Export(typeof(StepScreenBase))]
+    [Export(typeof(StepScreen))]
     [Export(typeof(StartViewModel))]
     [ExportOrder(1)]
-    public sealed class StartViewModel : StepScreenBase
+    public sealed class StartViewModel : StepScreen
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -77,11 +79,14 @@ namespace ImageDownloader.Screens.Start
             this.site_controller = site_controller;
             this.navigation_controller = navigation_controller;
 
-            _CanCrawlSite = this.WhenAny(x => x.CurrentFavoriteUrl, x => !string.IsNullOrWhiteSpace(x.Value))
+            _CanCrawlSite = this.WhenAny(x => x.CurrentFavoriteUrl, 
+                                         x => !string.IsNullOrWhiteSpace(x.Value) && x.Value.IsWellFormedUrl())
                                .ToProperty(this, x => x.CanCrawlSite);
 
             _CanLoadSite = this.WhenAny(x => x.CurrentFavoriteFile, x => !string.IsNullOrWhiteSpace(x.Value))
                                .ToProperty(this, x => x.CanLoadSite);
+
+            this.Validate(x => x.CurrentFavoriteUrl, x => !string.IsNullOrWhiteSpace(x) && !x.IsWellFormedUrl(), "Invalid url");
         }
 
         protected override async void OnActivate()

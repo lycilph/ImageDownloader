@@ -16,10 +16,10 @@ namespace WebCrawler.Extensions
             return new Uri(url).Host;
         }
 
-        //public static string GetFilename(this string url)
-        //{
-        //    return Path.GetFileName(url);
-        //}
+        public static bool IsWellFormedUrl(this string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
+        }
 
         public static Uri Normalize(this string url, Uri page_uri)
         {
