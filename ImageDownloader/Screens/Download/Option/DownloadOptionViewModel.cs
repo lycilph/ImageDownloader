@@ -9,7 +9,6 @@ namespace ImageDownloader.Screens.Download.Option
     public class DownloadOptionViewModel : ReactiveScreen
     {
         private readonly NavigationController navigation_controller;
-        private readonly StatusController status_controller;
 
         private readonly ObservableAsPropertyHelper<bool> _CanHome;
         public bool CanHome { get { return _CanHome.Value; } }
@@ -18,7 +17,6 @@ namespace ImageDownloader.Screens.Download.Option
         public DownloadOptionViewModel(NavigationController navigation_controller, StatusController status_controller)
         {
             this.navigation_controller = navigation_controller;
-            this.status_controller = status_controller;
 
             _CanHome = status_controller.WhenAny(x => x.IsBusy, x => !x.Value)
                                         .ToProperty(this, x => x.CanHome);

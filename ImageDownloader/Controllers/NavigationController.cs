@@ -30,6 +30,16 @@ namespace ImageDownloader.Controllers
             main.Show(start);
         }
 
+        public void Back()
+        {
+            shell.Back();
+        }
+
+        public void ShowBrowser()
+        {
+            shell.Show(IoC.Get<BrowserViewModel>());
+        }
+
         public void ShowStart()
         {
             main.ResetAndShow(IoC.Get<StartViewModel>());
@@ -43,11 +53,6 @@ namespace ImageDownloader.Controllers
         public void ShowSitemap()
         {
             main.Show(IoC.Get<SitemapViewModel>());
-        }
-
-        public void ShowBrowser()
-        {
-            shell.Show(IoC.Get<BrowserViewModel>());
         }
     }
 }

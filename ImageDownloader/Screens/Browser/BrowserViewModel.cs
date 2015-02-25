@@ -13,6 +13,7 @@ namespace ImageDownloader.Screens.Browser
         private const string HomeUrl = "www.google.com";
 
         private readonly SiteController site_controller;
+        private readonly NavigationController navigation_controller;
         
         private string _Address;
         public string Address
@@ -22,9 +23,10 @@ namespace ImageDownloader.Screens.Browser
         }
 
         [ImportingConstructor]
-        public BrowserViewModel(SiteController site_controller)
+        public BrowserViewModel(SiteController site_controller, NavigationController navigation_controller)
         {
             this.site_controller = site_controller;
+            this.navigation_controller = navigation_controller;
         }
 
         protected override void OnActivate()
@@ -38,6 +40,21 @@ namespace ImageDownloader.Screens.Browser
         public void Home()
         {
             Address = HomeUrl;
+        }
+
+        public void Cancel()
+        {
+            navigation_controller.Back();
+        }
+
+        public void Capture()
+        {
+            logger.Trace("Capturing address " + Address);
+            // This also calls cleanup on the site controller
+            navigation_controller.Back();
+            // Crawl captured site
+            site_controller.InitializeCrawl(Address);
+            navigation_controller.ShowOptions();
         }
     }
 }

@@ -229,6 +229,7 @@
     <Resource Include="Images\appbar.arrow.left.png" />
     <Resource Include="Images\appbar.arrow.right.png" />
     <Resource Include="Images\appbar.refresh.png" />
+    <Resource Include="Images\appbar.camera.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

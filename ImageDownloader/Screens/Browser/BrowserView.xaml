@@ -62,10 +62,22 @@
                     Margin="5,0,0,0">
                 <Image Source="../../Images/appbar.home.png" Height="{Binding ElementName=AddressTextBox, Path=ActualHeight}"/>
             </Button>
-            
+
+            <Button DockPanel.Dock="Right" 
+                    x:Name="Cancel" 
+                    Padding="0"
+                    Margin="5,0,0,0">
+                <Image Source="../../Images/appbar.cancel.png" Height="{Binding ElementName=AddressTextBox, Path=ActualHeight}"/>
+            </Button>
+            <Button DockPanel.Dock="Right" 
+                    x:Name="Capture" 
+                    Padding="0">
+                <Image Source="../../Images/appbar.camera.png" Height="{Binding ElementName=AddressTextBox, Path=ActualHeight}"/>
+            </Button>
+
             <TextBox x:Name="AddressTextBox" 
                      Text="{Binding ElementName=WpfBrowser, Path=Address, UpdateSourceTrigger=PropertyChanged, Delay=500}" 
-                     Margin="5,0,0,0"/>
+                     Margin="5,0"/>
         </DockPanel>
 
         <controls:MetroProgressBar DockPanel.Dock="Top" IsIndeterminate="True">
