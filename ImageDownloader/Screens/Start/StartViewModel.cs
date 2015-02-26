@@ -71,6 +71,8 @@ namespace ImageDownloader.Screens.Start
             protected set { throw new NotSupportedException(); }
         }
 
+        public override bool ShowNavigation { get { return false; } }
+
         [ImportingConstructor]
         public StartViewModel(Settings settings, SiteController site_controller, NavigationController navigation_controller)
         {

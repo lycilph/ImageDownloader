@@ -40,7 +40,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TreeView x:Name="Nodes" Grid.Column="0" ItemContainerStyle="{StaticResource TreeViewItemStyle}">
+        <TreeView x:Name="Nodes"
+                  Grid.Column="0" 
+                  ItemContainerStyle="{StaticResource TreeViewItemStyle}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
                     <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="CurrentNode" Value="{Binding ElementName=Nodes, Path=SelectedItem}"/>

@@ -95,6 +95,7 @@ namespace ImageDownloader.Screens.Download
                 }
             }, TaskCreationOptions.LongRunning);
 
+            DownloadedFiles.Add("Done!");
             status_controller.IsBusy = false;
         }
     }

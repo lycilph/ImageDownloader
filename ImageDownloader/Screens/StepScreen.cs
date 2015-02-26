@@ -11,6 +11,7 @@ namespace ImageDownloader.Screens
 
         public abstract bool CanNext { get; protected set; }
         public abstract bool CanPrevious { get; protected set; }
+        public virtual bool ShowNavigation { get { return true; } }
 
         private IScreen _Option;
         public IScreen Option

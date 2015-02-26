@@ -44,13 +44,24 @@ namespace ImageDownloader.Screens.Main
             set { this.RaiseAndSetIfChanged(ref _CanPrevious, value); }
         }
 
+        private bool _ShowNavigation;
+        public bool ShowNavigation
+        {
+            get { return _ShowNavigation; }
+            set { this.RaiseAndSetIfChanged(ref _ShowNavigation, value); }
+        }
+
         [ImportingConstructor]
         public MainViewModel([ImportMany] IEnumerable<Lazy<StepScreen, IExportOrder>> steps, StatusController status_controller)
         {
             this.status_controller = status_controller;
+            
             Steps = steps.OrderBy(s => s.Metadata.Order)
                          .Select(s => s.Value)
                          .ToReactiveList();
+
+            this.WhenAny(x => x.ActiveItem, x => x.Value != null && x.Value.ShowNavigation)
+                .Subscribe(x => ShowNavigation = x);
         }
 
         protected override void ChangeActiveItem(StepScreen new_item, bool close_previous)
