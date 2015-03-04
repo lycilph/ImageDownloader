@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
 using ImageDownloader.Controllers;
+using MahApps.Metro.Controls.Dialogs;
 using Ookii.Dialogs.Wpf;
 using Panda.ApplicationCore;
+using Panda.ApplicationCore.Dialogs;
 using Panda.ApplicationCore.Validation;
 using ReactiveUI;
 
@@ -17,6 +19,7 @@ namespace ImageDownloader.Screens.Options
     public sealed class OptionsViewModel : StepScreen
     {
         private readonly SiteController site_controller;
+        private readonly StatusController status_controller;
 
         private string _Folder;
         public string Folder
@@ -86,7 +89,14 @@ namespace ImageDownloader.Screens.Options
 
         private readonly ObservableAsPropertyHelper<bool> _CanRemoveString;
         public bool CanRemoveString { get { return _CanRemoveString.Value; } }
-        
+
+        private bool _CanClearCache;
+        public bool CanClearCache
+        {
+            get { return _CanClearCache; }
+            set { this.RaiseAndSetIfChanged(ref _CanClearCache, value); }
+        }
+
         private readonly ObservableAsPropertyHelper<bool> _CanNext;
         public override bool CanNext
         {
@@ -101,10 +111,11 @@ namespace ImageDownloader.Screens.Options
         }
         
         [ImportingConstructor]
-        public OptionsViewModel(SiteController site_controller)
+        public OptionsViewModel(SiteController site_controller, StatusController status_controller)
         {
             DisplayName = "Options";
             this.site_controller = site_controller;
+            this.status_controller = status_controller;
 
             _CanRemoveExtension = this.WhenAny(x => x.CurrentExcludedExtension, x => !string.IsNullOrWhiteSpace(x.Value))
                                       .ToProperty(this, x => x.CanRemoveExtension);
@@ -123,6 +134,7 @@ namespace ImageDownloader.Screens.Options
             base.OnActivate();
 
             Mapper.Map(site_controller.SiteOptions, this);
+            CanClearCache = site_controller.HasCache();
         }
 
         protected override void OnDeactivate(bool close)
@@ -181,6 +193,19 @@ namespace ImageDownloader.Screens.Options
         public void RemoveString()
         {
             ExcludedStrings.Remove(CurrentExcludedString);
+        }
+
+        public async void ClearCache()
+        {
+            var result = await DialogController.ShowMessageAsync("Deleting cache", "Are you sure you want to delete the cache?", MessageDialogStyle.AffirmativeAndNegative);
+            if (result == MessageDialogResult.Affirmative)
+            {
+                status_controller.IsBusy = true;
+                await site_controller.DeleteCache();
+                CanClearCache = false;
+                status_controller.IsBusy = false;
+                status_controller.MainStatusText = "Cache cleared";
+            }
         }
     }
 }

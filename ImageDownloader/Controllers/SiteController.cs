@@ -77,6 +77,14 @@ namespace ImageDownloader.Controllers
             SiteOptions.CacheTask = null;
         }
 
+        public async Task DeleteCache()
+        {
+            await CleanupCache();
+            var path = GetCachePath();
+            File.Delete(path);
+            await UpdateSiteOptions();
+        }
+
         public async Task UpdateSiteOptions()
         {
             if (SiteOptions == null)
@@ -126,6 +134,12 @@ namespace ImageDownloader.Controllers
         public void InitializeCapture(string url)
         {
             Url = url;
+        }
+
+        public bool HasCache()
+        {
+            var path = GetCachePath();
+            return File.Exists(path);
         }
     }
 }
